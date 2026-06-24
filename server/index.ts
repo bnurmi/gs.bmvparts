@@ -6,6 +6,14 @@ import { createServer } from "http";
 const app = express();
 const httpServer = createServer(app);
 
+app.get("/health", (_req, res) => {
+  res.status(200).json({ status: "ok", service: "bmvparts", uptime: process.uptime() });
+});
+
+app.get("/ready", (_req, res) => {
+  res.status(200).json({ status: "ready", service: "bmvparts" });
+});
+
 declare module "http" {
   interface IncomingMessage {
     rawBody: unknown;

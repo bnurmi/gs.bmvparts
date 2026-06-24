@@ -1,0 +1,46 @@
+services:
+  bmv-app:
+    build:
+      context: .
+    image: bmvparts-app:main-vpsdev
+    container_name: bmv-app
+    restart: unless-stopped
+    env_file:
+      - /opt/bmvparts/secrets/bmvparts-app.env
+    environment:
+      NODE_ENV: production
+      PORT: "5000"
+      REDIS_URL: redis://bmv-redis:6379
+      BMW_MODELS_SEED_DISABLED: "1"
+      BMV_DISABLE_STARTUP_SEED: "1"
+      BMV_DISABLE_CATALOG_DELTA: "1"
+      BMV_DISABLE_ISTA_INGEST: "1"
+      BMV_DISABLE_VIN_BACKFILL: "1"
+      BMV_DISABLE_SEO_SCHEDULER: "1"
+      BMV_DISABLE_SEO_ENGINES: "1"
+      BMV_DISABLE_AI_FAQ: "1"
+      BMV_DISABLE_BACKUP_SCHEDULER: "1"
+    ports:
+      - "127.0.0.1:5002:5000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      bmv-redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:5000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  bmv-redis:
+    image: redis:7-alpine
+    container_name: bmv-redis
+    restart: unless-stopped
+    command: ["redis-server", "--maxmemory", "128mb", "--maxmemory-policy", "allkeys-lru"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5

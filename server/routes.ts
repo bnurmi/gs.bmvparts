@@ -12,8 +12,12 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
-  // Seed initial cars on startup
-  await seedInitialCars();
+  // Seed initial cars on startup unless explicitly disabled for VPS first boot.
+  if (process.env.BMW_MODELS_SEED_DISABLED === "1" || process.env.BMV_DISABLE_STARTUP_SEED === "1") {
+    console.log("[startup] Initial car seed disabled by environment");
+  } else {
+    await seedInitialCars();
+  }
 
   // GET /api/cars - list all cars
   app.get("/api/cars", async (req, res) => {

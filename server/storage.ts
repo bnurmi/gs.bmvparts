@@ -263,3 +263,7 @@ export class DatabaseStorage implements IStorage {
 }
 
 export const storage = new DatabaseStorage();
+
+export async function createPartsWorker(partsData: InsertPart[]): Promise<void> {
+  return storage.createParts(partsData);
+}

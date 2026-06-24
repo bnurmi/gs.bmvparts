@@ -1,0 +1,14 @@
+node_modules
+npm-debug.log*
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+.DS_Store
+coverage
+.vite
+.tmp
+tmp-*.mjs
+forveronica
+replit-extract-*
