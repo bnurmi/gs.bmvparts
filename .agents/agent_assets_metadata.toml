@@ -42,3 +42,21 @@ id = "Lw-bDHm5K2xoJz_FfM5cf"
 uri = "file://bmv-production-urls.md"
 type = "text"
 title = "BMV Production URL Reference"
+
+[[outputs]]
+id = "NRoCTcIwqmftESoU7iSoA"
+uri = "file://forveronica/migration-dossier.md"
+type = "text"
+title = "Migration Dossier"
+
+[[outputs]]
+id = "SKCOlND4NFzSYU8MC-YhU"
+uri = "file://forveronica/smoke-test-guide.md"
+type = "text"
+title = "Smoke Test Guide (6 tests)"
+
+[[outputs]]
+id = "Ukol97WhBFoGCY-uXx4gb"
+uri = "file://veronica-bmv-migration.tar.gz"
+type = "unspecified"
+title = "All 3 files (migration-dossier.md + .env.example + smoke-test-guide.md)"
