@@ -1,0 +1,21 @@
+
+          col C width N                 New width for column C = N
+          col C mleft                   Adjust column C to the left
+          col C mright                  Adjust column C to the right
+          col C name TEXT               New title for column C = TEXT
+
+          ex [ all but ] C              Exclude (all but) column C
+          inc  C                        Include column C
+
+          right                         Move right
+          left                          Move left
+
+          back N                        N tuples backward
+          forw N                        N tuples forward            
+
+          print N                       Print N (max 30) copies
+          file F                        Output on file F
+        
+          help CO                       Give Syntax of command CO
+
+Type ESC to continue 

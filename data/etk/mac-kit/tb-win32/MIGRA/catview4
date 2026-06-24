@@ -1,0 +1,137 @@
+CREATE VIEW sysblob(
+	rsno, bcont
+	) AS SELECT
+	rsno, bcont
+	FROM "@@sysblob";
+
+CREATE VIEW syscolumn(
+	tsegno,cname,ctype,domainname,defaultvalue,dum,cpos, ckey,notnull
+	) AS SELECT
+	tsegno,cname,ctype,domainname,defaultvalue,multiple,cpos,ckey,notnull
+	FROM "@@syscolumn"
+	;
+
+CREATE VIEW syscolumnpriv(
+	grantee,tsegno,grantor, cpos, upd_priv
+	) AS SELECT
+	grantee,tsegno,grantor, cpos, upd_priv
+	FROM "@@syscolumnpriv";
+
+CREATE VIEW sysconstraint(
+	segno,constraintname,attributes,constrainttext,cpos
+	) AS SELECT
+	segno,constraintname,attributes,constrainttext,cpos
+	FROM "@@sysconstraint";
+
+CREATE VIEW sysdomain(
+	name, owner,basetype,defaultvalue,constraintname,
+		attributes, constrainttext
+	) AS SELECT
+	name, owner,basetype,defaultvalue,constraintname,
+		attributes, constrainttext
+	FROM "@@sysdomain";
+
+CREATE VIEW sysindex(
+	tsegno,iname,weight,cpos,isuniq,isegno,wlistsegno,
+	stowosegno,charmapsegno,delimsegno,ftxttype,wlisttype
+	) AS SELECT
+	tsegno,iname,weight,cpos,isuniq,isegno,wlistsegno,
+	stowosegno,charmapsegno,delimsegno,ftxttype,wlisttype
+	FROM "@@sysindex";
+
+CREATE VIEW sysrefconstraint(
+	constraintname,attributes,srcsegno,srccpos,
+		tarsegno, tarcpos, delact, updact, matchtype
+	) AS SELECT
+	constraintname,attributes,srcsegno,srccpos,
+		tarsegno, tarcpos, delact, updact, matchtype
+	FROM "@@sysrefconstraint";
+
+CREATE VIEW systable(
+	tname,owner,ttype,segno,colno,"date","cluster"
+	) AS SELECT
+	tname,owner,ttype,segno,colno,"date","cluster"
+	FROM "@@systable"
+	WHERE tname NOT IN (
+		'@@systable',
+		'@@syscolumn',
+		'@@sysindex',
+		'@@sysuser',
+		'@@sysview',
+		'@@sysblob',
+		'@@systablepriv',
+		'@@syscolumnpriv',
+		'@@sysviewdep',
+		'@@sysdomain',
+		'@@sysconstraint',
+		'@@sysrefconstraint',
+		'@@sysx1',
+		'@@sysx2',
+		'@@sysx3');
+
+CREATE VIEW systablepriv(
+	grantee,tsegno,grantor, sel_priv, del_priv, ins_priv, upd_priv
+	) AS SELECT
+	grantee,tsegno,grantor, sel_priv, del_priv, ins_priv, upd_priv
+	FROM "@@systablepriv";
+
+CREATE VIEW sysuser(
+	username,userclass,passwd,userid
+	) AS SELECT
+	username,userclass,passwd,userid
+	FROM "@@sysuser";
+
+CREATE VIEW sysview(
+	vsegno,viewtext,checkopt,updatable,viewtree
+	) AS SELECT
+	vsegno,viewtext,checkopt,updatable,viewtree
+	FROM "@@sysview";
+
+CREATE VIEW sysviewdep(
+	basesegno, vsegno
+	) AS SELECT
+	basesegno, vsegno
+	FROM "@@sysviewdep";
+
+GRANT SELECT ON sysblob TO PUBLIC;
+GRANT SELECT ON syscolumn TO PUBLIC;
+GRANT SELECT ON syscolumnpriv TO PUBLIC;
+GRANT SELECT ON sysconstraint TO PUBLIC;
+GRANT SELECT ON sysdomain TO PUBLIC;
+GRANT SELECT ON sysindex TO PUBLIC;
+GRANT SELECT ON sysrefconstraint TO PUBLIC;
+GRANT SELECT ON systable TO PUBLIC;
+GRANT SELECT ON systablepriv TO PUBLIC;
+GRANT SELECT ON sysuser TO PUBLIC;
+GRANT SELECT ON sysview TO PUBLIC;
+GRANT SELECT ON sysviewdep TO PUBLIC;
+
+GRANT SELECT ON "@@sysblob" TO PUBLIC;
+GRANT SELECT ON "@@syscolumn" TO PUBLIC;
+GRANT SELECT ON "@@syscolumnpriv" TO PUBLIC;
+GRANT SELECT ON "@@sysconstraint" TO PUBLIC;
+GRANT SELECT ON "@@sysdomain" TO PUBLIC;
+GRANT SELECT ON "@@sysindex" TO PUBLIC;
+GRANT SELECT ON "@@sysrefconstraint" TO PUBLIC;
+GRANT SELECT ON "@@systable" TO PUBLIC;
+GRANT SELECT ON "@@systablepriv" TO PUBLIC;
+GRANT SELECT ON "@@sysuser" TO PUBLIC;
+GRANT SELECT ON "@@sysview" TO PUBLIC;
+GRANT SELECT ON "@@sysviewdep" TO PUBLIC;
+
+UPDATE "@@systable" 
+SET ttype='v' 
+WHERE   tname IN (
+	'sysblob',
+	'syscolumn',
+	'syscolumnpriv',
+	'sysconstraint',
+	'sysdomain',
+	'sysindex',
+	'sysrefconstraint',
+	'systable',
+	'systablepriv',
+	'sysuser',
+	'sysview',
+	'sysviewdep')
+;

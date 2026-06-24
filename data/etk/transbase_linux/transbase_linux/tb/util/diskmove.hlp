@@ -1,0 +1,4 @@
+To move a diskfile from its original location to a new one,
+insert the path name of the target location.
+
+The file will be copied to its new location.

@@ -1,0 +1,18 @@
+RELDESC_BEGIN
+"@@syssurrogate" 
+97 1 -1 1
+7
+	integer "surrid" 0 1 1
+	integer "segno" 1 0 1
+	integer "level" 2 2 1
+	integer "cpos" 3 0 1
+	integer "fanout" 4 0 1
+	integer "d1" 5 0 0
+	char(*) "d2" 6 0 0
+0
+RELDESC_END
+
+(N0:sel
+	 (N001:rel  { "@@syssurrogate" }
+		  (N002:ivmk {eq}      
+			   (N006:param  { integer[1] } ))))

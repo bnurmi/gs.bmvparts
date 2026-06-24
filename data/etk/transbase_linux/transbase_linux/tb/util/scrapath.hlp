@@ -1,0 +1,10 @@
+Choose the path of the "Scratch" Directory. 
+
+In the Scratch Directory, all temporary files needed for query 
+evaluation are stored. Typically these files are used as mass 
+storage by the TransBase data sorter.
+
+This directory can also be placed on NFS mounted file systems 
+without risk.
+
+   -	Command Line Syntax :   s=<path>

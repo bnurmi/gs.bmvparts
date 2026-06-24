@@ -1,0 +1,58 @@
+Add a read-only client for an external BMW parts catalog API.
+
+I run a separate scraping service that has been crawling Partslink24 for several weeks. It currently holds ~511,000 BMW parts across 33 model series, and grows daily as the scrape continues. I want BMV.parts to be able to query it.
+
+API base URL: https://<MY-SCRAPER>.replit.app (I'll give you the exact host)
+Auth: none yet — read-only, no key required for now. Add a placeholder for an Authorization: Bearer <token> header so we can lock it down later without a refactor.
+
+Endpoint: GET /catalog-parts
+
+Query params:
+
+brand (string, default BMW)
+model (string, optional — exact match, e.g. G20)
+partNumber (string, optional — exact match)
+limit (int, default 100, max 1000)
+offset (int, default 0)
+Response shape:
+
+{
+  "brand": "BMW",
+  "total": 511052,
+  "offset": 0,
+  "limit": 100,
+  "parts": [
+    {
+      "id": 123,
+      "brand": "BMW",
+      "modelSeries": "3'",
+      "model": "G20",
+      "partGroup": "Engine",
+      "subgroup": "Cylinder head",
+      "partNumber": "11127634315",
+      "description": "...",
+      "price": "42.50",
+      "currency": "EUR",
+      "supersessionPartNumber": null,
+      "supersessionInfo": null,
+      "quantity": 1,
+      "diagramImagePath": "/path/to/diagram.png",
+      "diagramRefNumber": "12",
+      "compatibility": { ... },
+      "hierarchyPath": "BMW/3'/G20/Engine/...",
+      "sourceUrl": "https://...",
+      "lastScrapedAt": "2026-04-22T10:54:55Z",
+      "createdAt": "...",
+      "updatedAt": "..."
+    }
+  ]
+}
+
+What to build:
+
+A typed client module (e.g. src/lib/partsCatalog.ts) with a lookupPart(partNumber), searchByModel(model, opts?), and a generic listParts(opts) that paginates automatically.
+A 5-minute in-memory cache keyed by query string to keep response times snappy and avoid hammering the upstream.
+Configuration via env var PARTS_CATALOG_API_URL (and reserved PARTS_CATALOG_API_TOKEN for future auth).
+Graceful handling: timeouts (10s), retries (1 retry with backoff), and never throw on a 404 — return null/[].
+Don't try to mirror or sync the data into your own DB yet — just query live.
+Where to wire it in: show me the candidate pages/components in BMV.parts where I'd want to surface OEM part numbers, supersession info, or diagram references, but don't make UI changes yet. I'll review the integration points first.

@@ -1,0 +1,24 @@
+RELDESC_BEGIN
+"@@sysviewdep" 
+57 1 -1 1
+4
+	integer "basesegno" 0 1 1
+	integer "vsegno" 1 2 1
+	integer "d1" 2 0 0
+	char(*) "d2" 3 0 0
+0
+RELDESC_END
+
+(N0:sel
+	(N001:restr 
+		(N002:tclos  {   sort     } 
+			(N003:proj 
+				(rel  { "@@sysviewdep" } )
+				(build
+					(attr  { N003[1] } )
+					(attr  { N003[2] } ))))
+		(N004:eq 
+			(N005:attr  { N001[1] } )
+			(N006:param { integer[1] } ))))
+
+

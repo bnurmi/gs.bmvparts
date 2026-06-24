@@ -1,0 +1,43 @@
+UPDATE "@@sysviewdep"
+SET basesegno = 
+	COALESCE( (SELECT segno
+		  FROM "@@systable"
+		  WHERE tname = CASE basesegno
+		  		WHEN 1    THEN  '@@systable'
+		  		WHEN 17   THEN  '@@syscolumn'
+		  		WHEN 33   THEN  '@@sysindex'
+		  		WHEN 49   THEN  '@@sysview'
+		  		WHEN 65   THEN  '@@sysuser'
+		  		WHEN 81   THEN  '@@systablepriv'
+		  		WHEN 97   THEN  '@@syscolumnpriv'
+		  		WHEN 113  THEN  '@@sysviewdep'
+		  		WHEN 129  THEN  '@@sysblob'
+				ELSE NULL
+				END
+		 ) , basesegno )
+;
+UPDATE "@@systable"
+SET ttype = 'R'
+where tname IN (
+'sysblob',
+'syscolumn',
+'syscolumnpriv',
+'sysconstraint',
+'sysdomain',
+'sysindex',
+'sysrefconstraint',
+'systable',
+'systablepriv',
+'sysuser',
+'sysview',
+'sysviewdep')
+;
+DROP TABLE  sysblob ;
+DROP TABLE  syscolumn ;
+DROP TABLE  syscolumnpriv ;
+DROP TABLE  sysindex ;
+DROP TABLE  systable ;
+DROP TABLE  systablepriv ;
+DROP TABLE  sysuser ;
+DROP TABLE  sysview ;
+DROP TABLE  sysviewdep ;

@@ -1,0 +1,90 @@
+﻿Estimate Line Item,Category,OEM Part Number,OEM Description,Recommended USD,AUD inc GST,Price Source,Notes
+FRONT BUMPER BAR,Body/bumper,51 11 8084590,"Panel, bumper, primed, front (PDC/PMA)",754.88,1449.75,DB EUR×1.08,EUR 699.15 list price. No USD deal price in DB.
+FRONT BUMPER BAR BADGE - BMW,Trim,51 11 7886503,Badge with adhesive film 74mm,50.9,97.75,DB deal,
+FRONT BUMPER BAR GUIDE - O/S,Bumper hardware,51 11 8069418,Bumper guide right top,39.93,76.69,DB deal,
+FRONT BUMPER BAR GUIDE - O/S (lower),Bumper hardware,51 11 8069420,Bumper guide right bottom,39.93,76.69,DB deal,
+FRONT BUMPER BAR GUIDE - N/S,Bumper hardware,51 11 8069417,Guide bumper left top,39.93,76.69,DB deal,
+FRONT BUMPER BAR GUIDE - N/S (lower),Bumper hardware,51 11 8069419,Guide bumper left bottom,39.93,76.69,DB deal,
+FRONT BUMPER BAR INNER SKELETON - O/S,Bumper hardware,41 00 7413086,"Mount, bumper right",69.04,132.59,DB deal,
+FRONT BUMPER BAR INNER SKELETON - N/S,Bumper hardware,41 00 7413085,"Mount, bumper left",69.04,132.59,DB deal,
+FRONT BUMPER BAR MAIN GRILLE — INSERT,Bumper grille,51 13 8081141,Grill front (COMPETITION),250.9,481.85,DB deal,Grille insert
+FRONT BUMPER BAR MAIN GRILLE — ORNAMENTAL SURROUND,Bumper grille,51 13 8085968,Front ornamental grille surround,754.66,1449.32,DB deal,ADDED: Both grille components confirmed damaged
+FRONT BUMPER BAR PTS SENSORS x 6,Electronics/PDC,51 11 8084591 + sensors TBC,PDC/PMA mounting set + 6× sensor units,870,1670.84,AI estimate,Mounting set $49.90 in DB. Sensor unit PNs need EPC group 66.20 lookup.
+FRONT BUMPER BAR PTS SENSORS WIRING,Electronics/PDC,61 12 5A02390,"Set of cables, front bumper",195.12,374.73,DB deal,
+FRONT BUMPER BAR MAIN CAMERA,Camera/driver assist,TBC (EPC 61.67),Front ICAM camera unit,650,1248.33,AI estimate,Camera separate from bumper panel. PN TBC via EPC group 61.67.
+FRONT BUMPER BAR NUMBER PLATE BASE,Trim,51 11 8074796,Number plate carrier front (ECE),76.2,146.34,DB deal,
+FRONT BUMPER BAR FOG LAMP MESH - O/S,Bumper mesh,51 11 8069440,"Grille, air inlet, right (M)",70.72,135.82,DB deal,
+FRONT BUMPER BAR FOG LAMP MESH BACKING - O/S,Bumper mesh,51 11 7886865,Kit holder Aircurtain PART 2,49.44,94.95,DB deal,
+FRONT BUMPER BAR FOG LAMP MESH - N/S,Bumper mesh,51 11 8069439,"Grille, air inlet, left (M)",70.72,135.82,DB deal,
+FRONT BUMPER BAR FOG LAMP MESH BACKING - N/S,Bumper mesh,51 11 7886864,Kit holder Aircurtain PART 1,49.44,94.95,DB deal,
+FRONT BUMPER BAR RADAR COVER,Radar/driver assist,66 31 5A1CFA0,Cover integral to radar module — see RADAR line,0,0,N/A,Cover is part of sensor housing. Zeroed to avoid double-count.
+FRONT BUMPER BAR RADAR,Radar/driver assist,66 31 5A1CFA0,Front radar sensor long range (FRR-02),4345.52,8345.57,DB deal,"DB $4,345.52 confirmed dealer price. AI was $2,400 — AI underestimated."
+FRONT RADAR BRACKET,Radar/driver assist,51 64 8071632,"Mounting, headlight/radar area",207.56,398.62,DB deal,Verify exact radar bracket PN via EPC 66.31.
+FRONT BUMPER BAR MAIN REIO,Crash structure,51 11 8071640,"Carrier, bumper front",420.8,808.15,DB deal,
+FRONT BUMPER BAR MAIN REIO FOAM,Crash structure,51 11 8072756,Energy absorber / shock absorber front,58.28,111.93,DB EUR×1.08,EUR 53.96. AI $185 overstated.
+FRONT BUMPER BAR LOWER REIO,Crash structure,51 11 8071602,"Carrier, bumper, front bottom",220.32,423.12,DB deal,
+FRONT BUMPER BAR LOWER REIO FEET - O/S,Crash structure,41 00 9630050,"Mount, bumper right",69.04,132.59,DB deal,
+FRONT BUMPER BAR LOWER REIO FEET - N/S,Crash structure,41 00 9630049,"Mount, bumper left",69.04,132.59,DB deal,
+BONNET SHELL,Panel,41 61 8082029,Aluminium engine hood,1040.72,1998.7,DB deal,
+BONNET HINGE - O/S,Panel hardware,41 00 8494432,Right engine hood hinge,75.88,145.73,DB deal,
+BONNET HINGE STRUT - O/S,Panel hardware,51 23 9463397,Gas pressure spring bonnet active (590N),76.5,146.92,DB deal,
+BONNET HINGE ACTUATOR - O/S,Pedestrian protection,TBC (EPC 51.23/72.12),Active hood pyrotechnic actuator RH,420,806.61,AI estimate,Pedestrian protection confirmed. Pyro actuator PN not in DB — AI $420 used.
+BONNET HINGE - N/S,Panel hardware,41 00 8494431,Left engine hood hinge,75.88,145.73,DB deal,
+BONNET HINGE STRUT - N/S,Panel hardware,51 23 9463396,Gas pressure spring bonnet passive,67.2,129.06,DB deal,
+BONNET HINGE ACTUATOR - N/S,Pedestrian protection,TBC (EPC 51.23/72.12),Active hood pyrotechnic actuator LH,420,806.61,AI estimate,
+O/S HEADLAMP,Lighting,63 11 8084894,"Headlight, laser light, right (RHD / SHAD.LINE)",3224.9,6193.42,DB EUR×1.08,"LASER confirmed AUS. EUR 2,985.09 × 1.08. No USD deal price in DB."
+N/S HEADLAMP,Lighting,63 11 8084893,"Headlight, laser light, left (RHD / SHAD.LINE)",3224.9,6193.42,DB EUR×1.08,"LASER confirmed AUS. EUR 2,985.09 × 1.08."
+LOWER AIR BAFEL RADIAOTOR,Cooling ducting,51 74 8074611,"Air duct, radiator (M)",128.57,246.92,DB deal,
+OIL COOLER # 1,Cooling,17 11 8095293,Engine-oil cooler,732.18,1406.15,DB deal,
+OIL COOLER BRACKET # 2,Cooling bracket,17 21 9501958,Repair kit bracket engine oil cooler,50.8,97.56,DB deal,
+OIL COOLER BRACKET SEAL # 3,Cooling seal,17 21 9501844,Profile seal engine oil cooler,24.99,47.99,DB deal,
+RADIATOR # 1,Cooling,17 11 8095283,Radiator (main coolant),449.55,863.36,DB deal,
+RADIATOR # 2,Cooling,17 11 8095285,External/remote radiator,495.22,951.07,DB deal,Alt: trans oil cooler 17118095284 ($369.20). Confirm which is Radiator #2.
+RADIATOR AIR BAFFEL - UPPER # 5,Cooling ducting,17 11 8666828,"Cooling module mounting, top",20.63,39.62,DB deal,AI $180 was generic. DB $20.63 is the actual part.
+RADIATOR AIR BAFFEL - LOWER # 8,Cooling ducting,17 21 9501845,Air dam engine oil cooler,23.31,44.77,DB deal,
+RADIATOR AIR BAFFEL - O/S # 6,Cooling ducting,51 74 8072094,Air duct displaced radiator right (M),48.67,93.47,DB deal,
+RADIATOR AIR BAFFEL - N/S # 6,Cooling ducting,51 74 8072093,Air duct displaced radiator left (M),48.67,93.47,DB deal,
+RADIATOR AIR BAFFEL MESH # 12,Cooling mesh,51 13 8073057,Grill front (M/BASIS) — verify if inner mesh or outer grille,202.44,388.79,DB deal,Flag: DB part is outer grille assembly. Confirm if items #12/#13 are small internal mesh inserts — may have different PNs.
+RADIATOR AIR BAFFEL MESH # 13,Cooling mesh,51 13 8081142,Grill front (FRR/COMPETITION) — verify,250.9,481.85,DB deal,Same note as #12.
+ENGINE OIL,Fluids,N/A,Engine Oil BMW Longlife-04,220,422.51,AI estimate,No ETK catalog PN. Service item allowance.
+ENGINE COOLANT BMW GENUINE,Fluids,N/A,BMW Coolant HT-12,110,211.26,AI estimate,Service item allowance.
+O/S/F GUARD,Panel,41 00 8083536,"Side panel, front right",559.02,1073.6,DB deal,
+O/S/F GUARD SPLASH TRAY,Wheel arch liner,41 00 7486651,Splash wall,388.41,745.94,DB deal,Full splash wall structure. AI $185 was underestimate.
+O/S SILL PANEL MOULD,Side trim,51 77 8084240,"Door sill cover, primed right",394.71,758.04,DB deal,
+O/S SILL PANEL MOULD INSERT,Side trim,51 77 8084410,Insert side sill right,221.33,425.06,DB deal,
+O/S SILL PANEL MOULD REIO # 3,Side trim support,41 00 9879792,"Reinforcement plate, sill, right",48.27,92.7,DB deal,
+O/S SILL PANEL MOULD REIO # 4,Side trim support,41 00 7488040,"Reinforcement plate, sill, right",125.32,240.68,DB deal,
+O/S SILL PANEL MOULD REIO # 5,Side trim support,51 77 8081014,"Support, sill, right",52.19,100.23,DB deal,
+O/S SILL PANEL MOULD REIO # 6,Side trim support,51 77 8076446,"Support, sill, right",13.28,25.5,DB deal,AI $145 was blanket estimate. Real part is $13.28.
+O/S/F ROAD WHEEL,Wheel,36 10 8093832,Disc wheel light alloy jet black 9.5JX19 ET:20,964.61,1852.53,DB deal,Confirm exact style/finish vs vehicle.
+N/S/F ROAD WHEEL,Wheel,36 10 8093832,Disc wheel light alloy jet black 9.5JX19 ET:20,964.61,1852.53,DB deal,
+N/S/F SUSPENSION - COMPLETE,Suspension,N/A — inspection required,Complete front LH corner,4200,8066.1,AI estimate,Working figure. Finalise from inspection report.
+O/S DOOR,Panel,41 00 9478692,"Door, front, right",1179.04,2264.35,DB deal,
+O/S DOOR HINGE - UPPER,Door hardware,41 51 7420094,"Door hinge, top right",51.95,99.77,DB deal,
+O/S DOOR HINGE - LOWER,Door hardware,41 51 7420090,"Door hinge, bottom right",51.95,99.77,DB deal,
+O/S DOOR CHECK STRAP,Door hardware,51 00 7482127,Door brake,65.56,125.91,DB deal,
+O/S DOOR WEATHER SEAL (ON DOOR),Door seal,TBC (EPC 51.72),Door perimeter weather seal,260,499.33,AI estimate,Full door seal not in DB. Verify PN via EPC group 51.72.
+O/S DOOR TRIM RETAINERS,Clips/fasteners,N/A,Trim retainer clips allowance,80,153.64,AI estimate,
+O/S DOOR MIRROR MECHANISM,Mirror,TBC (EPC 51.16),Mirror fold/drive mechanism assembly,820,1574.81,AI estimate,DB only had wiring harness ($187). Full mechanism PN needed via EPC 51.16.
+O/S DOOR MIRROR HOUSING,Mirror,51 16 9500712,"Outside mirror cover cap, primed, right (M)",94.98,182.41,DB deal,Primed cap only. Full painted housing may have different PN.
+O/S DOOR GLASS MIRROR,Mirror,51 16 5A07758,"Mirror glass, heated, wide-angle, right (EC/HC2)",557.35,1070.39,DB deal,DB $557.35 confirmed. AI $190 was a major underestimate.
+O/S DOOR GLASS,Glass,51 33 7955244,Side window door right,345.03,662.63,Average DB+AI,DB $170.06 / AI $520. Average applied per instruction.
+N/S DOOR GLASS,Glass,51 37 7482713,"Side window, fixed, rear left",362.03,695.28,Average DB+AI,DB $204.06 / AI $520. Average applied.
+FUEL FILLER BUCKET,Fuel system/body,16 11 7484896,Filler pipe,228.24,438.33,DB deal,
+FUEL FILLER BUCKET - DECAL,Decal,16 11 2472988,Fuel filler cap M Performance carbon,109.55,210.39,DB deal,Full M Performance cap confirmed.
+FUEL FILLER BUCKET - DECAL (duplicate),Decal,—,Duplicate estimate line — removed,0,0,N/A,
+HOOD LINING,Trim/headliner,51 44 8097321,Headlining (SCHWARZ),886.74,1702.98,DB deal,
+O/S SIDE CURTAIN AIR BAG,SRS,TBC (EPC 72.12),Side curtain airbag right,1050,2016.53,AI estimate,Not in DB. Verify PN via EPC 72.12.
+N/S SIDE CURTAIN AIR BAG,SRS,TBC (EPC 72.12),Side curtain airbag left,1050,2016.53,AI estimate,
+O/S/F SEAT SIDE AIR BAG,SRS,72 12 7441496,"Side airbag, front right seat",337.79,648.73,DB deal,
+N/S/F SEAT SIDE AIR BAG,SRS,72 12 7441495,"Side airbag, front left seat",337.79,648.73,DB deal,
+O/S QTR INNER AIR BAG,SRS,TBC (EPC 72.12),Quarter inner airbag right,950,1824.48,AI estimate,Not in DB. Verify via EPC 72.12.
+N/S QTR INNER AIR BAG,SRS,TBC (EPC 72.12),Quarter inner airbag left,950,1824.48,AI estimate,
+O/S/F SRS SEAT BELT ASSEMBLY,SRS restraint,72 11 8097740,"Upper belt, front right (M) — full pyro SRS assembly",900,1728.45,AI estimate,DB EUR ~$229 is retractor only. Full SRS assembly (pretensioner) used.
+OS/F SRS BUCKLE ASSEMBLY,SRS restraint,TBC (EPC 72.11),Front right seat belt buckle/pretensioner,360,691.38,AI estimate,Not in DB.
+N/S/F SRS SEAT BELT ASSEMBLY,SRS restraint,72 11 8097739,Upper belt front left (M) — full pyro SRS assembly,900,1728.45,AI estimate,
+N/S/F SRS BUCKLE ASSEMBLY,SRS restraint,TBC (EPC 72.11),Front left seat belt buckle/pretensioner,360,691.38,AI estimate,
+O/S/R SRS SEAT BELT ASSEMBLY,SRS restraint,72 11 8097754,"Upper belt, rear right (M) — full SRS assembly",760,1459.58,AI estimate,Duplicate rear belt line removed per confirmation.
+N/S/R SRS SEAT BELT ASSEMBLY,SRS restraint,72 11 8097753,"Upper belt, rear left (M) — full SRS assembly",760,1459.58,AI estimate,
+O/S/R SUSPENSION COMPLETE,Suspension,N/A — inspection required,Complete rear RH corner,3800,7297.9,AI estimate,"Report-on in original estimate. AI $3,800 working figure."
+*** GRAND TOTAL ***,,,,46503,89309.05,,"USD total: $46503.00 | AUD inc GST: $89309.05. FX: 1 USD = 1.396 AUD + 25% AU dealer uplift + 10% GST. Excludes: TBC lines pending EPC lookup, report-on suspension until inspection finalised, paint/labour/calibration/freight."

@@ -1,0 +1,166 @@
+CREATE TABLE "@@sysblob"
+(	"rsno"	integer not null,
+	"bcont"	integer not null,
+	"d1"	integer,
+	"d2"	char(*)
+)  KEY IS "rsno"
+;
+CREATE TABLE "@@syscolumn"
+(	"tsegno"	integer not null,
+	"cname"	char(*) not null,
+	"ctype"	char(*) not null,
+	"domainname"	char(*),
+	"defaultvalue"	char(*),
+	"multiple"	integer,
+	"cpos"	integer not null,
+	"ckey"	integer,
+	"notnull"	char(*),
+	"d1"	integer,
+	"d2"	char(*)
+)  KEY IS "tsegno", "cpos"
+;
+
+CREATE TABLE "@@syscolumnpriv"
+(	"grantee"	integer not null,
+	"tsegno"	integer not null,
+	"grantor"	integer not null,
+	"cpos"	integer not null,
+	"upd_priv"	char(*) not null,
+	"d1"	integer,
+	"d2"	char(*)
+)  KEY IS "grantee", "tsegno", "grantor", "cpos"
+;
+CREATE TABLE "@@sysconstraint"
+(	"segno"	integer not null,
+	"constraintname"	char(*) not null,
+	"attributes"	char(*),
+	"constrainttext"	char(*) not null,
+	"cpos"	integer,
+	"d1"	integer,
+	"d2"	char(*)
+)  KEY IS "segno", "constraintname"
+;
+CREATE TABLE "@@sysdomain"
+(	"name"	char(*) not null,
+	"owner"	integer not null,
+	"basetype"	char(*) not null,
+	"defaultvalue"	char(*) not null,
+	"constraintname"	char(*),
+	"attributes"	char(*) not null,
+	"constrainttext"	char(*),
+	"d1"	integer,
+	"d2"	char(*)
+)  KEY IS "name", "constraintname"
+;
+
+CREATE TABLE "@@sysindex"
+(	"tsegno"	integer not null,
+	"iname"	char(*) not null,
+	"weight"	integer not null,
+	"cpos"	integer not null,
+	"isuniq"	char(*) not null,
+	"isegno"	integer not null,
+	"wlistsegno"	integer,
+	"stowosegno"	integer,
+	"charmapsegno"	integer,
+	"delimsegno"	integer,
+	"ftxttype"	char(*),
+	"wlisttype"	char(*),
+	"d1"	integer,
+	"d2"	char(*)
+)  KEY IS "tsegno", "iname", "weight"
+;
+CREATE TABLE "@@sysrefconstraint"
+(	"constraintname"	char(*) not null,
+	"attributes"	char(*),
+	"srcsegno"	integer not null,
+	"srccpos"	integer not null,
+	"tarsegno"	integer not null,
+	"tarcpos"	integer not null,
+	"delact"	char(*) not null,
+	"updact"	char(*) not null,
+	"matchtype"	char(*),
+	"d1"	integer,
+	"d2"	char(*)
+)  KEY IS "srcsegno", "constraintname", "srccpos"
+;
+CREATE TABLE "@@systable"
+(	"tname"	char(*) not null,
+	"owner"	integer not null,
+	"ttype"	char(*) not null,
+	"segno"	integer not null,
+	"colno"	integer not null,
+	"date"	datetime[yy:ms] not null,
+	"cluster"	smallint not null,
+	"d1"	integer,
+	"d2"	char(*)
+)  KEY IS "tname"
+;
+
+CREATE TABLE "@@systablepriv"
+(	"grantee"	integer not null,
+	"tsegno"	integer not null,
+	"grantor"	integer not null,
+	"sel_priv"	char(*) not null,
+	"del_priv"	char(*) not null,
+	"ins_priv"	char(*) not null,
+	"upd_priv"	char(*) not null,
+	"d1"	integer,
+	"d2"	char(*)
+)  KEY IS "grantee", "tsegno", "grantor"
+;
+CREATE TABLE "@@sysuser"
+(	"username"	char(*) not null,
+	"userclass"	char(*) not null,
+	"passwd"	char(*) not null,
+	"userid"	integer not null,
+	"d1"	integer,
+	"d2"	char(*)
+)  KEY IS "username"
+;
+CREATE TABLE "@@sysview"
+(	"vsegno"	integer not null,
+	"viewtext"	char(*),
+	"checkopt"	char(*) not null,
+	"updatable"	char(*) not null,
+	"viewtree"	char(*),
+	"d1"	integer,
+	"d2"	char(*)
+)  KEY IS "vsegno"
+;
+CREATE TABLE "@@sysviewdep"
+(	"basesegno"	integer not null,
+	"vsegno"	integer not null,
+	"d1"	integer,
+	"d2"	char(*)
+)  KEY IS "basesegno", "vsegno"
+;
+CREATE TABLE "@@sysx1"
+(	"x1"	integer,
+	"x2"	char(*),
+	"x3"	integer,
+	"x4"	char(*),
+	"x5"	integer,
+	"x6"	char(*)
+)  KEY IS "x1", "x2", "x3", "x4", "x5", "x6"
+;
+
+CREATE TABLE "@@sysx2"
+(	"x1"	integer,
+	"x2"	char(*),
+	"x3"	integer,
+	"x4"	char(*),
+	"x5"	integer,
+	"x6"	char(*)
+)  KEY IS "x1", "x2", "x3", "x4", "x5", "x6"
+;
+
+CREATE TABLE "@@sysx3"
+(	"x1"	integer,
+	"x2"	char(*),
+	"x3"	integer,
+	"x4"	char(*),
+	"x5"	integer,
+	"x6"	char(*)
+)  KEY IS "x1", "x2", "x3", "x4", "x5", "x6"
+;

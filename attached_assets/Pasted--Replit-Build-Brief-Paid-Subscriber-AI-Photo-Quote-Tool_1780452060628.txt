@@ -1,0 +1,114 @@
+# Replit Build Brief: Paid Subscriber AI Photo Quote Tool
+
+Build a paid-subscriber-only page inside the existing BMW Parts Catalogue / Pricing system.
+
+## Feature Name
+
+AI Photo Quote Generator
+
+## Purpose
+
+Allow vendors or paid subscribers to upload accident/damage photos of a BMW, enter or detect the VIN, run AI damage analysis, match damaged/salvageable parts against the existing BMW parts catalogue, and generate a CSV quote in the same format as the existing G80 M3 pricing comparison output.
+
+This should replicate the workflow already completed manually for the attached G80 M3 example.
+
+## Access Control
+
+This feature must only be available to paid subscribers.
+
+Requirements:
+
+- Check the user subscription status before allowing access
+- Block unpaid users with an upgrade/paywall message
+- Vendors should have access if their account has an active vendor/paid plan
+- Admin users should always have access
+
+## Page Requirements
+
+Create a new page:
+
+`/photo-quote`
+
+or inside the vendor dashboard:
+
+`/vendor/photo-quote`
+
+The page should include:
+
+1. Upload vehicle photos
+2. Enter VIN manually
+3. Optional: auto-detect VIN from uploaded images if visible
+4. Select vehicle model if VIN is missing
+5. Run AI damage analysis
+6. Review detected damaged parts
+7. Generate quote
+8. Export CSV
+9. Save quote to vendor/customer record
+
+## AI Photo Analysis
+
+The AI should inspect uploaded photos and detect:
+
+- Vehicle make/model
+- VIN if visible
+- Front damage
+- Rear damage
+- Side damage
+- Interior damage
+- Airbag deployment
+- Headlight/taillight damage
+- Bumper damage
+- Bonnet/boot damage
+- Guard/fender damage
+- Doors
+- Mirrors
+- Wheels
+- Suspension visible damage
+- Cooling pack/radiator/condenser damage
+- Reinforcement/crash bar damage
+- Trim pieces
+- Any obvious missing parts
+
+The AI should output a structured list of likely required parts.
+
+Each detected part should include:
+
+- OEM description
+- Damage confidence score
+- Damage location
+- Suggested category
+- Whether part is required, optional, or needs human review
+- Notes from image analysis
+
+## Catalogue Matching
+
+Use the existing BMW parts catalogue and pricing engine to match detected parts to:
+
+- BMW OEM description
+- BMW OEM part number
+- BMW new price in AUD
+- M Performance Parts used price
+- Saving amount
+- Category
+
+If VIN is available, use VIN-specific compatibility first.
+
+If VIN is not available, fall back to model/year/platform matching.
+
+## Vendor VIN API Quote Pull
+
+Add an API endpoint so vendors can generate quotes directly via VIN.
+
+Example endpoint:
+
+`POST /api/vendor/photo-quote`
+
+Input:
+
+```json
+{
+  "vin": "WBS42AY000FT45458",
+  "vehicle": "BMW G80 M3 Competition",
+  "photos": ["uploaded_photo_urls"],
+  "vendor_id": "vendor_123"
+}

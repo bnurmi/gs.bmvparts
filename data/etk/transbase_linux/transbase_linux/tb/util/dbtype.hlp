@@ -1,0 +1,15 @@
+Choose the database type as Standard or Editorial.
+
+A Standard Database (S) is the choice in most cases.
+An Editorial Database (E) is chosen to prepare files for a CD-ROM 
+database (tool "tbmkrom", see TransBase CD-ROM Manual).
+A third database type is the CD-ROM database itself. It is created
+by using a separate tbadmin option: -C ..
+A good way to prepare CD-ROM database files is to first develop the 
+database on a Standard Database, then to archive the database (with
+tbarc or tbtar), then to rebuild the data on a Editorial Database from
+the archive, then to use tbmkrom.
+
+   -	This DB parameter cannot be changed after DB creation.
+   -	Command Line Syntax :   typ=S | typ=E
+		S is the default.

@@ -1,0 +1,127 @@
+//
+// 
+//                  T r a n s B a s e / C D
+//                  $ProjectRevision: 4.119.1.19 $
+// 
+//	@(#) mymigmul.ccl
+//            $RCSfile: mymigmul.ccl $
+//            $Revision: 1.5 $
+//            $Date: 1998/06/17 15:00:42 $
+//
+//	Copyright (c) 1987 -
+//	Transaction Software GmbH
+//	D 81739 Munich
+// 
+//
+// Module begin
+//
+//	This ccl script migrates an archive to a MultiMYRIAD archive
+//
+//	Usage: ccl mymigmul.ccl <archive> <host> [<user> [<password>]]
+//
+
+local procedure usage
+begin
+    echo {Usage: ccl mymigmul.ccl <archive> <host> [<user> [<password>]]}
+    exit 1
+end
+
+local procedure check_migration(archive)
+begin
+    // check existence of tablename ArchHist_1
+    run {select tname from systable where tname = 'ArchHist_1'}
+    if $run.0 = ArchHist_1 then
+	echo {Archive $archive already migrated, exiting}
+	exit 1
+    fi
+end
+
+local procedure create_ArchHist(archive, host)
+begin
+
+    // for all MyUsers: create ArchHist_<tbuid> and fill it with
+    // current dbname
+
+    local myuser := {}
+    local myclass := {}
+    local tbuser := {}
+    local tbuid := 0
+
+    local archhist := {}
+    local queryhist := {}
+
+    open myusers {select UserName, UserClass from MyUser}
+    fetch myusers
+    while not eod(myusers) do
+	myuser := $myusers.0
+	myclass := $myusers.1
+	run {select username, userid
+	     from sysuser
+	     where username = if '$myuser' = 'myadmin'
+			      then 'tbadmin'
+			      else '$myuser'
+			      fi
+	    }
+
+	tbuser := $run.0
+	tbuid := $run.1
+
+	archhist :=  ArchHist_  & $tbuid
+	queryhist := QueryHist_ & $tbuid
+
+	echo {Create $archhist for user $myuser}
+	run { create table $archhist without ikaccess (
+		QueryId integer not null,
+		Archive char(*) not null,
+		Host char(*) not null
+	      ) key is QueryId, Archive, Host
+	    }
+	if $myclass <> myadm then
+	    run {grant all on $archhist to $tbuser}
+	fi
+
+	echo {Fill $archhist}
+	run {insert into $archhist
+	     select QueryId, '$archive', '$host' from $queryhist
+	    }
+
+	fetch myusers
+    od
+    close myusers
+end
+
+local procedure main(archive, host, user, passwd)
+begin
+    // check arguments
+    if not isset(archive) or not isset(host) then exec usage fi
+
+    if not isset(user) then accept user prompt {login: } fi
+    if $user = myadmin then user := tbadmin fi
+
+    conn $archive & {@} & $host
+
+    if isset(passwd) then login $user $passwd else login $user
+    fi
+
+    echo {}
+    exec check_migration($archive)
+    exec create_ArchHist($archive, $host)
+    echo {Commit and disconnect}
+    ct
+    dconn
+    echo {}
+
+    exit 0
+end
+
+if isset(4) then
+    exec main($1, $2, $3, $4)
+else if isset(3) then
+    exec main($1, $2, $3) 
+else if isset(2) then
+    exec main($1, $2)
+else if isset(1) then
+    exec main($1)
+else
+    exec main
+fi fi fi fi

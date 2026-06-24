@@ -1,0 +1,14 @@
+If physical intialization is triggered by 'y', then the diskfile will
+be written up to its specified size with dummy pages.
+The effect is that all disk space ever needed by the diskfile is 
+allocated at creation time already. 
+
+
+   -	Command Line Syntax :  d=[<path>],[<size>],[blob],pinit
+   	Example:  
+	$ tbadmin -cf <sampledb>  d=  d=/data/tbdsk002,100000,blob,pinit
+	   -->	specifies 2 diskfiles where the first has default 
+		properties (and no physical initialization) and
+		the second resides on /data with about 200MB size and 
+		is reserved for BLOB data and is physically initialized
+		with 100000 dummy pages.

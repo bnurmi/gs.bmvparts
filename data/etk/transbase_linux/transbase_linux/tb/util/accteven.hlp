@@ -1,0 +1,22 @@
+Specify accounting events to be logged into the accounting file.
+  CONN 	:  One entry  for each CONNECT and DISCONNECT action.
+  LOGIN :  One entry  for each LOGIN action.
+  TA 	:  One entry  for each start (BT) and end (CT,AT,PT) of a 
+		transaction.
+  DDL 	:  One entry  for each DDL request (CREATE TABLE etc.)
+  DML 	:  One entry  for each DML request (SELECT, INSERT, UPDATE,..)
+  ERROR :  One entry  for each received error received
+  APPLIC:  Application definable event.
+  STATS/STATQ: Statistics after each query / connection
+
+   -	Command Line Syntax :   ace=<eventspec>
+
+A list of events can be specified separated by comma, blank or tab.
+ALL / NONE specify a complete or empty list of events, resp.
++event and -event adds/removes an event from the actual event list.
+Examples:   $ tbadmin  -cf  dbname  ace=ALL-ERROR  acl=on
+	       -->  Create database which logs all events except ERROR,
+		    and switch event logging on.
+	    $ tbadmin  -af  dbname  ace=-DDL+ERROR 
+	       -->	Remove event DDL, add event ERROR to the event 
+			logging list of the database dbname.

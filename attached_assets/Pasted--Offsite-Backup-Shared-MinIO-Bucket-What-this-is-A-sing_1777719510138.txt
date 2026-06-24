@@ -1,0 +1,324 @@
+# Offsite Backup — Shared MinIO Bucket
+
+## What this is
+
+A single MinIO bucket (`replit-backup`) on a TrueNAS host is shared across every sibling Replit project. The bucket speaks the S3 protocol, so any S3 client (`boto3`, `@aws-sdk/client-s3`, the `aws` CLI, `mc`, etc.) can read and write to it. **Each project owns exactly one top-level prefix inside the bucket** and must never read, list, or write outside its own prefix.
+
+The pattern this document describes:
+
+1. Dump the project's PostgreSQL database, tar + gzip it.
+2. Tar + gzip the project's application files (uploads, instance data, anything user-generated).
+3. Push both archives to the shared MinIO bucket using path-style S3 addressing, under the project's own prefix only.
+4. Verify the upload landed in the right place.
+5. Log every attempt; never let an offsite failure crash the app.
+
+This doc is offsite-first because the shared bucket is the offsite tier. If a project also wants an onsite copy (e.g. Replit Object Storage), that is optional and lives outside this doc.
+
+## Required env vars
+
+Set these in **Replit Secrets** for the project. Never commit them; never log them.
+
+| Variable | Example value (bmv.parts) | Notes |
+|----------|---------------------------|-------|
+| `OFFSITE_BACKUP_ENDPOINT` | `https://ch.infra.hiddenservers.net` | MinIO endpoint URL. Same value for every sibling project. |
+| `OFFSITE_BACKUP_BUCKET` | `replit-backup` | Bucket name. Same value for every sibling project. |
+| `OFFSITE_BACKUP_PREFIX` | `bmv.parts/` | **Must end in `/`.** Project-name → prefix. Swap to your own project. |
+| `OFFSITE_BACKUP_ACCESS_KEY` | _(provided by operator)_ | Project-scoped IAM key. Set via Replit Secrets. |
+| `OFFSITE_BACKUP_SECRET_KEY` | _(provided by operator)_ | Paired secret. Set via Replit Secrets. |
+
+Project-name → prefix convention (current siblings):
+
+| Project | `OFFSITE_BACKUP_PREFIX` |
+|---------|-------------------------|
+| bmv.parts | `bmv.parts/` |
+| chrome | `chrome/` |
+| scraper | `scraper/` |
+| _(your project)_ | `<project-name>/` — match the repo / app name |
+
+The access key + secret key are provisioned manually by the operator out-of-band. They are not in any repo, not in any blueprint, and not derivable. If you don't have them, ask — do not fabricate or reuse another project's keys.
+
+## Prefix rules (read this first)
+
+The bucket is shared. Treat everything outside `${OFFSITE_BACKUP_PREFIX}` as if it does not exist.
+
+**Do:**
+
+- Build every object key as `${OFFSITE_BACKUP_PREFIX}YYYY/MM/DD/<type>_<timestamp>.tar.gz`.
+- Pass `Prefix=${OFFSITE_BACKUP_PREFIX}` on **every** `list_objects` / `list_objects_v2` call.
+- Filter retention cleanup by the same prefix before deleting anything.
+- Use path-style S3 addressing (MinIO requires it).
+
+**Do not:**
+
+- Call `list_objects` / `list_objects_v2` against the bucket root (no `Prefix`) — you'll page over every sibling project's data.
+- Call `delete_object` against any key that doesn't start with your prefix.
+- Set, modify, or read bucket policies, lifecycle rules, ACLs, or CORS config.
+- Use `delete_objects` (bulk) without first validating every key starts with your prefix.
+- Hardcode another project's prefix anywhere — if you need to read a sibling's data, ask the operator.
+
+**What will get a project removed from the shared bucket:**
+
+- Writing outside your prefix (even once).
+- Deleting anything outside your prefix (even once).
+- Modifying bucket-level configuration.
+- Leaking the access key / secret key into a repo, log line, error message, or client-side payload.
+
+## What to back up
+
+Two archive types per project, both `.tar.gz`:
+
+1. **Database** — `pg_dump` of the project's Postgres DB, gzipped inside a tar.
+2. **Application files** — user-generated content the app writes to disk (uploads, instance data, anything not in source control).
+
+Object key format (use this exactly):
+
+```
+${OFFSITE_BACKUP_PREFIX}YYYY/MM/DD/db_<timestamp>.tar.gz
+${OFFSITE_BACKUP_PREFIX}YYYY/MM/DD/files_<timestamp>.tar.gz
+```
+
+Where `YYYY/MM/DD` is UTC date and `<timestamp>` is `YYYYMMDDTHHMMSSZ` (UTC, ISO-8601 basic). The date prefix makes day-scoped listing cheap and keeps retention cleanup simple.
+
+## Recipe — Database
+
+Canonical recipe (small / medium DBs, fits comfortably in /tmp):
+
+```bash
+TS=$(date -u +%Y%m%dT%H%M%SZ)
+pg_dump --no-owner --no-privileges "$DATABASE_URL" > /tmp/dump.sql
+tar -czf /tmp/db_${TS}.tar.gz -C /tmp dump.sql
+rm /tmp/dump.sql
+```
+
+The dump file is written first, then tarred + gzipped. Do **not** try to pipe `pg_dump | gzip | tar` — `tar -c` needs a real file or directory tree to read from, not a stream.
+
+For very large DBs where loading the whole compressed dump into memory is risky (this is the common OOM cause when the upload step also buffers the full archive), stream `pg_dump` through `gzip` to disk first, then tar the resulting file:
+
+```bash
+TS=$(date -u +%Y%m%dT%H%M%SZ)
+pg_dump --no-owner --no-privileges "$DATABASE_URL" \
+  | gzip -6 > /tmp/dump.sql.gz
+tar -czf /tmp/db_${TS}.tar.gz -C /tmp dump.sql.gz
+rm /tmp/dump.sql.gz
+```
+
+This keeps peak memory ≈ the size of the gzipped dump on disk only. Upload the resulting `db_${TS}.tar.gz` by streaming it from disk (open the file, hand the file handle to the S3 client) — never read the whole thing into memory just to upload it.
+
+Recommended `pg_dump` flags:
+
+- `--no-owner --no-privileges` — keeps the dump portable across environments.
+- `PGOPTIONS='-c statement_timeout=290000 -c lock_timeout=5000 -c idle_in_transaction_session_timeout=30000'` — caps how long a wedged dump can hold connections open.
+
+## Recipe — Application files
+
+Default include list (tailor to your project — only include things the app writes that aren't in source control):
+
+- `uploads/`
+- `static/user_uploads/`
+- `instance/`
+- anything else the project treats as user data
+
+Default exclude list (put these in `.backupignore` at the repo root):
+
+```
+node_modules
+__pycache__
+.git
+.cache
+*.pyc
+dist
+build
+.venv
+venv
+.pytest_cache
+.next
+.turbo
+```
+
+Recipe:
+
+```bash
+TS=$(date -u +%Y%m%dT%H%M%SZ)
+tar --exclude-from=.backupignore \
+    -czf /tmp/files_${TS}.tar.gz \
+    uploads/ static/user_uploads/ instance/
+```
+
+If a directory in the include list doesn't exist on a given project, drop it from the command — `tar` will hard-fail otherwise. The agent wiring this up should pick the include list that matches the project's actual layout.
+
+## Code expectations
+
+Both snippets must:
+
+- Construct the client against `OFFSITE_BACKUP_ENDPOINT`.
+- Enable path-style addressing (MinIO requires it).
+- Read access key / secret key from env vars (never hardcoded).
+- Upload one example object under `${OFFSITE_BACKUP_PREFIX}YYYY/MM/DD/db_<timestamp>.tar.gz`.
+
+### Python (boto3)
+
+```python
+import os
+from datetime import datetime, timezone
+import boto3
+from botocore.config import Config
+
+ENDPOINT   = os.environ["OFFSITE_BACKUP_ENDPOINT"]
+BUCKET     = os.environ["OFFSITE_BACKUP_BUCKET"]
+PREFIX     = os.environ["OFFSITE_BACKUP_PREFIX"]  # must end with "/"
+ACCESS_KEY = os.environ["OFFSITE_BACKUP_ACCESS_KEY"]
+SECRET_KEY = os.environ["OFFSITE_BACKUP_SECRET_KEY"]
+
+assert PREFIX.endswith("/"), "OFFSITE_BACKUP_PREFIX must end with '/'"
+
+s3 = boto3.client(
+    "s3",
+    endpoint_url=ENDPOINT,
+    aws_access_key_id=ACCESS_KEY,
+    aws_secret_access_key=SECRET_KEY,
+    config=Config(s3={"addressing_style": "path"}),
+)
+
+now = datetime.now(timezone.utc)
+ts  = now.strftime("%Y%m%dT%H%M%SZ")
+key = f"{PREFIX}{now:%Y/%m/%d}/db_{ts}.tar.gz"
+
+with open(f"/tmp/db_{ts}.tar.gz", "rb") as f:
+    s3.put_object(Bucket=BUCKET, Key=key, Body=f)
+
+print("uploaded:", key)
+```
+
+### Node.js (`@aws-sdk/client-s3`)
+
+```js
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { createReadStream, statSync } from "node:fs";
+
+const ENDPOINT   = process.env.OFFSITE_BACKUP_ENDPOINT;
+const BUCKET     = process.env.OFFSITE_BACKUP_BUCKET;
+const PREFIX     = process.env.OFFSITE_BACKUP_PREFIX; // must end with "/"
+const ACCESS_KEY = process.env.OFFSITE_BACKUP_ACCESS_KEY;
+const SECRET_KEY = process.env.OFFSITE_BACKUP_SECRET_KEY;
+
+if (!PREFIX.endsWith("/")) {
+  throw new Error("OFFSITE_BACKUP_PREFIX must end with '/'");
+}
+
+const s3 = new S3Client({
+  endpoint: ENDPOINT,
+  forcePathStyle: true,
+  credentials: { accessKeyId: ACCESS_KEY, secretAccessKey: SECRET_KEY },
+  region: "us-east-1", // MinIO ignores this; SDK requires a value
+});
+
+const now = new Date();
+const ts  = now.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+const ymd = `${now.getUTCFullYear()}/${String(now.getUTCMonth() + 1).padStart(2, "0")}/${String(now.getUTCDate()).padStart(2, "0")}`;
+const key = `${PREFIX}${ymd}/db_${ts}.tar.gz`;
+
+const path = `/tmp/db_${ts}.tar.gz`;
+await s3.send(new PutObjectCommand({
+  Bucket: BUCKET,
+  Key: key,
+  Body: createReadStream(path),
+  ContentLength: statSync(path).size,
+}));
+
+console.log("uploaded:", key);
+```
+
+## Recommended schedule
+
+Treat this as a starting point — each sibling project can tune intervals and retention to match its data velocity and storage budget.
+
+| Job | Frequency | Default retention |
+|-----|-----------|-------------------|
+| Database tar.gz | Daily | Keep last 30 daily |
+| Application files tar.gz | Weekly | Keep last 12 weekly |
+| Pre-deploy DB tar.gz (optional) | Before each deploy | Keep last 10 |
+
+Cleanup must run **per prefix** and must filter `Prefix=${OFFSITE_BACKUP_PREFIX}` on every list call. Sort the resulting keys (the `YYYY/MM/DD/<type>_<timestamp>` format sorts chronologically by string) and delete the oldest beyond the retention count. Never call `list_objects_v2` on the bucket root.
+
+## Optional: server-side encryption
+
+MinIO supports SSE-S3 (`AES256`). It's opt-in per project. If you want it, add the header on every `put_object` / `PutObjectCommand`:
+
+```python
+# boto3
+s3.put_object(Bucket=BUCKET, Key=key, Body=f, ServerSideEncryption="AES256")
+```
+
+```js
+// @aws-sdk/client-s3
+await s3.send(new PutObjectCommand({
+  Bucket: BUCKET,
+  Key: key,
+  Body: createReadStream(path),
+  ServerSideEncryption: "AES256",
+}));
+```
+
+No client-side key management is needed — MinIO handles the key on the server.
+
+## Verification
+
+After your first successful upload, run this from any shell that has the `aws` CLI installed (substitute your prefix and credentials):
+
+```bash
+AWS_ACCESS_KEY_ID=$OFFSITE_BACKUP_ACCESS_KEY \
+AWS_SECRET_ACCESS_KEY=$OFFSITE_BACKUP_SECRET_KEY \
+aws --endpoint-url $OFFSITE_BACKUP_ENDPOINT \
+    s3 ls s3://replit-backup/$OFFSITE_BACKUP_PREFIX
+```
+
+Expected output: a listing of `YYYY/MM/DD/` folders under your project's prefix, with the `db_<timestamp>.tar.gz` you just uploaded visible inside the matching date folder. If you see objects from another project, you're listing the wrong prefix — stop and fix the code before doing anything else.
+
+The MinIO web console at the endpoint URL also shows the bucket contents and is a fast sanity check that your prefix is showing up alongside the other sibling project folders.
+
+## Restore / fetch
+
+Pulling a single archive back is the inverse of upload. Two ways:
+
+### aws CLI
+
+```bash
+AWS_ACCESS_KEY_ID=$OFFSITE_BACKUP_ACCESS_KEY \
+AWS_SECRET_ACCESS_KEY=$OFFSITE_BACKUP_SECRET_KEY \
+aws --endpoint-url $OFFSITE_BACKUP_ENDPOINT \
+    s3 cp s3://replit-backup/${OFFSITE_BACKUP_PREFIX}2026/05/02/db_20260502T030000Z.tar.gz \
+          /tmp/restore.tar.gz
+```
+
+### boto3
+
+```python
+s3.download_file(
+    Bucket=BUCKET,
+    Key=f"{PREFIX}2026/05/02/db_20260502T030000Z.tar.gz",
+    Filename="/tmp/restore.tar.gz",
+)
+```
+
+Expand the archive:
+
+```bash
+tar -xzf /tmp/restore.tar.gz -C /tmp
+# DB archives expand to dump.sql (or dump.sql.gz if you used the streaming variant).
+# Application-file archives expand to the original directory tree.
+```
+
+Restoring the DB into Postgres (`psql "$DATABASE_URL" < /tmp/dump.sql`) and any per-project restore UI is out of scope for this doc — wire it up per project.
+
+## Failure handling
+
+The offsite pipeline must never crash the app. It is a best-effort secondary path.
+
+Rules:
+
+- **Log every attempt.** Success, retry, and final failure all get a log line. Include the object key and the elapsed time.
+- **Retry with exponential backoff.** Up to **3 attempts**, sleeping `2^n` seconds between them (2s, 4s, 8s). Retry on transient network / 5xx errors only — do not retry on 403 (auth) or 400 (bad request); those are bugs to fix, not transients.
+- **Persist the outcome.** Record the final status (`transferred` / `failed` / `skipped`) somewhere durable — a `BackupLog`-style row in the project's own DB is the standard pattern. The local DB record is the source of truth for "did this backup make it offsite?".
+- **Fail closed on misconfiguration.** If `OFFSITE_BACKUP_*` env vars are missing or `OFFSITE_BACKUP_PREFIX` doesn't end in `/`, mark the run as `skipped` and log a warning — do not attempt the upload, and do not silently fall back to a default prefix.
+- **Never let an offsite failure surface to end users.** Wrap the call site in a try/except (or try/catch) at the boundary; alerting is the right channel for offsite failures, not user-facing errors.
+- **Alert on sustained failure.** If the most recent N (e.g. 3) consecutive offsite attempts have failed, or no successful offsite transfer has happened in 25+ hours, fire an operator alert through whatever channel the project already uses (email, Telegram, Slack, etc.).

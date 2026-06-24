@@ -1,0 +1,1571 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Walter L. Goebel (ESG Elektroniksystem und Logitstik) -->
+<xs:schema targetNamespace="http://bmw.de/dms" xmlns="http://bmw.de/dms" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--Allgemeine Typedefinitionen (Generell typedefinitions)-->
+	<xs:simpleType name="typeString30">
+		<xs:annotation>
+			<xs:documentation>A string containing 30 characters at max</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:normalizedString">
+			<xs:maxLength value="30"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeString256">
+		<xs:annotation>
+			<xs:documentation>A string containing 256 characters at max</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="256"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeString512">
+		<xs:annotation>
+			<xs:documentation>A string containing 512 characters at max</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="512"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeDecimal3.2">
+		<xs:annotation>
+			<xs:documentation>Decimal values in the format 3.2</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="5"/>
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeDecimal6.2">
+		<xs:annotation>
+			<xs:documentation>Decimal values in the format 6.2</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="8"/>
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeDecimal8.2">
+		<xs:annotation>
+			<xs:documentation>Decimal values in the format 8.2</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="10"/>
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeDecimal9.2">
+		<xs:annotation>
+			<xs:documentation>Decimal vallues in the format 9.2</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="11"/>
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--DMS Basisdatentypen (DMS basic types)-->
+	<!--Typen für Identifikation (Type for identification purpose)-->
+	<xs:simpleType name="typeUsername">
+		<xs:annotation>
+			<xs:documentation>Name of the user. This is only unique with a given firm parameter</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="typeString30"/>
+	</xs:simpleType>
+	<xs:simpleType name="typeFirma">
+		<xs:annotation>
+			<xs:documentation>Name of the firm of the user</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="typeString30">
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeFiliale">
+		<xs:annotation>
+			<xs:documentation>Name of the branch the user is currently working in</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeHaendlernummer">
+		<xs:annotation>
+			<xs:documentation>A datatype for dealer numbers</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:pattern value="[0-9]{5}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeAuftragsnummer">
+		<xs:annotation>
+			<xs:documentation>An order number from the DMS</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:maxLength value="10"/>
+			<xs:minLength value="1"/>
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeKundennummer">
+		<xs:annotation>
+			<xs:documentation>A customer number. The maximum number of digits is 7.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:nonNegativeInteger">
+			<xs:totalDigits value="7"/>
+			<xs:fractionDigits value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeFahrgestellnummer">
+		<xs:annotation>
+			<xs:documentation>A vehicle identification number</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+			<xs:minLength value="7"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeProduktklasse">
+		<xs:annotation>
+			<xs:documentation>A datatype for product classes</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeTeileart">
+		<xs:annotation>
+			<xs:documentation>Indentifier for part types</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:length value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeTeilenummer">
+		<xs:annotation>
+			<xs:documentation>Part number, it can have any format, though in BMW it has either 7 or 11-digits</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="11"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeNummernArt">
+		<xs:annotation>
+			<xs:documentation>Kind of the number(TEILENUMMER = part number or ARBEITSWERTNUMMER = flat rate number)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typePaketnummer">
+		<xs:annotation>
+			<xs:documentation>Package number</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="13"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--Typen für Wertemengen (Datatypes for value sets)-->
+	<xs:simpleType name="typeMarke">
+		<xs:annotation>
+			<xs:documentation>All possible marques</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="BMW"/>
+			<xs:enumeration value="MINI"/>
+			<xs:enumeration value="Rolls-Royce"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeMwstArten">
+		<xs:annotation>
+			<xs:documentation>Different types of VAT. The valid values are numbers from 1-5 where each number my appear only once</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="1"/>
+			<xs:maxInclusive value="5"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeKodierungsstufe">
+		<xs:annotation>
+			<xs:documentation>Identifier for discount types</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeBedarfshinweisCode">
+		<xs:annotation>
+			<xs:documentation>Valid codes for remarks on requirements. The codes can have up to 2 digits.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:nonNegativeInteger">
+			<xs:totalDigits value="2"/>
+			<xs:fractionDigits value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeDmsAusfuehrungsart">
+		<xs:annotation>
+			<xs:documentation>The type of execution the DMS supports (order oriented or set oriented)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="satz"/>
+			<xs:enumeration value="auftrag"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeDMSErgebnisCodes">
+		<xs:annotation>
+			<xs:documentation>All valid resullt codes of the DMS. The code can have up to 4 digits. The valid codes are: 0, 1701, 1702, 1705, 1706, 1707, 1708, 1709, 1710, 1741, 1742, 1743, 1744, 1746, 1748, 1749, 1750, 1751, 1752, 1754, 1756, 1757, 1758, 1760, 1762, 1763, 1765, 1800, 1801, 1802, 1810, 1820, 1825, 1900, 1902, 1904, 1906, 1907, 1908, 1930, 1935
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:nonNegativeInteger">
+			<xs:totalDigits value="4"/>
+			<xs:fractionDigits value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--Typen für String-Datenformate (Types for strings)-->
+	<xs:simpleType name="typeDMSTeilebezeichnung">
+		<xs:annotation>
+			<xs:documentation>Description of a part limited to 40 characters as defined in the DMS</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="40"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeLagerort">
+		<xs:annotation>
+			<xs:documentation>Storage location of parts</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="8"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeWaehrung">
+		<xs:annotation>
+			<xs:documentation>Valid currencies (this type is obsolete because currencies are not supported by the interface)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:minLength value="2"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--Typen für Zahlenformate (Types for digital values)-->
+	<xs:simpleType name="typeOneDigitCode">
+		<xs:annotation>
+			<xs:documentation>A one-digit code</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:nonNegativeInteger">
+			<xs:totalDigits value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--Komplexe Datentypen-->
+	<xs:complexType name="typeMehrwertsteuerSatz">
+		<xs:annotation>
+			<xs:documentation>A VAT consisting of the type and the percentage of the VAT</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="mwstId" type="typeMwstArten">
+				<xs:annotation>
+					<xs:documentation>The ID of the VAT. Valid values are 1-5, where 1 indicates the high and 2 the low VAT. The other numbers are for free use.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="steuersatz" type="typeDecimal3.2">
+				<xs:annotation>
+					<xs:documentation>The percentage of the VAT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="teilelistenPosition">
+		<xs:annotation>
+			<xs:documentation>An entry in a partlist containing information about parts</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="teilenummer" type="typeTeilenummer">
+				<xs:annotation>
+					<xs:documentation>Part number according to the 11-digit format</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="marke" type="typeMarke">
+				<xs:annotation>
+					<xs:documentation>The marque of the part</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="bestelllistenPosition">
+		<xs:annotation>
+			<xs:documentation>An entry in a partlist for ordering parts (inlcudes quantity)</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="teilelistenPosition">
+				<xs:sequence>
+					<xs:element name="bezeichnung" type="typeDMSTeilebezeichnung">
+						<xs:annotation>
+							<xs:documentation>Description of the part limited to 40 characters according to DMS format</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="menge" type="typeDecimal8.2">
+						<xs:annotation>
+							<xs:documentation>The quantity of the part</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="erweiterteBestellistenPosition">
+		<xs:annotation>
+			<xs:documentation>An entry in an enhanced partlist for ordering parts (inlcudes quantity, comments, order numbers etc.)</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="bestelllistenPosition">
+				<xs:sequence>
+					<xs:element name="auftragsnummer" type="typeAuftragsnummer" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The order number if available</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="kundennummer" type="typeKundennummer" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The customer number if available</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="kommentar" type="typeString30" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Space for comments and other information. This field can contain the name of the customer in order to allow mapping of the ordered parts to customers. This mapping is also possible via customer number</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="kompletteBestelllistenPosition">
+		<xs:annotation>
+			<xs:documentation>An entry in a complete partlist for ordering parts (inlcudes additionally prices discounts, etc.)</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="bestelllistenPosition">
+				<xs:sequence>
+					<xs:element name="nettopreis" type="typeDecimal9.2">
+						<xs:annotation>
+							<xs:documentation>price (UPE)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="preisPreisdatei" type="typeDecimal9.2" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The price from the price module</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="rabatt">
+						<xs:annotation>
+							<xs:documentation>Percentage of the discount. This is a String, so +X meaning an addition instead of a reduction (X or -X) can be expressed.</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:minLength value="0"/>
+								<xs:maxLength value="7"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="kodierungsstufe" type="typeKodierungsstufe" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Code of the discount</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="suffix" type="typeOneDigitCode" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Suffix</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="splitKennzeichen" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Split code, used for splitting the costs (customer, subsidiary, warranty , etc.). This code can have up to 2 digits.</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:positiveInteger">
+								<xs:totalDigits value="2"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="produktklasse" type="typeProduktklasse" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Porduct class of the part</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="teileart" type="typeTeileart" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Type of the part</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="RT" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Job number and sub-job-number (Rechnungstransparenz)</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="4"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="SNP" type="typeDecimal9.2" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Special price</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="kommentar" type="typeString30" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Space for comments and other information. This field can contain the name of the customer in order to allow mapping of the ordered parts to customers. This mapping is also possible via customer number</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--Typdefinitionen der Requests (Request types)-->
+	<xs:complexType name="typeDmsRequest">
+		<xs:annotation>
+			<xs:documentation>Generic request element containing required overhead</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>This information is required for the identification of the user and the branch he is working from.</xs:documentation>
+			</xs:annotation>
+			<xs:element name="username" type="typeUsername">
+				<xs:annotation>
+					<xs:documentation>The login of the user who uses the system</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="firma" type="typeFirma">
+				<xs:annotation>
+					<xs:documentation>The firm of the user, because the login is only unqiue under a given firm. This is the ID of the firm.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="filiale">
+				<xs:annotation>
+					<xs:documentation>The branch the user is working from</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="typeFiliale">
+						<xs:whiteSpace value="collapse"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="typeInitRequest">
+		<xs:annotation>
+			<xs:documentation>Request for initialisation and querying the DMS data</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsRequest">
+				<xs:sequence>
+					<xs:element name="password" type="typeString30">
+						<xs:annotation>
+							<xs:documentation>The passwort of the user</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeStammsatzanlageRequest">
+		<xs:annotation>
+			<xs:documentation>Request for creating a master record for a part</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsRequest">
+				<xs:sequence>
+					<xs:element name="teilenummer" type="typeTeilenummer">
+						<xs:annotation>
+							<xs:documentation>The part number of the part for that the master record is to be created</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="marke" type="typeMarke">
+						<xs:annotation>
+							<xs:documentation>The marqueof the part for that the master record is to be created</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="bezeichnung" type="typeDMSTeilebezeichnung">
+						<xs:annotation>
+							<xs:documentation>The description of the part for that the master record is to be created reduced to 40 characters in order to be handleable by the DMS</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="UPE" type="typeDecimal9.2" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The net price</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="SNP" type="typeDecimal9.2" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Special price</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="kodierungsstufe" type="typeKodierungsstufe" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Discount key</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="produktklasse" type="typeProduktklasse">
+						<xs:annotation>
+							<xs:documentation>The product class of the part</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="teileart" type="typeTeileart">
+						<xs:annotation>
+							<xs:documentation>The type of the part (lacquer, lubricant, etc.)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="VVM" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Quantity which is contained in the smallest package unit. The number of digits is restricted to 3</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:nonNegativeInteger">
+								<xs:totalDigits value="3"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="LVM" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Quantity for packaging for storage. Maximum number of digits is 5.</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:nonNegativeInteger">
+								<xs:totalDigits value="5"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="BVM" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Quantity for packaging in containers.Maximum number of digits is 7.</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:nonNegativeInteger">
+								<xs:totalDigits value="7"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="hoherMWST" type="xs:boolean" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>This indicator defines what VAT should be used, the high or the low. If this value is true the high VAT is used.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<!--Was sollen die Felder für MWST bewirken?-->
+					<!--ENTFALLEN: Rover Teilenummer-->
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeTeilelisteInfoRequest">
+		<xs:annotation>
+			<xs:documentation>Request for information about the parts given in the partlist</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsRequest">
+				<xs:sequence>
+					<xs:element name="auftragsnummer" type="typeAuftragsnummer" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The order number for the given list of parts</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="kundennummer" type="typeKundennummer" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The customer number of the customer that is related to the order of this list</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="vin" type="typeFahrgestellnummer" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The vehicle identification number, if the parts  in the list are part of a package and flat rates should be returned</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="paketnummer" type="typePaketnummer" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Package number, if the parts in the list are part of a package and flat rates should be returned</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="marke" type="typeMarke">
+						<xs:annotation>
+							<xs:documentation>The marque of the parts in the list. All parts in the list must have the same marque</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:sequence maxOccurs="unbounded">
+						<xs:element name="teilenummer" type="typeTeilenummer">
+							<xs:annotation>
+								<xs:documentation>The part numbers of the parts for which the information is requested. Can be a flat rate number instead, see field art. </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="art" type="typeNummernArt" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Kind of the number in field teilenummer. If not set the number is a part number. If the field is set to ARBEITSWERTNUMMER the number is a flat rate number.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+					<!--ENTFALLEN:Rover-Teilenummer-->
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeTeileinfoRequest">
+		<xs:annotation>
+			<xs:documentation>Request for information about the given part</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsRequest">
+				<xs:sequence>
+					<xs:element name="teilenummer" type="typeTeilenummer">
+						<xs:annotation>
+							<xs:documentation>The part number of the part for that the information is requested</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="marke" type="typeMarke">
+						<xs:annotation>
+							<xs:documentation>The marque of the part for that the information is requested</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeBestandsabfrageRequest">
+		<xs:annotation>
+			<xs:documentation>Request for number on stock of the the given parts</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsRequest">
+				<xs:sequence maxOccurs="unbounded">
+					<xs:element name="teilenummer" type="typeTeilenummer">
+						<xs:annotation>
+							<xs:documentation>The part number of the part for that the information is requested</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="marke" type="typeMarke">
+						<xs:annotation>
+							<xs:documentation>The marque of the part for that the information is requested</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeFahrzeugidentRequest">
+		<xs:annotation>
+			<xs:documentation>Request for identification of a vehicle based on the order number</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsRequest">
+				<xs:sequence>
+					<xs:element name="auftragsnummer" type="typeAuftragsnummer">
+						<xs:annotation>
+							<xs:documentation>The order number that is used to identifiy the vehicle</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeEilauftragRequest">
+		<xs:annotation>
+			<xs:documentation>Request for a rush order for the given parts in the list</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsRequest">
+				<xs:sequence>
+					<xs:element name="position" type="erweiterteBestellistenPosition" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>For each part in the order list exists one position containing the information about the part and order</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeNeuteilauftragRequest">
+		<xs:annotation>
+			<xs:documentation>Request for an order for the given parts in the list</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsRequest">
+				<xs:sequence>
+					<xs:element name="position" type="bestelllistenPosition" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>For each part in the order list exists one position containing the information about the part and order</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeFilialabfrageRequest">
+		<xs:annotation>
+			<xs:documentation>Request for the inventory for the given part in the existing branches</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsRequest">
+				<xs:sequence>
+					<xs:element name="position" type="teilelistenPosition" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>For each part in the list exists one position containing the information about the part</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeKostenvoranschlagRequest">
+		<xs:annotation>
+			<xs:documentation>Request for a proposal for the given parts in the list</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsRequest">
+				<xs:sequence>
+					<xs:annotation>
+						<xs:documentation>Information about the parts, user and order</xs:documentation>
+					</xs:annotation>
+					<xs:element name="position" type="kompletteBestelllistenPosition" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>For each part exists one entry containing the information about the part and order</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="mitarbeiterNr">
+						<xs:annotation>
+							<xs:documentation>The identification number of the user to be stored in the DMS. Maximum number of digits is 3.</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:positiveInteger">
+								<xs:totalDigits value="3"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="kommentar" type="typeString512" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Space for commenty</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="auftragsnummer" type="typeAuftragsnummer" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The order number, if one exists</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="kundennummer" type="typeKundennummer" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The customer number of the customer who is buying the parts.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<!--ENTFALLEN:Rover-Teilenummer-->
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeWerkstattauftragRequest">
+		<xs:annotation>
+			<xs:documentation>Request for an order for the given parts in the list</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeKostenvoranschlagRequest">
+				<xs:sequence>
+					<xs:element name="auftragsnummer" type="typeAuftragsnummer">
+						<xs:annotation>
+							<xs:documentation>The order number</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="greiferschein" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>Indicates whether a printout containing information about the part and its storage is required</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeBarverkaufRequest">
+		<xs:annotation>
+			<xs:documentation>Request for cash sale for the given parts in the list</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeKostenvoranschlagRequest">
+				<xs:sequence>
+					<xs:annotation>
+						<xs:documentation>Additional information to control required printouts and special cash sale fields</xs:documentation>
+					</xs:annotation>
+					<xs:element name="kundennummer" type="typeKundennummer">
+						<xs:annotation>
+							<xs:documentation>The customer number of the customer who is buying the parts. This can the default number as provided by the DMS during initialization</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="passwort">
+						<xs:annotation>
+							<xs:documentation>The passwort of the user</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="10"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="rechnung" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>Indicates whether an invoice is to be printed. 0 = no invoice / 1 = invoice required</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="greiferschein" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>Indicates whether a printout containing information about the part and its storage is required</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="lieferschein" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>Indicates whether a delivery note is to be printed. 0 = no delivery note / 1 = delivery note required</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="kredit" type="typeOneDigitCode" default="0" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Special control value with valid values 0-9, Default = 0; also called "Sondersteuerung"</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="bar" type="typeDecimal9.2">
+						<xs:annotation>
+							<xs:documentation>The amount the customer paid cash</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="unbar" type="typeDecimal9.2">
+						<xs:annotation>
+							<xs:documentation>The difference between the amount on the invoice and the amount the customer paid in cash</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeKFZKennzeichenRequest">
+		<xs:annotation>
+			<xs:documentation>Request for identification of a vehicle based on the license number</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsRequest">
+				<xs:sequence>
+					<xs:element name="kfzKennzeichen">
+						<xs:annotation>
+							<xs:documentation>The license plate number of the vehicle</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="17"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="marke" type="typeMarke" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The marque of the vehicle</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<!--ENTFALLEN:Rover-Teilenummer-->
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--Typedefinitionen der Responses-->
+	<xs:complexType name="typeDmsResponse">
+		<xs:annotation>
+			<xs:documentation>Generic response element containing required overhead</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="ergebnisCode"/>
+			<xs:element name="messageText" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A Messagetext from the DMS. This text is displayed unchanged without further comment by the ETK. The message is displayed independently from the value of ergebnisCode.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="0"/>
+						<xs:maxLength value="128"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="typeInitResponse">
+		<xs:annotation>
+			<xs:documentation>Response of initialisation containing information about the DMS</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsResponse">
+				<xs:sequence>
+					<xs:element name="firma" type="typeString256">
+						<xs:annotation>
+							<xs:documentation>The firm of the user. This is Name of the firm.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PLZ">
+						<xs:annotation>
+							<xs:documentation>The ZIP code</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="10"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="ort" type="typeString256">
+						<xs:annotation>
+							<xs:documentation>The city</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="strasse" type="typeString256">
+						<xs:annotation>
+							<xs:documentation>The address</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="telefon" type="typeString30">
+						<xs:annotation>
+							<xs:documentation>The telephone</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="haendlernummerPkw" type="typeHaendlernummer" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The dealer number for car selling dealers</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="haendlernummerKrad" type="typeHaendlernummer" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The dealer number for motor cycle selling dealers</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="kundennummerBarverkauf" type="typeKundennummer">
+						<xs:annotation>
+							<xs:documentation>The customer number that is to be used for cash sales</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="mehrwertsteuer" type="typeMehrwertsteuerSatz" minOccurs="0" maxOccurs="5">
+						<xs:annotation>
+							<xs:documentation>Different VAT's. The VAT is differenciated by a type attribute</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ATSteuer" type="typeDecimal3.2" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Additional taxes</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nachkommastellen" default="2">
+						<xs:annotation>
+							<xs:documentation>The number of positions after decimal point. This number can have a maximum of 2 digits.</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:integer">
+								<xs:totalDigits value="2"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="ausfuehrungsart" type="typeDmsAusfuehrungsart">
+						<xs:annotation>
+							<xs:documentation>Indicator, if the DMS works set or order oriented</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="marke" type="typeMarke">
+						<xs:annotation>
+							<xs:documentation>The default marque (BMW, MINI, Rolls-Royce)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeStammsatzanlageResponse">
+		<xs:annotation>
+			<xs:documentation>Success information on the request to create a master record</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsResponse">
+				<xs:sequence>
+					<xs:element name="teilenummer" type="typeTeilenummer">
+						<xs:annotation>
+							<xs:documentation>After successfull creation of the master record the part number is returned</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<!--ENTFALLEN: Rover-Teilenummer-->
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeTeilelisteInfoResponse">
+		<xs:annotation>
+			<xs:documentation>For each part in the partlist a return code is given additionally to the information about the part</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsResponse">
+				<xs:sequence>
+					<xs:element name="auftragsnummer" type="typeAuftragsnummer" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The order number, if an order for this list exists</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="kundennummer" type="typeKundennummer" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The customer number, if a customer is assigned to the list</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="paketnummer" type="typePaketnummer" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Package number, if the parts in the list are part of a package and flat rates are returned</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="paketpreis" type="typeDecimal9.2" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Net price of the package without discount</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="paketmehrwertsteuer" type="typeDecimal3.2" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Percentage of the VAT for the package.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="teilinformation" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>For each part in the list exists an element with the required information</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="ergebnisCode" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>Falls das DMS satzweise arbeitet, dann wird pro Satz ein Ergebniscode erzeugt. Dieser steht dann hier. Der übergeordnete Ergebniscode ist dann nicht relevant.</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="teilenummer" type="typeTeilenummer">
+									<xs:annotation>
+										<xs:documentation>The part number or flat rate number, see field art. </xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="art" type="typeNummernArt" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>Kind of the number in field teilenummer. If not set the number is a part number. If the field is set to ARBEITSWERTNUMMER the number is a flat rate number.</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="bezeichnung" type="typeDMSTeilebezeichnung" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>The description of the part limited to 40 characters according to the format of the DMS. Must be set if art is TEILENUMMER, is not set if art is ARBEITSWERTNUMMER.</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="bedarfshinweis" type="typeBedarfshinweisCode" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>Code of the remarks on requirements</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="AUME" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>Outstanding quantity</xs:documentation>
+									</xs:annotation>
+									<xs:simpleType>
+										<xs:restriction base="xs:decimal">
+											<xs:totalDigits value="9"/>
+											<xs:fractionDigits value="2"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:element>
+								<xs:element name="lagerort" type="typeLagerort" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>Place of storage of the part</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="lagerbestand" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>Inventory of the part in storage</xs:documentation>
+									</xs:annotation>
+									<xs:simpleType>
+										<xs:restriction base="xs:decimal">
+											<xs:totalDigits value="10"/>
+											<xs:fractionDigits value="2"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:element>
+								<xs:element name="mindestbestand" type="typeDecimal8.2" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>The minimum inventory of the part. </xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="haendlerpreis" type="typeDecimal9.2">
+									<xs:annotation>
+										<xs:documentation>Price of the part or net price of the flat rate without discount if art is ARBEITSWERTNUMMER.</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="rabatt" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>Percentage of the discount. This is a String, so +X meaning an addition instead of a reduction (X or -X) can be expressed.</xs:documentation>
+									</xs:annotation>
+									<xs:simpleType>
+										<xs:restriction base="xs:string">
+											<xs:minLength value="0"/>
+											<xs:maxLength value="7"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:element>
+								<xs:element name="kodierungsstufe" type="typeKodierungsstufe" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>Key of the discount</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="dispocode" type="typeOneDigitCode" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>Dispocode, must be set if art is TEILENUMMER, is not set if art is ARBEITSWERTNUMMER.</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="suffix" type="typeOneDigitCode" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>Suffix</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="mehrwertsteuer" type="typeDecimal3.2" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>Percentage of the VAT</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="sondersteuer" type="typeDecimal3.2" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>Percentage of the special tax</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeTeileinfoResponse">
+		<xs:annotation>
+			<xs:documentation>The information about the part</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsResponse">
+				<xs:sequence>
+					<xs:element name="teilenummer" type="typeTeilenummer">
+						<xs:annotation>
+							<xs:documentation>The part number of the part for that the information is requested</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="bezeichnung" type="typeDMSTeilebezeichnung">
+						<xs:annotation>
+							<xs:documentation>The description of the part for that the information is requested limited to 40 characters as defined by DMS</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="haendlerpreis" type="typeDecimal9.2">
+						<xs:annotation>
+							<xs:documentation>Price of the part as defined in DMS</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="preisaenderungsdatum" type="xs:date" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The date of the last price change</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="kodierungsstufe" type="typeKodierungsstufe" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Discount key</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="lagerort" type="typeLagerort" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Storage place of the part</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="lagerbestand" type="typeDecimal8.2" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Inventory of the part</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="mindestbestand" type="typeDecimal8.2" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The minimum inventory of the part. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="mehrwertsteuer" type="typeDecimal3.2" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The VAT that is to be used for the part</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="sondersteuer" type="typeDecimal3.2" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The special tax that is to be used for the part</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeBestandsabfrageResponse">
+		<xs:annotation>
+			<xs:documentation>For each part in the partlist a return code is given additionally to the information about the part</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsResponse">
+				<xs:sequence>
+					<xs:element name="bestandsinformation" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>For each part in the list exists an element with the required information</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="ergebnisCode" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>Falls das DMS satzweise arbeitet, dann wird pro Satz ein Ergebniscode erzeugt. Dieser steht dann hier. Der übergeordnete Ergebniscode ist dann nicht relevant.</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="teilenummer" type="typeTeilenummer">
+									<xs:annotation>
+										<xs:documentation>The part number </xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="lagerbestand">
+									<xs:annotation>
+										<xs:documentation>Inventory of the part in storage</xs:documentation>
+									</xs:annotation>
+									<xs:simpleType>
+										<xs:restriction base="xs:decimal">
+											<xs:totalDigits value="10"/>
+											<xs:fractionDigits value="2"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeFahrzeugidentResponse">
+		<xs:annotation>
+			<xs:documentation>The vehicle identification number deducted from the order number</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsResponse">
+				<xs:sequence>
+					<xs:element name="auftragsnummer" type="typeAuftragsnummer">
+						<xs:annotation>
+							<xs:documentation>The order number that was used to identifiy the vehicle. This is the same value as the input parameter</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="kundennummer" type="typeKundennummer" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The customer number of the customer to whom the vehicle belongs</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="kundenname" type="typeString256" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The name of the customer limited to 20 characters</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="fahrgestellnummer" type="typeFahrgestellnummer">
+						<xs:annotation>
+							<xs:documentation>The vehicle identification number (VIN)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="marke" type="typeMarke">
+						<xs:annotation>
+							<xs:documentation>The marque of the vehicle</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeEilauftragResponse">
+		<xs:annotation>
+			<xs:documentation>Return codes related to the rush order</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsResponse">
+				<xs:sequence>
+					<xs:element ref="teilErgebnis" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeNeuteilauftragResponse">
+		<xs:annotation>
+			<xs:documentation>Return code for the order of the parts. For each part a separate return code can be provided</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsResponse">
+				<xs:sequence>
+					<xs:element ref="teilErgebnis" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeFilialabfrageResponse">
+		<xs:annotation>
+			<xs:documentation>Information about the inventory of the branches according to the given part</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsResponse">
+				<xs:sequence>
+					<xs:element name="filialErgebnis" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>For each part in the list exists one entry containing the information about the inventory in the branches</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="teilErgebnis"/>
+								<xs:element name="filialBestand" minOccurs="0" maxOccurs="unbounded">
+									<xs:annotation>
+										<xs:documentation>For each branch exists one entry for the current part</xs:documentation>
+									</xs:annotation>
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="filiale" type="typeFiliale">
+												<xs:annotation>
+													<xs:documentation>The branch</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="bestand" type="typeDecimal8.2">
+												<xs:annotation>
+													<xs:documentation>The inventory of the part in the branch</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeVerkaufAuftragResponse">
+		<xs:annotation>
+			<xs:documentation>As confirmation part number, order number and customer number are given</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsResponse">
+				<xs:sequence>
+					<xs:element name="auftragsnummer" type="typeAuftragsnummer" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The order number, if one exists</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element ref="teilErgebnis" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>die Teilenummer des gesendeten Teils</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeKFZKennzeichenResponse">
+		<xs:annotation>
+			<xs:documentation>The vehicle identification number deducted from the license number</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="typeDmsResponse">
+				<xs:sequence>
+					<xs:element name="auftragsnummer" type="typeAuftragsnummer" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The order number if one exists for the identified vehicle</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="kundennummer" type="typeKundennummer" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The customer number of the customer who is registered for the vehicle</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="kundenname" type="typeString256" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The name of the customer limited to 20 characters</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="fahrgestellnummer" type="typeFahrgestellnummer">
+						<xs:annotation>
+							<xs:documentation>The vehicle identification number (VIN)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="marke" type="typeMarke">
+						<xs:annotation>
+							<xs:documentation>The marque of the vehicle</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--Globale Elemente, die wiederverwendet werden.-->
+	<xs:element name="teilErgebnis">
+		<xs:annotation>
+			<xs:documentation>Many DMS function return for each given part a return code. This datatype covers that information. If the DMS works set oriented, multiple return codes are given.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ergebnisCode" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Der Rückgabewert des DMS, wenn das DMS satzweise arbeitet.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="teilenummer" type="typeTeilenummer">
+					<xs:annotation>
+						<xs:documentation>The part number as a confirmation for successfull transmission</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ergebnisCode" type="typeDMSErgebnisCodes">
+		<xs:annotation>
+			<xs:documentation>A valid return code from the DMS.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!--Basiselement der Nachrichten an das und von dem DMS-->
+	<xs:element name="dmsMessage">
+		<xs:annotation>
+			<xs:documentation>The main element for communication with the DMS via XML</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="dmsInit">
+					<xs:annotation>
+						<xs:documentation>The initialisation and retrieval of DMS sepcific information</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:choice>
+							<xs:element name="dmsRequest" type="typeInitRequest"/>
+							<xs:element name="dmsResponse" type="typeInitResponse">
+								<xs:unique name="UniqueMwstConstraint">
+									<xs:selector xpath="typeMehrwertsteuerSatz"/>
+									<xs:field xpath="mwstId"/>
+								</xs:unique>
+							</xs:element>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="dmsStammsatzanlage">
+					<xs:annotation>
+						<xs:documentation>The creation of a master record for a given part</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:choice>
+							<xs:element name="dmsRequest" type="typeStammsatzanlageRequest"/>
+							<xs:element name="dmsResponse" type="typeStammsatzanlageResponse"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="dmsTeileInfo">
+					<xs:annotation>
+						<xs:documentation>Request information about a given part</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:choice>
+							<xs:element name="dmsRequest" type="typeTeileinfoRequest"/>
+							<xs:element name="dmsResponse" type="typeTeileinfoResponse"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="dmsTeilelistenInfo">
+					<xs:annotation>
+						<xs:documentation>Request information about the parts in the given partslist</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:choice>
+							<xs:element name="dmsRequest" type="typeTeilelisteInfoRequest"/>
+							<xs:element name="dmsResponse" type="typeTeilelisteInfoResponse"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="dmsEilauftrag">
+					<xs:annotation>
+						<xs:documentation>Request to order a list of parts for several jobs and customers</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:choice>
+							<xs:element name="dmsRequest" type="typeEilauftragRequest"/>
+							<xs:element name="dmsResponse" type="typeEilauftragResponse"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="dmsNeuteileAuftrag">
+					<xs:annotation>
+						<xs:documentation>Request to order a list of parts to restock the inventory and to get the new parts</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:choice>
+							<xs:element name="dmsRequest" type="typeNeuteilauftragRequest"/>
+							<xs:element name="dmsResponse" type="typeNeuteilauftragResponse"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="dmsFilialabfrage">
+					<xs:annotation>
+						<xs:documentation>Request to retrieve the inventory for the given parts for each existing branch of the firm</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:choice>
+							<xs:element name="dmsRequest" type="typeFilialabfrageRequest"/>
+							<xs:element name="dmsResponse" type="typeFilialabfrageResponse"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="dmsFzgIdAuftrag">
+					<xs:annotation>
+						<xs:documentation>Request to identify a vehicle by a given order number. The result is a vehicle identification number</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:choice>
+							<xs:element name="dmsRequest" type="typeFahrzeugidentRequest"/>
+							<xs:element name="dmsResponse" type="typeFahrzeugidentResponse"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="dmsFzgIdKfzKennzeichen">
+					<xs:annotation>
+						<xs:documentation>Request to identify a vehicle by a given license plate number. The result is a vehicle identification number</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:choice>
+							<xs:element name="dmsRequest" type="typeKFZKennzeichenRequest"/>
+							<xs:element name="dmsResponse" type="typeKFZKennzeichenResponse"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="dmsKostenvoranschlag">
+					<xs:annotation>
+						<xs:documentation>Request for a proposal for the given parts in the list</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:choice>
+							<xs:element name="dmsRequest" type="typeKostenvoranschlagRequest"/>
+							<xs:element name="dmsResponse" type="typeVerkaufAuftragResponse"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="dmsWerkstattauftrag">
+					<xs:annotation>
+						<xs:documentation>Request to order parts related to a job or customer</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:choice>
+							<xs:element name="dmsRequest" type="typeWerkstattauftragRequest"/>
+							<xs:element name="dmsResponse" type="typeVerkaufAuftragResponse"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="dmsBarverkauf">
+					<xs:annotation>
+						<xs:documentation>Request for a cash sale of the given parts</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:choice>
+							<xs:element name="dmsRequest" type="typeBarverkaufRequest"/>
+							<xs:element name="dmsResponse" type="typeVerkaufAuftragResponse"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="dmsBestandsabfrage">
+					<xs:complexType>
+						<xs:choice>
+							<xs:element name="dmsRequest" type="typeBestandsabfrageRequest"/>
+							<xs:element name="dmsResponse" type="typeBestandsabfrageResponse"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

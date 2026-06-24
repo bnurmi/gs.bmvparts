@@ -1,0 +1,4 @@
+- [bmv.vin host rewriter single-segment rule](bmv-vin-host-rewriter.md) — single-segment /bmw-* paths must pass through; anything else becomes a VIN lookup.
+- [drizzle-kit gel-core mismatch](drizzle-gel-core.md) — drizzle-kit 0.30.x and 0.31.x require drizzle-orm ≥ 0.40.0 for ./gel-core export; 0.39.x crashes, Replit shows it as "timeout exceeded when trying to connect" in the publish UI.
+- [replit-publish-diff-check-bypass](replit-publish-diff-bypass.md) — "Failed to check for database diff: timeout exceeded when trying to connect" is a network isolation issue: helium (172.24.0.3) is a Docker-bridge private IP only reachable from inside the repl container; Replit's publish diff service cannot reach it. Fix: rename drizzle.config.ts → drizzle.config.ts.bak before publishing; restore after.
+- [production-db-url](production-db-url.md) — DATABASE_URL resolves to helium (dev-only hostname); production VMs must use PROD_DATABASE_URL instead.

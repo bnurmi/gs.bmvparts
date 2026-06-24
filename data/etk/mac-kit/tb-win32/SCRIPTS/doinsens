@@ -1,0 +1,24 @@
+update "@@systable"
+set tname = upper(tname)
+;
+;  from here on, tablenames must be written in uppercase 
+update "@@SYSCOLUMN"
+set cname = upper(cname),
+	domainname = upper(domainname)
+;
+;  from here on, fieldnames must be written in uppercase 
+update "@@SYSINDEX" set INAME = upper(INAME)
+;
+update "@@SYSDOMAIN" set NAME = upper(NAME),
+		CONSTRAINTNAME = upper(CONSTRAINTNAME)
+;
+update "@@SYSCONSTRAINT" set CONSTRAINTNAME = upper(CONSTRAINTNAME)
+;
+update "@@SYSREFCONSTRAINT" set CONSTRAINTNAME = upper(CONSTRAINTNAME)
+;
+update "@@SYSVIEW" set VIEWTEXT = upper(VIEWTEXT)
+;
+update "@@SYSUSER" set USERNAME = upper(USERNAME)
+;
+update "@@SYSEXTERNALMETHOD" set SQLNAME = upper(SQLNAME)
+;

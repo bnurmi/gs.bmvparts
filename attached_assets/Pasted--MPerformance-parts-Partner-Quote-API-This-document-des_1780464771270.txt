@@ -1,0 +1,217 @@
+# MPerformance.parts — Partner Quote API
+
+This document describes the secured API endpoint that **bmv.parts** uses to submit
+BMW parts quote requests directly to MPerformance.parts. A submission creates a lead
+in our system, generates a reference number, creates a Shopify draft order (when
+configured), and emails our sales team — identical to a quote submitted through our
+website funnel, but attributed to bmv.parts.
+
+---
+
+## Base URL
+
+```
+https://<your-mperformance-domain>
+```
+
+The production base URL will be provided to you alongside your API key. All examples
+below use `https://mperformance.parts` as a placeholder.
+
+## Endpoint
+
+```
+POST /api/partner/leads
+```
+
+## Authentication
+
+Every request **must** include your API key in the `X-API-Key` header:
+
+```
+X-API-Key: <your-api-key>
+```
+
+- Requests with a missing or invalid key are rejected with **HTTP 401**.
+- Keep the key secret. Send it only over HTTPS and never embed it in client-side
+  / browser code.
+- To obtain or rotate your key, contact the MPerformance.parts team. The key is
+  stored as a server-side secret (`PARTNER_API_KEY`) on our side; rotating it
+  invalidates the previous value.
+
+## Content type
+
+```
+Content-Type: application/json
+```
+
+---
+
+## Request body
+
+| Field              | Type                | Required | Description                                                                 |
+| ------------------ | ------------------- | -------- | --------------------------------------------------------------------------- |
+| `category`         | string              | **Yes**  | One of the valid category slugs listed below. Identifies the type of quote. |
+| `fullName`         | string (min 2)      | **Yes**  | Customer's full name.                                                        |
+| `email`            | string (email)      | **Yes**  | Customer's email address.                                                    |
+| `phone`            | string (min 4)      | **Yes**  | Customer's phone number.                                                     |
+| `vin`              | string \| null      | No       | Vehicle VIN for an exact match.                                             |
+| `make`             | string \| null      | No       | Vehicle make (e.g. `BMW`).                                                  |
+| `model`            | string \| null      | No       | Vehicle model (e.g. `M3`, `F30 320d`).                                      |
+| `year`             | string \| null      | No       | Vehicle year (e.g. `2018`).                                                 |
+| `colour`           | string \| null      | No       | Vehicle / part colour or BMW colour code.                                  |
+| `notes`            | string \| null      | No       | Any free-text notes from the customer.                                     |
+| `shippingPostcode` | string \| null      | No       | Postcode used to estimate shipping.                                        |
+| `answers`          | object              | No       | Optional key/value map of additional structured detail (see below).        |
+
+### The `answers` object
+
+`answers` is a free-form JSON object for any category-specific detail you have
+collected. Keys are strings; values are strings (or nested objects). These appear in
+the lead summary, the sales email, and the Shopify draft order. Common keys:
+
+- `partDescription` — a description of the specific part/component requested.
+- Any other `key: value` pairs you wish to pass through (e.g. `condition`, `quantity`).
+
+If you have nothing extra to send, omit `answers` or pass `{}`.
+
+> Note: `source` and `tags` are set automatically on our side (`source` =
+> `bmv.parts`, plus a `bmv.parts` tag) so leads are clearly attributed. You do not
+> send these.
+
+---
+
+## Valid `category` values
+
+| Slug                        | Description                                            |
+| --------------------------- | ----------------------------------------------------- |
+| `complete-front-clip`       | Complete Front Clip                                   |
+| `engine-gearbox-drivetrain` | Engine / Gearbox / Drivetrain                         |
+| `single-bmw-part`           | Single BMW Part                                       |
+| `interior-parts`            | Interior Parts                                        |
+| `exterior-body-panels`      | Exterior / Body Panels                                |
+| `wheels-brakes-suspension`  | Wheels / Brakes / Suspension                          |
+| `conversion-retrofit`       | Conversion / Retrofit                                 |
+| `identify-part`             | Help Me Identify This Part                            |
+| `sell-damaged-bmw`          | Sell Us Your Damaged BMW                              |
+
+Submitting any other value returns **HTTP 400** with a validation error.
+
+---
+
+## Example request
+
+### curl
+
+```bash
+curl -X POST https://mperformance.parts/api/partner/leads \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: YOUR_API_KEY_HERE" \
+  -d '{
+    "category": "single-bmw-part",
+    "fullName": "Jane Driver",
+    "email": "jane@example.com",
+    "phone": "+61 400 000 000",
+    "make": "BMW",
+    "model": "F80 M3",
+    "year": "2017",
+    "colour": "Yas Marina Blue",
+    "shippingPostcode": "2000",
+    "notes": "Needs delivery before end of month.",
+    "answers": {
+      "partDescription": "N55 oil filter housing gasket, part #11428637821",
+      "condition": "new-oem"
+    }
+  }'
+```
+
+### JSON body
+
+```json
+{
+  "category": "single-bmw-part",
+  "fullName": "Jane Driver",
+  "email": "jane@example.com",
+  "phone": "+61 400 000 000",
+  "make": "BMW",
+  "model": "F80 M3",
+  "year": "2017",
+  "colour": "Yas Marina Blue",
+  "shippingPostcode": "2000",
+  "notes": "Needs delivery before end of month.",
+  "answers": {
+    "partDescription": "N55 oil filter housing gasket, part #11428637821",
+    "condition": "new-oem"
+  }
+}
+```
+
+---
+
+## Responses
+
+### Success — `201 Created`
+
+```json
+{
+  "success": true,
+  "referenceNumber": "MPPQ-20260603-4821",
+  "leadId": 42,
+  "status": "new",
+  "source": "bmv.parts",
+  "shopifySyncStatus": "pending"
+}
+```
+
+- `referenceNumber` — quote reference in the format `MPPQ-YYYYMMDD-XXXX`. Share this
+  with the customer / use it to track the request.
+- `status` — lead status, always `new` on creation.
+- `shopifySyncStatus` — `pending` when a Shopify draft order is being created,
+  or `skipped` when Shopify is not configured. The draft order and sales email are
+  processed asynchronously after the response is returned.
+
+### Unauthorized — `401 Unauthorized`
+
+Returned when the `X-API-Key` header is missing or incorrect.
+
+```json
+{
+  "message": "Invalid or missing API key"
+}
+```
+
+### Validation error — `400 Bad Request`
+
+Returned for malformed input (missing required field, invalid email, unknown
+category, etc.). `errors` contains the detailed Zod issues.
+
+```json
+{
+  "message": "Validation failed",
+  "errors": [
+    {
+      "code": "custom",
+      "message": "Invalid category. Valid values: complete-front-clip, engine-gearbox-drivetrain, single-bmw-part, interior-parts, exterior-body-panels, wheels-brakes-suspension, conversion-retrofit, identify-part, sell-damaged-bmw",
+      "path": ["category"]
+    }
+  ]
+}
+```
+
+### Server error — `500 Internal Server Error`
+
+```json
+{
+  "message": "Internal server error"
+}
+```
+
+---
+
+## Notes
+
+- Use HTTPS for every request.
+- The endpoint is idempotent only at the network level — each successful POST creates
+  a new lead. Avoid retrying a request that already returned `201`.
+- Shopify draft-order creation and the sales notification email happen after the
+  `201` response is sent, so a successful response means the lead is persisted even if
+  downstream sync is still in progress.

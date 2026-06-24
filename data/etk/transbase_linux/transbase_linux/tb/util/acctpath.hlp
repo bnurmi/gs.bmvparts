@@ -1,0 +1,7 @@
+Choose the name of the database accounting file. 
+Into this file, specific database events are logged by all 
+TransBase kernels.
+See separate menu entry for the specification of Accounting Events 
+and for switching Accounting.
+
+   -	Command Line Syntax :   acf=<path>

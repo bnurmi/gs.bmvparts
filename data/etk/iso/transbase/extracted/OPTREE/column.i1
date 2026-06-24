@@ -1,0 +1,32 @@
+RELDESC_BEGIN
+"@@syscolumn" 
+9 1 -1 1
+11
+	integer "tsegno" 0 1 1
+	char(*) "cname" 1 0 1
+	char(*) "ctype" 2 0 1
+	char(*) "domainname" 3 0 0
+	char(*) "defaultvalue" 4 0 0
+	integer "multiple" 5 0 0
+	integer "cpos" 6 2 1
+	integer "ckey" 7 0 0
+	char(*) "notnull" 8 0 0
+	integer "surrid" 9 0 0
+	integer "surref" 10 0 0
+0
+RELDESC_END
+
+(N000:ins  { "@@syscolumn" on_the_fly } 
+ 	(N001:set 
+		(N002:build 
+			(N003:param  { integer[1] } )
+			(N004:param  { string[2] } )
+			(N005:param  { string[3] } )
+			(N006:param  { string[4] } )
+			(N007:param  { string[5] } )
+			(N008:param  { integer[6] } )
+			(N009:param  { integer[7] } )
+			(N010:param  { integer[8] } )
+			(N011:param  { string[9] } )
+			(N012:param  { integer[10] } )
+			(N013:param  { integer[11] } ))))

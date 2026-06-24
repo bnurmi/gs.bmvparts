@@ -1,0 +1,462 @@
+RELDESC_BEGIN
+"@@sysblob" 
+0 1 -1 1
+4
+	integer "rsno" 0 1 1
+	integer "bcont" 1 0 1
+	integer "d1" 2 0 0
+	char(*) "d2" 3 0 0
+0
+RELDESC_END
+RELDESC_BEGIN
+"sysblob" 
+129 1 -1 1
+2
+	integer "rsno" 0 1 1
+	integer "bcont" 1 0 1
+0
+RELDESC_END
+(ins { "@@sysblob"   on_the_fly }
+   (N0: proj
+      (rel { "sysblob"  user_tablename="sysblob" })
+      (build
+         (attr { N0[1] } )
+         (attr { N0[2] } )
+         (cast { false integer } 
+            (const { null } ))
+         (cast { false char(*) } 
+            (const { null } )))))
+{nosort}
+;
+RELDESC_BEGIN
+"@@syscolumn" 
+0 1 -1 1
+11
+	integer "tsegno" 0 1 1
+	char(*) "cname" 1 0 1
+	char(*) "ctype" 2 0 1
+	char(*) "domainname" 3 0 0
+	char(*) "defaultvalue" 4 0 0
+	integer "multiple" 5 0 0
+	integer "cpos" 6 2 1
+	integer "ckey" 7 0 0
+	char(*) "notnull" 8 0 0
+	integer "d1" 9 0 0
+	char(*) "d2" 10 0 0
+0
+RELDESC_END
+RELDESC_BEGIN
+"syscolumn" 
+17 1 -1 1
+7
+	integer "tsegno" 0 1 1
+	char(*) "cname" 1 0 1
+	char(*) "ctype" 2 0 1
+	integer "multiple" 3 0 0
+	integer "cpos" 4 2 1
+	integer "ckey" 5 0 0
+	char(*) "notnull" 6 0 0
+0
+RELDESC_END
+(ins { "@@syscolumn"   on_the_fly }
+   (N0: proj
+      (rel { "syscolumn"  })
+      (build
+         (attr { N0[1] } )
+         (attr { N0[2] } )
+         (attr { N0[3] } )
+         (cast { false char(*) } 
+            (const { null } ))
+         (const { 'NULL' } )
+         (attr { N0[4] } )
+         (attr { N0[5] } )
+         (attr { N0[6] } )
+         (attr { N0[7] } )
+         (cast { false integer } 
+            (const { null } ))
+         (cast { false char(*) } 
+            (const { null } )))))
+{nosort}
+;
+RELDESC_BEGIN
+"@@syscolumnpriv" 
+0 1 -1 1
+7
+	integer "grantee" 0 1 1
+	integer "tsegno" 1 2 1
+	integer "grantor" 2 3 1
+	integer "cpos" 3 4 1
+	char(*) "upd_priv" 4 0 1
+	integer "d1" 5 0 0
+	char(*) "d2" 6 0 0
+0
+RELDESC_END
+RELDESC_BEGIN
+"syscolumnpriv" 
+97 1 -1 1
+5
+	integer "grantee" 0 1 1
+	integer "tsegno" 1 2 1
+	integer "grantor" 2 3 1
+	integer "cpos" 3 4 1
+	char(*) "upd_priv" 4 0 1
+0
+RELDESC_END
+(ins { "@@syscolumnpriv"   on_the_fly }
+   (N0: proj
+      (rel { "syscolumnpriv"  })
+      (build
+         (attr { N0[1] } )
+         (attr { N0[2] } )
+         (attr { N0[3] } )
+         (attr { N0[4] } )
+         (attr { N0[5] } )
+         (cast { false integer } 
+            (const { null } ))
+         (cast { false char(*) } 
+            (const { null } )))))
+{nosort}
+;
+RELDESC_BEGIN
+"@@sysindex" 
+0 1 -1 1
+14
+	integer "tsegno" 0 1 1
+	char(*) "iname" 1 2 1
+	integer "weight" 2 3 1
+	integer "cpos" 3 0 1
+	char(*) "isuniq" 4 0 1
+	integer "isegno" 5 0 1
+	integer "wlistsegno" 6 0 0
+	integer "stowosegno" 7 0 0
+	integer "charmapsegno" 8 0 0
+	integer "delimsegno" 9 0 0
+	char(*) "ftxttype" 10 0 0
+	char(*) "wlisttype" 11 0 0
+	integer "d1" 12 0 0
+	char(*) "d2" 13 0 0
+0
+RELDESC_END
+RELDESC_BEGIN
+"sysindex" 
+33 1 -1 1
+6
+	integer "tsegno" 0 1 1
+	char(*) "iname" 1 2 1
+	integer "weight" 2 3 1
+	integer "cpos" 3 0 1
+	char(*) "isuniq" 4 0 1
+	integer "isegno" 5 0 1
+0
+RELDESC_END
+(ins { "@@sysindex"   on_the_fly }
+   (N0: proj
+      (rel { "sysindex"  })
+      (build
+         (attr { N0[1] } )
+         (attr { N0[2] } )
+         (attr { N0[3] } )
+         (attr { N0[4] } )
+         (attr { N0[5] } )
+         (attr { N0[6] } )
+         (cast { false integer } 
+            (const { null } ))
+         (cast { false integer } 
+            (const { null } ))
+         (cast { false integer } 
+            (const { null } ))
+         (cast { false integer } 
+            (const { null } ))
+         (cast { false char(*) } 
+            (const { null } ))
+         (cast { false char(*) } 
+            (const { null } ))
+         (cast { false integer } 
+            (const { null } ))
+         (cast { false char(*) } 
+            (const { null } )))))
+{nosort}
+;
+RELDESC_BEGIN
+"@@systable" 
+0 1 -1 1
+9
+	char(*) "tname" 0 1 1
+	integer "owner" 1 0 1
+	char(*) "ttype" 2 0 1
+	integer "segno" 3 0 1
+	integer "colno" 4 0 1
+	datetime[yy:ms] "date" 5 0 1
+	smallint "cluster" 6 0 1
+	integer "d1" 7 0 0
+	char(*) "d2" 8 0 0
+0
+RELDESC_END
+RELDESC_BEGIN
+"systable" 
+1 1 -1 1
+7
+	char(*) "tname" 0 1 1
+	integer "owner" 1 0 1
+	char(*) "ttype" 2 0 1
+	integer "segno" 3 0 1
+	integer "colno" 4 0 1
+	datetime[yy:ms] "date" 5 0 1
+	smallint "cluster" 6 0 1
+0
+RELDESC_END
+(ins { "@@systable"   on_the_fly }
+   (N0: proj
+      (rel { "systable"  })
+      (build
+         (attr { N0[1] } )
+         (attr { N0[2] } )
+         (attr { N0[3] } )
+         (attr { N0[4] } )
+         (attr { N0[5] } )
+         (attr { N0[6] } )
+         (attr { N0[7] } )
+         (cast { false integer } 
+            (const { null } ))
+         (cast { false char(*) } 
+            (const { null } )))))
+{nosort}
+;
+RELDESC_BEGIN
+"@@systablepriv" 
+0 1 -1 1
+9
+	integer "grantee" 0 1 1
+	integer "tsegno" 1 2 1
+	integer "grantor" 2 3 1
+	char(*) "sel_priv" 3 0 1
+	char(*) "del_priv" 4 0 1
+	char(*) "ins_priv" 5 0 1
+	char(*) "upd_priv" 6 0 1
+	integer "d1" 7 0 0
+	char(*) "d2" 8 0 0
+0
+RELDESC_END
+RELDESC_BEGIN
+"systablepriv" 
+81 1 -1 1
+7
+	integer "grantee" 0 1 1
+	integer "tsegno" 1 2 1
+	integer "grantor" 2 3 1
+	char(*) "sel_priv" 3 0 1
+	char(*) "del_priv" 4 0 1
+	char(*) "ins_priv" 5 0 1
+	char(*) "upd_priv" 6 0 1
+0
+RELDESC_END
+RELDESC_BEGIN
+"systable" 
+1 1 -1 1
+7
+	char(*) "tname" 0 1 1
+	integer "owner" 1 0 1
+	char(*) "ttype" 2 0 1
+	integer "segno" 3 0 1
+	integer "colno" 4 0 1
+	datetime[yy:ms] "date" 5 0 1
+	smallint "cluster" 6 0 1
+0
+RELDESC_END
+(ins { "@@systablepriv"   standard }
+   (N1:proj 
+      (N2:restr  { '' 0 }
+         ( rel  { "systablepriv"  user_tablename="systablepriv" })
+         (N4:xin 
+               (build 
+                   (attr  { N2[2] } ))
+	   (corr 
+            (N7:proj 
+               (N8:restr  { '' 0 }
+                  (N9:rel  { "systable"  })
+                  (N10:inls 
+                     (attr  { N8[1] } )
+                     (const  { '@@sysblob'  char(9) } )
+                     (const  { '@@syscolumn'  char(11) } )
+                     (const  { '@@syscolumnpriv'  char(15) } )
+                     (const  { '@@sysconstraint'  char(15) } )
+                     (const  { '@@sysdomain'  char(11) } )
+                     (const  { '@@sysindex'  char(10) } )
+                     (const  { '@@sysrefconstraint'  char(18) } )
+                     (const  { '@@systable'  char(10) } )
+                     (const  { '@@systablepriv'  char(14) } )
+                     (const  { '@@sysuser'  char(9) } )
+                     (const  { '@@sysview'  char(9) } )
+                     (const  { '@@sysviewdep'  char(12) } )
+                     (const  { '@@sysx1'  char(7) } )
+                     (const  { '@@sysx2'  char(7) } )
+                     (const  { '@@sysx3'  char(7) } )))
+               (build 
+                  (attr  { N7[4] } ))))))
+      (build 
+         (attr  { N1[1] } )
+         (attr  { N1[2] } )
+         (attr  { N1[3] } )
+         (attr  { N1[4] } )
+         (attr  { N1[5] } )
+         (attr  { N1[6] } )
+         (attr  { N1[7] } )
+         (cast  { false integer } 
+            (const  { null } ))
+         (cast  { false char(*) } 
+            (const  { null } )))))
+{nosort}
+;
+RELDESC_BEGIN
+"@@sysuser" 
+0 1 -1 1
+6
+	char(*) "username" 0 1 1
+	char(*) "userclass" 1 0 1
+	char(*) "passwd" 2 0 1
+	integer "userid" 3 0 1
+	integer "d1" 4 0 0
+	char(*) "d2" 5 0 0
+0
+RELDESC_END
+RELDESC_BEGIN
+"sysuser" 
+65 1 -1 1
+4
+	char(*) "username" 0 1 1
+	char(*) "userclass" 1 0 1
+	char(*) "passwd" 2 0 1
+	integer "userid" 3 0 1
+0
+RELDESC_END
+(ins { "@@sysuser"   on_the_fly }
+   (N0: proj
+      (rel { "sysuser"  user_tablename="sysuser" })
+      (build
+         (attr { N0[1] } )
+         (attr { N0[2] } )
+         (attr { N0[3] } )
+         (attr { N0[4] } )
+         (cast { false integer } 
+            (const { null } ))
+         (cast { false char(*) } 
+            (const { null } )))))
+{nosort}
+;
+RELDESC_BEGIN
+"@@sysview" 
+0 1 -1 1
+7
+	integer "vsegno" 0 1 1
+	char(*) "viewtext" 1 0 0
+	char(*) "checkopt" 2 0 1
+	char(*) "updatable" 3 0 1
+	char(*) "viewtree" 4 0 0
+	integer "d1" 5 0 0
+	char(*) "d2" 6 0 0
+0
+RELDESC_END
+RELDESC_BEGIN
+"sysview" 
+49 1 -1 1
+5
+	integer "vsegno" 0 1 1
+	char(*) "viewtext" 1 0 0
+	char(*) "checkopt" 2 0 1
+	char(*) "updatable" 3 0 1
+	char(*) "viewtree" 4 0 0
+0
+RELDESC_END
+(ins { "@@sysview"   on_the_fly }
+   (N0: proj
+      (rel { "sysview"  user_tablename="sysview" })
+      (build
+         (attr { N0[1] } )
+         (attr { N0[2] } )
+         (attr { N0[3] } )
+         (attr { N0[4] } )
+         (attr { N0[5] } )
+         (cast { false integer } 
+            (const { null } ))
+         (cast { false char(*) } 
+            (const { null } )))))
+{nosort}
+;
+RELDESC_BEGIN
+"@@sysviewdep" 
+0 1 -1 1
+4
+	integer "basesegno" 0 1 1
+	integer "vsegno" 1 2 1
+	integer "d1" 2 0 0
+	char(*) "d2" 3 0 0
+0
+RELDESC_END
+RELDESC_BEGIN
+"sysviewdep" 
+113 1 -1 1
+2
+	integer "basesegno" 0 1 1
+	integer "vsegno" 1 2 1
+0
+RELDESC_END
+(ins { "@@sysviewdep"   on_the_fly }
+   (N0: proj
+      (rel { "sysviewdep"  user_tablename="sysviewdep" })
+      (build
+         (attr { N0[1] } )
+         (attr { N0[2] } )
+         (cast { false integer } 
+            (const { null } ))
+         (cast { false char(*) } 
+            (const { null } )))))
+{nosort}
+;
+RELDESC_BEGIN
+"@@systable" 
+0 1 -1 1
+9
+	char(*) "tname" 0 1 1
+	integer "owner" 1 0 1
+	char(*) "ttype" 2 0 1
+	integer "segno" 3 0 1
+	integer "colno" 4 0 1
+	datetime[yy:ms] "date" 5 0 1
+	smallint "cluster" 6 0 1
+	integer "d1" 7 0 0
+	char(*) "d2" 8 0 0
+0
+RELDESC_END
+(upd { "@@systable"  on_the_fly    -1 }
+   (N0: proj
+      (N1: restr
+         (rel { "@@systable"  })
+         (inls
+            (attr { N1[1] } )
+            (const { '@@sysblob' } )
+            (const { '@@syscolumn' } )
+            (const { '@@syscolumnpriv' } )
+            (const { '@@sysconstraint' } )
+            (const { '@@sysdomain' } )
+            (const { '@@sysindex' } )
+            (const { '@@sysrefconstraint' } )
+            (const { '@@systable' } )
+            (const { '@@systablepriv' } )
+            (const { '@@sysuser' } )
+            (const { '@@sysview' } )
+            (const { '@@sysviewdep' } )
+            (const { '@@sysx1' } )
+            (const { '@@sysx2' } )
+            (const { '@@sysx3' } )))
+      (build
+         (attr { N0[1] } )
+         (attr { N0[2] } )
+         (const { 'S' char(*) } )
+         (attr { N0[4] } )
+         (attr { N0[5] } )
+         (attr { N0[6] } )
+         (attr { N0[7] } )
+         (attr { N0[8] } )
+         (attr { N0[9] } ))))
+{nosort}
+;

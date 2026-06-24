@@ -1,0 +1,2003 @@
+{
+    "data": [
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "0.00",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2026-01-09T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": null,
+            "id": "7QtRjBD4cGaB972c",
+            "invoice_date": "2026-01-09T00:00:00+00:00",
+            "invoice_number": "JTUEPK-00017",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/jiM3QxYXczudpiu5?token=ImppTTNReFlYY3p1ZHBpdTUi.UqlCkXmy60jxpEKOx7qZ-pXpSDU",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": null,
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/52pPi5ieGeXAmtmo?token=IjUycFBpNWllR2VYQW10bW8i.u9J5_CsH5WWVNqOg-fSOYBN0UzM",
+            "scheduled_issue_at": "2026-01-09T12:05:00+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Core Usage",
+            "total_with_tax": "0.00",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "0.00",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2025-12-09T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": null,
+            "id": "5DGHqvLmJPva6x84",
+            "invoice_date": "2025-12-09T00:00:00+00:00",
+            "invoice_number": "JTUEPK-00016",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/8npUnnfD99BzFrx2?token=IjhucFVubmZEOTlCekZyeDIi.TYQLlihOowb2EuitH3HpTNgcSBc",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": null,
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/kScA7xuANP4Xfi9J?token=ImtTY0E3eHVBTlA0WGZpOUoi.I2tZRvGThhcgLU22qSg2yJisPMk",
+            "scheduled_issue_at": "2025-12-09T12:05:00+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Core Usage",
+            "total_with_tax": "0.00",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "0.00",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2025-11-09T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": null,
+            "id": "QGdxisXN9J4mybFb",
+            "invoice_date": "2025-11-09T00:00:00+00:00",
+            "invoice_number": "JTUEPK-00015",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/9MCejQuYrdEbqoh6?token=IjlNQ2VqUXVZcmRFYnFvaDYi.J6NRZTzz9Mmi4V5lvgoG2eIpve4",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": null,
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/HUzUrKc258WRtQFg?token=IkhVelVyS2MyNThXUnRRRmci.NWAFxmEXPRuYUo03Su0VVHBuVY4",
+            "scheduled_issue_at": "2025-11-09T12:05:00+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Core Usage",
+            "total_with_tax": "0.00",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "0.00",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2025-10-09T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": null,
+            "id": "EpPP9ZAiKM6fsUQC",
+            "invoice_date": "2025-10-09T00:00:00+00:00",
+            "invoice_number": "JTUEPK-00014",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/eZghJ55F4YNkoDvD?token=ImVaZ2hKNTVGNFlOa29EdkQi.qjQEUWzZKw4w9DjLHQc1eAp0Jy4",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": null,
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/E96kYbB4tQ66f5mu?token=IkU5NmtZYkI0dFE2NmY1bXUi.PM-xJAEuzAGLIZIf_f5Fm2_6acA",
+            "scheduled_issue_at": "2025-10-09T12:05:00+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Core Usage",
+            "total_with_tax": "0.00",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "0.00",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2025-09-09T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": null,
+            "id": "kmmDbjnPWV7xyj8v",
+            "invoice_date": "2025-09-09T00:00:00+00:00",
+            "invoice_number": "JTUEPK-00013",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/MqioiDMCCZxKi2de?token=Ik1xaW9pRE1DQ1p4S2kyZGUi.PUIw5YXyu9074j0R5lWEHuqGZuo",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": null,
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/j4GbQsZXtKpGfu4W?token=Imo0R2JRc1pYdEtwR2Z1NFci.WuFYn8cqFikdLLN1NerYD0up7vA",
+            "scheduled_issue_at": "2025-09-09T12:05:00+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Core Usage",
+            "total_with_tax": "0.00",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "0.00",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2025-08-09T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": null,
+            "id": "fDLceQWHdXV8nH8L",
+            "invoice_date": "2025-08-09T00:00:00+00:00",
+            "invoice_number": "JTUEPK-00012",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/mBXXDB4BG48it5fA?token=Im1CWFhEQjRCRzQ4aXQ1ZkEi.p_UKbuxHakTxyakhwH8ZG1dkHrU",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": null,
+            "receipt_pdf": null,
+            "scheduled_issue_at": "2025-08-09T12:05:00+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Core Usage",
+            "total_with_tax": "0.00",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "0.00",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2025-07-09T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": null,
+            "id": "GSqZtrU8DCqgQB88",
+            "invoice_date": "2025-07-09T00:00:00+00:00",
+            "invoice_number": "JTUEPK-00011",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/d334EacXPbeYyBtj?token=ImQzMzRFYWNYUGJlWXlCdGoi.u1K1OWBRiYw84DITS4Je0k7Jmmg",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": null,
+            "receipt_pdf": null,
+            "scheduled_issue_at": "2025-07-09T12:05:00+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Core Usage",
+            "total_with_tax": "0.00",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "0.00",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2025-06-09T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": null,
+            "id": "2QxDmudT3RYAjFhZ",
+            "invoice_date": "2025-06-09T00:00:00+00:00",
+            "invoice_number": "JTUEPK-00010",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/mpgTrBUuhMrRTR7k?token=Im1wZ1RyQlV1aE1yUlRSN2si.OYrGXkv1v9tqD5an1dS-60SgpME",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": null,
+            "receipt_pdf": null,
+            "scheduled_issue_at": "2025-06-09T12:05:00+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Core Usage",
+            "total_with_tax": "0.00",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "0.00",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2025-05-09T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": null,
+            "id": "XYiMaFXB69TPW4me",
+            "invoice_date": "2025-05-09T00:00:00+00:00",
+            "invoice_number": "JTUEPK-00009",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/D562R6nGLc6SGPMN?token=IkQ1NjJSNm5HTGM2U0dQTU4i.eKwwf3nZmmkkt1THDE8oGujE3zk",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": null,
+            "receipt_pdf": null,
+            "scheduled_issue_at": "2025-05-09T12:05:00+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Core Usage",
+            "total_with_tax": "0.00",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "0.00",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2025-04-09T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": null,
+            "id": "66LbiKK9nPyX8mBG",
+            "invoice_date": "2025-04-09T00:42:50+00:00",
+            "invoice_number": "JTUEPK-00007",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/nQFjw5bQAchxyk3C?token=Im5RRmp3NWJRQWNoeHlrM0Mi.Wij7h44wmfQ5gquSYN123Dodppc",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": null,
+            "receipt_pdf": null,
+            "scheduled_issue_at": "2025-04-09T00:42:50+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Core Usage",
+            "total_with_tax": "0.00",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "0.00",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2025-04-09T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": null,
+            "id": "SU555ZeB6rCA5Ukk",
+            "invoice_date": "2025-04-09T00:42:50+00:00",
+            "invoice_number": "JTUEPK-00008",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/2urWXHw8zApBa6Mh?token=IjJ1cldYSHc4ekFwQmE2TWgi.z-CMj5W6G0mYY3tCQkpHWSfRfIs",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": null,
+            "receipt_pdf": null,
+            "scheduled_issue_at": "2025-04-09T12:47:50+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Core Usage",
+            "total_with_tax": "0.00",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "11.72",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2025-04-08T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": null,
+            "id": "nPVvvJMKX5BJjFcj",
+            "invoice_date": "2025-04-08T00:00:00+00:00",
+            "invoice_number": "JTUEPK-00006",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/XWvcLvkxpmdQpeFv?token=IlhXdmNMdmt4cG1kUXBlRnYi.FFJ6q2AF_ckrilULyqO2D4BM_TQ",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": null,
+            "scheduled_issue_at": "2025-04-08T12:05:00+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Core Usage",
+            "total_with_tax": "11.72",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "10.10",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2025-03-16T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": null,
+            "id": "MbwVDmLpdJLCq3u6",
+            "invoice_date": "2025-03-16T07:21:31+00:00",
+            "invoice_number": "JTUEPK-00005",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/BrwkueYwJPC4UZMZ?token=IkJyd2t1ZVl3SlBDNFVaTVoi.HCSU0QeB48qO4LhKO1yP_0_yd00",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": null,
+            "scheduled_issue_at": "2025-03-16T07:21:31+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Core Usage",
+            "total_with_tax": "10.10",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "7.84",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2025-03-15T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": null,
+            "id": "Je983prBB9DpEwWX",
+            "invoice_date": "2025-03-15T02:14:24+00:00",
+            "invoice_number": "JTUEPK-00004",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/UPQmQuUxnF3hjMM8?token=IlVQUW1RdVV4bkYzaGpNTTgi.BChZ3VQ-_naU4iv2IgT6z1sINLk",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": null,
+            "scheduled_issue_at": "2025-03-15T02:14:24+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Core Usage",
+            "total_with_tax": "28.16",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "10.07",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [
+                {
+                    "created_at": "2025-03-15T02:14:13+00:00",
+                    "credit_note_number": "JTUEPK-00002-CN-1",
+                    "credit_note_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/V7wEUmaLqsxjFXyu?token=IlY3d0VVbWFMcXN4akZYeXUi.YvehksaxvlnTxMVO386wrg3hX5k",
+                    "customer": {
+                        "external_customer_id": "replit_user__40321449",
+                        "id": "Vig2rY67J2Y8eBUz"
+                    },
+                    "id": "4VLUUxLaAGtrtA2R",
+                    "invoice_id": "mfByvvEgoCgmNZdE",
+                    "invoice_status": "paid",
+                    "invoice_total": "10.07",
+                    "line_items": [
+                        {
+                            "end_time_exclusive": "2025-03-14T02:10:49+00:00",
+                            "id": "iQZRGq5c9UGqtQve",
+                            "name": "Object Storage Data Storage",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-14T02:10:49+00:00",
+                            "id": "3BMffSXaEmDnoCY9",
+                            "name": "Deployments Outbound Data Transfer",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-14T02:10:49+00:00",
+                            "id": "89teFm4ESJpuVrDH",
+                            "name": "Development Compute Time",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-14T02:10:49+00:00",
+                            "id": "R8PtaBYetFzzLU4E",
+                            "name": "Reserved VM Compute Time",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-14T02:10:49+00:00",
+                            "id": "kRu7TYgXWVTHNYN3",
+                            "name": "Neon Data Storage",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.01"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-14T02:10:49+00:00",
+                            "id": "BmfQUYpQXMh9qtNh",
+                            "name": "Object Storage Basic Operations",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-14T02:10:49+00:00",
+                            "id": "9UUhshFYoU2KVZiR",
+                            "name": "Development Outbound Data Transfer",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-14T02:10:49+00:00",
+                            "id": "YQbZVVWGcdjf3shW",
+                            "name": "Modelfarm Output Tokens",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-14T02:10:49+00:00",
+                            "id": "eMTm8JUqokkiyqVz",
+                            "name": "Object Storage Advanced Operations",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-14T02:10:49+00:00",
+                            "id": "dgKR4uTVTCo9WZFA",
+                            "name": "Agent Checkpoints",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "10.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-14T02:10:49+00:00",
+                            "id": "TZkEhFBXuc4KeYZ7",
+                            "name": "Autoscale Deployments",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-14T02:10:49+00:00",
+                            "id": "ZXxvKnaqaPLjpo82",
+                            "name": "Assistant Edits",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-14T02:10:49+00:00",
+                            "id": "Rm9qGYet9cs94Hxa",
+                            "name": "Neon Compute Time",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.06"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-14T02:10:49+00:00",
+                            "id": "dGfAYtgwYmcP8FJG",
+                            "name": "Autoscale Requests",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-14T02:10:49+00:00",
+                            "id": "VCckgw6aNxQYgzj4",
+                            "name": "Object Storage Data Transfer",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-14T02:10:49+00:00",
+                            "id": "b7KyC4aprMN9XR7S",
+                            "name": "Scheduled Deployments",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-14T02:10:49+00:00",
+                            "id": "jFFuREdiKc2rfLA5",
+                            "name": "Modelfarm Input Tokens",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-14T02:10:49+00:00",
+                            "id": "bzbH7nnnBWepUc9y",
+                            "name": "Development Storage",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-14T02:10:49+00:00",
+                            "id": "VMakLztptb56RE3i",
+                            "name": "Autoscale Compute Units",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-14T02:10:49+00:00",
+                            "id": "D5aVPmVjxdHrPBj4",
+                            "name": "Scheduled Compute Units",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        }
+                    ],
+                    "memo": null,
+                    "pricing_unit": {
+                        "display_name": "US Dollar",
+                        "id": "ikya6q7s6xtH3U7P",
+                        "is_real_world_currency": true,
+                        "name": "USD",
+                        "short_name": "USD",
+                        "symbol": "$"
+                    },
+                    "reason": "Order change",
+                    "tax_amounts": [],
+                    "tax_percentage": null,
+                    "total": "10.07",
+                    "type": "refund",
+                    "voided_at": null
+                }
+            ],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2025-03-14T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": null,
+            "id": "mfByvvEgoCgmNZdE",
+            "invoice_date": "2025-03-14T02:10:49+00:00",
+            "invoice_number": "JTUEPK-00002",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/agmBaFQZKqp9sqQ8?token=ImFnbUJhRlFaS3FwOXNxUTgi.da3U2rIBFRWkuumaSjRBXHsDpWE",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": null,
+            "scheduled_issue_at": "2025-03-14T02:10:49+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Core Usage",
+            "total_with_tax": "10.07",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "10.25",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [
+                {
+                    "created_at": "2025-03-15T02:14:13+00:00",
+                    "credit_note_number": "JTUEPK-00001-CN-1",
+                    "credit_note_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/chLTagWMnAUFhQRv?token=ImNoTFRhZ1dNbkFVRmhRUnYi.Op_5XiQ-NZMbjz-XpeKknpyze1A",
+                    "customer": {
+                        "external_customer_id": "replit_user__40321449",
+                        "id": "Vig2rY67J2Y8eBUz"
+                    },
+                    "id": "VfDjrTSz9vasM9De",
+                    "invoice_id": "9pCWVEFT2U2VPKVY",
+                    "invoice_status": "paid",
+                    "invoice_total": "10.25",
+                    "line_items": [
+                        {
+                            "end_time_exclusive": "2025-03-09T22:48:30+00:00",
+                            "id": "dsXKHHNicP8cx5CT",
+                            "name": "Object Storage Data Transfer",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-09T22:48:30+00:00",
+                            "id": "MUXUjV77Zb6a74Ed",
+                            "name": "Agent Checkpoints",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "10.18"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-09T22:48:30+00:00",
+                            "id": "ADfD9xHr8gFnETxj",
+                            "name": "Reserved VM Compute Time",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-09T22:48:30+00:00",
+                            "id": "BWEWD8RfdjkdXYhX",
+                            "name": "Neon Data Storage",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.01"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-09T22:48:30+00:00",
+                            "id": "mXV4zihPUzFs25Xq",
+                            "name": "Autoscale Requests",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-09T22:48:30+00:00",
+                            "id": "9X5oJzPjdpTfKQUe",
+                            "name": "Object Storage Basic Operations",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-09T22:48:30+00:00",
+                            "id": "nBW6Nh62dbVhXzaN",
+                            "name": "Scheduled Deployments",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-09T22:48:30+00:00",
+                            "id": "Pu2jP4xU5wTSLHXS",
+                            "name": "Modelfarm Input Tokens",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-09T22:48:30+00:00",
+                            "id": "U9RBJoxfZbDqDBR6",
+                            "name": "Development Compute Time",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-09T22:48:30+00:00",
+                            "id": "SCnbS5AUAoKfif7g",
+                            "name": "Deployments Outbound Data Transfer",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-09T22:48:30+00:00",
+                            "id": "aVzg3kkMDdQEcFjD",
+                            "name": "Assistant Edits",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-09T22:48:30+00:00",
+                            "id": "TqduD9kQ5oKJ3zGE",
+                            "name": "Modelfarm Output Tokens",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-09T22:48:30+00:00",
+                            "id": "5J2cRk3zWeELaWHb",
+                            "name": "Development Storage",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-09T22:48:30+00:00",
+                            "id": "KL7mxgarzsWRKXNT",
+                            "name": "Development Outbound Data Transfer",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-09T22:48:30+00:00",
+                            "id": "Tp7rXM2UZRWQaNYy",
+                            "name": "Autoscale Compute Units",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-09T22:48:30+00:00",
+                            "id": "dLwFXBkTYu3EFtEB",
+                            "name": "Neon Compute Time",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.06"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-09T22:48:30+00:00",
+                            "id": "BAHGqR97hMN5erdb",
+                            "name": "Autoscale Deployments",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-09T22:48:30+00:00",
+                            "id": "dXXJFKBQWoZMTd77",
+                            "name": "Object Storage Data Storage",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-09T22:48:30+00:00",
+                            "id": "2NYuqzFyRjDo5Bjm",
+                            "name": "Object Storage Advanced Operations",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        },
+                        {
+                            "end_time_exclusive": "2025-03-09T22:48:30+00:00",
+                            "id": "DZpGs7j7bHSkMXmu",
+                            "name": "Scheduled Compute Units",
+                            "pricing_unit": {
+                                "display_name": "US Dollar",
+                                "id": "ikya6q7s6xtH3U7P",
+                                "is_real_world_currency": true,
+                                "name": "USD",
+                                "short_name": "USD",
+                                "symbol": "$"
+                            },
+                            "start_time_inclusive": "2025-03-08T22:11:01+00:00",
+                            "tax_amounts": [],
+                            "total": "0.00"
+                        }
+                    ],
+                    "memo": null,
+                    "pricing_unit": {
+                        "display_name": "US Dollar",
+                        "id": "ikya6q7s6xtH3U7P",
+                        "is_real_world_currency": true,
+                        "name": "USD",
+                        "short_name": "USD",
+                        "symbol": "$"
+                    },
+                    "reason": "Order change",
+                    "tax_amounts": [],
+                    "tax_percentage": null,
+                    "total": "10.25",
+                    "type": "refund",
+                    "voided_at": null
+                }
+            ],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2025-03-09T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": null,
+            "id": "9pCWVEFT2U2VPKVY",
+            "invoice_date": "2025-03-09T22:48:30+00:00",
+            "invoice_number": "JTUEPK-00001",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/kRDch2fvfgsV24Ev?token=ImtSRGNoMmZ2ZmdzVjI0RXYi.66s-CHFbzUfzIFj7Xq3-hxlEd8A",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": null,
+            "scheduled_issue_at": "2025-03-09T22:48:30+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Core Usage",
+            "total_with_tax": "10.25",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "0.00",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2025-03-15T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": null,
+            "id": "BzgABXDBgwUVfzwQ",
+            "invoice_date": "2025-03-08T22:11:01+00:00",
+            "invoice_number": "JTUEPK-00003",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/DZwrxJdMJy7xdjia?token=IkRad3J4SmRNSnk3eGRqaWEi.tHwAfu6IPrhmCBWTytKHZTrvPXg",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": null,
+            "receipt_pdf": null,
+            "scheduled_issue_at": "2025-03-15T02:14:16+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Core Usage",
+            "total_with_tax": "0.00",
+            "webapp_status": "paid"
+        }
+    ],
+    "next_page": null,
+    "total": 97
+}

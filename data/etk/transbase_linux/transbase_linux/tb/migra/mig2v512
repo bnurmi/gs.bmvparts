@@ -1,0 +1,47 @@
+create table "help@@sysindex@@"   
+(	"tsegno"	integer not null,
+	"iname"	char(*) not null,
+	"weight"	integer not null,
+	"cpos"	integer not null,
+	"isuniq"	char(*) not null,
+	"isegno"	integer not null,
+	"wlistsegno"	integer,
+	"stowosegno"	integer,
+	"charmapsegno"	integer,
+	"delimsegno"	integer,
+	"ftxttype"	char(*),
+	"wlisttype"	char(*),
+	"storepos"	integer,
+	"indextype"	char(*),
+)  key is "tsegno", "iname", "storepos"
+;
+
+insert into "help@@sysindex@@"
+select tsegno, iname,weight, cpos, isuniq, isegno, wlistsegno,
+	stowosegno, charmapsegno, delimsegno, ftxttype, wlisttype, 
+	weight, 'btree'
+from "@@sysindex"
+;
+
+UPDATE "@@systable"
+SET ttype = 'R'
+where tname = '@@sysindex'
+;
+
+drop table "@@sysindex";
+
+update  "@@systable" set tname = '@@sysindex'
+	where tname = 'help@@sysindex@@';
+
+CREATE VIEW sysindex(
+	tsegno,iname,weight,cpos,isuniq,isegno,indextype,wlistsegno,
+	stowosegno,charmapsegno,delimsegno,ftxttype,wlisttype
+	) AS SELECT
+	tsegno,iname,weight,cpos,isuniq,isegno,indextype,wlistsegno,
+	stowosegno,charmapsegno,delimsegno,ftxttype,wlisttype
+	FROM "@@sysindex";
+GRANT SELECT ON sysindex TO PUBLIC;
+UPDATE "@@systable"
+SET ttype = 'v'
+where tname = 'sysindex'
+;

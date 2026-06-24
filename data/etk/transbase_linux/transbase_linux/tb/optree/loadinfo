@@ -1,0 +1,21 @@
+
+create view loadinfo (
+segment,rompage,diskpage,flag) as
+gentree 
+RELDESC_BEGIN
+"ibb" 
+1 0 -1 0
+4
+	integer "segment" 0 1 1
+	integer "rompage" 1 2 1
+	integer "diskpage" 2 0 1
+	integer "flag" 3 0 1
+0
+RELDESC_END
+
+(N000:sel  {   } 
+   (N1:restr 
+      (N2:rel  { "ibb" asc } )
+      (N3:ne 
+         (N4:attr  { N1[2] } )
+         (N5:const  { 0  tinyint } ))))

@@ -1,0 +1,15 @@
+Specify new/old name of the database.
+
+The name of a database can be altered.
+All other parameters (database directory, paths etc.) remain unchanged.
+tbadmin extends the database name by @<machine>. For example,
+if tbadmin runs on machine 'server13', the database name 'xyz' is
+extended to 'xyz@server2'. 
+An application program which wants to connect to 'xyz' has to 
+specify the full name 'xyz@server13' if it runs on a machine
+different from server13, else the short name 'xyz' would also be
+sufficient.
+
+   -	Command Line Syntax :  n=<dbname>
+	Example:
+	$ tbadmin  -af  n=<dbname>

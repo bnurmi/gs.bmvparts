@@ -1,0 +1,73 @@
+drop table "@@sysx1"
+;
+create table "@@@syssurrogate"
+(	surrid	integer	not null,
+ 	segno	integer	not null,
+ 	level	integer	not null,
+ 	cpos	integer	not null,
+ 	siblings	integer	not null,
+ 	d1	integer	not null,
+ 	d2	char(*)	not null
+) key is surrid,level
+;
+update "@@systable"
+set tname = (if exists (select * from "@@systable"
+		   where tname = '@@SYSTABLE' )
+	     then '@@SYSSURROGATE'
+	     else '@@syssurrogate'
+	     fi)
+where tname in ('@@@syssurrogate', '@@@SYSSURROGATE')
+;
+create view syssurrogate(surrid,segno,level,cpos,siblings)
+as select surrid,segno,level,cpos,siblings
+	from "@@syssurrogate"
+;
+UPDATE "@@systable"
+SET ttype = 'S'
+where tname in ('@@syssurrogate', '@@SYSSURROGATE')
+;
+UPDATE "@@systable"
+SET ttype = 'v'
+where tname in ('syssurrogate', 'SYSSURROGATE')
+;
+GRANT SELECT on syssurrogate TO PUBLIC
+;
+drop view syscolumn
+;
+create table "help@@syscolumn"
+(	tsegno	integer	not null,
+	cname	char(*)	not null,
+	ctype	char(*)	not null,
+	domainname	char(*),
+	defaultvalue	char(*),
+	suppressed	integer,
+	cpos	integer	not null,
+	ckey	integer,
+	notnull	char(*),
+	surrid	integer,
+	surref	integer
+)  key is tsegno,cpos
+;
+insert into "help@@syscolumn"
+select tsegno, cname, ctype, domainname,
+	defaultvalue, 0, cpos, ckey,
+	notnull, 0, 0
+from "@@syscolumn"
+where  tsegno not in  (select segno from "@@systable"
+	  where tname in ('@@syscolumn','@@SYSCOLUMN'))
+;
+drop table "@@syscolumn"
+;
+
+update  "@@systable" set tname = 
+		(if exists (select * from "@@systable"
+		   where tname = '@@SYSTABLE' )
+	     then '@@SYSCOLUMN'
+	     else '@@syscolumn'
+	     fi)
+	where tname in  ( 'help@@syscolumn', 'HELP@@SYSCOLUMN')
+;
+UPDATE "@@systable"
+SET ttype = 'S'
+where tname in ('@@syscolumn','@@SYSCOLUMN')
+;

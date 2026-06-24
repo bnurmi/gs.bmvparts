@@ -1,0 +1,15 @@
+Specify the size of the main memory data cache 
+	(for table and index data).
+In a multiuser database, the cache is organized in shared memory.
+
+Machine configurations differ with respect to number and size of shared memories.
+Therefore the data cache can be specified as a collection of several 
+shared memory areas.
+The size "s" of one area must be one of 64,128,256,...[KB]
+The number of areas "n" can be chosen between 1 and 40.
+The overall size of the cache then computes as n*s [KB].
+
+NOTE: Database performance is only influenced by the overall size of the cache, not by the number and size of areas. 
+
+   -	Command Line Syntax :   nc=<number>*<sizeKB>
+   		e.g.	4*256

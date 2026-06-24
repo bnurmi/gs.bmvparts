@@ -1,0 +1,39 @@
+RELDESC_BEGIN
+"@@systable" 
+1 1 -1 1
+14
+	char(*) "tname" 0 1 1
+	integer "owner" 1 0 1
+	char(*) "ttype" 2 0 1
+	integer "segno" 3 0 1
+	integer "colno" 4 0 1
+	datetime[yy:ms] "date" 5 0 1
+	smallint "cluster" 6 0 1
+	integer "version" 7 0 0
+	char(*) "indextype" 8 0 0
+	char(*) "referentials" 9 0 0
+	integer "d1" 10 0 0
+	integer "d2" 11 0 0
+	char(*) "d3" 12 0 0
+	char(*) "d4" 13 0 0
+0
+RELDESC_END
+
+(N000:ins  { "@@systable"  on_the_fly } 
+	(N001:set 
+		(N002:build 
+			(N003:param  { string[2] } )
+			(N004:param  { integer[3] } )
+			(N005:param  { string[4] } )
+			(N006:param  { integer[5] } )
+			(N007:param  { integer[6] } )
+			(N008:param  { datetime[yy:ms][7] } )
+			(N009:param  { smallint[8] } )
+			(N010:const  { 1 integer } )
+			(N011:param  { string[9] } )
+			(N012:const  { 'NNNNNN' char(*) } )
+			(N013:const  { null } )
+			(N014:const  { null } )
+			(N015:const  { null } )
+			(N016:const  { null } )
+			)))

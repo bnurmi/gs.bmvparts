@@ -1,0 +1,27 @@
+RELDESC_BEGIN
+"@@sysindex" 
+17 1 -1 1
+14
+	integer "tsegno" 0 1 1
+	char(*) "iname" 1 2 1
+	integer "weight" 2 0 1
+	integer "cpos" 3 0 1
+	char(*) "isuniq" 4 0 1
+	integer "isegno" 5 0 1
+	integer "wlistsegno" 6 0 0
+	integer "stowosegno" 7 0 0
+	integer "charmapsegno" 8 0 0
+	integer "delimsegno" 9 0 0
+	char(*) "ftxttype" 10 0 0
+	char(*) "wlisttype" 11 0 0
+	integer "storepos" 12 3 0
+	char(*) "indextype" 13 0 0
+0
+RELDESC_END
+
+(N000:del  { "@@sysindex"  on_the_fly } 
+	(N001:restr 
+		(N002:rel  { "@@sysindex" } )
+	(N003:eq 
+		(N004:attr  { N001[2] } )
+		(N005:param  { string[1] } ))))

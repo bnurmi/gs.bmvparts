@@ -1,0 +1,20 @@
+
+
+
+        ^O   INSERTION ON/OFF           DEL  DELETE CHR LEFT
+        ^S   CURSOR LEFT CHAR           ^G   DELETE CHR RIGHT
+        ^D   CURSOR RIGHT CHAR          ^\   DELETE WORD LEFT
+        ^A   CURSOR LEFT WORD           ^T   DELETE WORD RIGHT
+        ^F   CURSOR RIGHT WORD          ^U   DELETE LINE LEFT
+        ^B   CURSOR BEGIN/END OF LINE   ^K   DELETE LINE RIGHT
+        ^E   CURSOR UP LINE             ^Y   DELETE WHOLE LINE
+        ^X   CURSOR DOWN LINE           ^I   PUT TAB IN FILE
+        ^]   CURSOR TOP/BOT (^HOME)     ^N   INSERT LINE
+        ^L   CURSOR RIGHT/LEFT
+        ^W   FILE DOWN 1 LINE           ^P   NEXT CHR IN FILE
+        ^Z   FILE UP 1 LINE             
+        ^R   FILE DOWN SCREEN           ESC  EXIT EDITOR
+        ^J   DISPLAY THIS
+
+
+TYPE ESC TO CONTINUE EDITING

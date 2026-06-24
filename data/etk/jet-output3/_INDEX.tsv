@@ -1,0 +1,15 @@
+idx	dir	size	path	extracted
+1	false	1627	package.properties	true
+2	false	268	CustomActionData.txt	true
+3	false	370	filelist.txt	true
+4	false	2	filelist_script.txt	true
+5	true	0	files/	false
+6	false	2322	files/postinstallDataDB.cmd	true
+7	false	123324	files/relnotes.pdf	true
+8	false	2147459072	files/rfile000.000	false
+9	false	1627	package.properties	true
+10	false	268	CustomActionData.txt	true
+11	false	370	filelist.txt	true
+12	false	2	filelist_script.txt	true
+13	true	0	files/	false
+14	false	2322	files/postins

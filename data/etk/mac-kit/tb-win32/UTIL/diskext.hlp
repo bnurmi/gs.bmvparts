@@ -1,0 +1,14 @@
+Specify a value x > 0 if you want to add x additional diskfiles
+to the database.
+
+tbadmin will prompt for the properties, location etc. of the
+additional diskfiles.
+
+   -	Command Line Syntax :   dx=..
+		The  dx=  syntax is the same as the d=  syntax
+	Examples:
+	$ tbadmin -a[f]  dbname  dx=
+	   --> add 1 diskfile with default properties:
+	$ tbadmin -a[f]  dbname  dx=,50000  dx=,30000,blob 
+	   --> add 2 diskfiles with default location, and specific
+	   sizes and the second reserved for BLOB's:

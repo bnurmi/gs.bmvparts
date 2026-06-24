@@ -1,0 +1,20 @@
+RELDESC_BEGIN
+"@@sysdomain" 
+73 1 -1 1
+9
+	char(*) "name" 0 1 1
+	integer "owner" 1 0 1
+	char(*) "basetype" 2 0 1
+	char(*) "defaultvalue" 3 0 1
+	char(*) "constraintname" 4 2 0
+	char(*) "attributes" 5 0 1
+	char(*) "constrainttext" 6 0 0
+	integer "d1" 7 0 0
+	char(*) "d2" 8 0 0
+0
+RELDESC_END
+
+(N0:sel
+	(N001:rel  { "@@sysdomain" } 
+		(N002:ivmk  { eq } 
+		(N003:param  { char(*)[2] } ))))

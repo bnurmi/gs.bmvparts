@@ -1,0 +1,24 @@
+RELDESC_BEGIN
+"@@syscolumnpriv" 
+49 1 -1 1
+7
+	integer "grantee" 0 1 1
+	integer "tsegno" 1 2 1
+	integer "grantor" 2 3 1
+	integer "cpos" 3 4 1
+	char(*) "upd_priv" 4 0 1
+	integer "d1" 5 0 0
+	char(*) "d2" 6 0 0
+0
+RELDESC_END
+
+(sel
+   (rel  { "@@syscolumnpriv" } 
+	(  times {  }
+	   (  times {  }
+		(ivmk  { eq } 
+		   (param  { integer[1] } ))
+		(ivmk  { eq } 
+		   (param  { integer[2] } )))
+	    (ivmk  { eq } 
+		(param  { integer[3] } )))))

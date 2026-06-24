@@ -1,0 +1,292 @@
+/* ============================================================
+   BMV.parts — Design Tokens
+   ============================================================
+   Drop-in CSS custom properties for light and dark mode.
+   Import this file once at the root of the application.
+
+   Usage:
+     <html data-theme="light">  ← default
+     <html data-theme="dark">
+     <html data-theme="auto">   ← respects prefers-color-scheme
+
+   Version: 1.0
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* ============================================================
+   ROOT — shared tokens (typography, spacing, motion)
+   ============================================================ */
+:root {
+  /* Typography families */
+  --font-sans: 'Inter Tight', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Type scale */
+  --text-xs:    11px;
+  --text-sm:    12.5px;
+  --text-base:  14px;
+  --text-md:    15px;
+  --text-lg:    17px;
+  --text-xl:    20px;
+  --text-2xl:   24px;
+  --text-3xl:   32px;
+  --text-4xl:   44px;
+  --text-5xl:   64px;
+  --text-display: 96px;
+
+  /* Letter spacing */
+  --tracking-mono:    0.04em;
+  --tracking-label:   0.14em;  /* small caps labels */
+  --tracking-tight:   -0.01em;
+  --tracking-tighter: -0.025em;
+  --tracking-display: -0.04em;
+
+  /* Line height */
+  --leading-tight: 1.05;
+  --leading-snug:  1.3;
+  --leading-base:  1.55;
+
+  /* Spacing scale (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* Borders */
+  --border-thin:   1px;
+  --border-medium: 2px;
+  --radius-none:   0;
+  --radius-sm:     2px;          /* maximum radius — keep things hard-edged */
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 120ms;
+  --duration-base: 180ms;
+  --duration-slow: 280ms;
+
+  /* Brand color — fixed across themes */
+  --brand-blue:        #1563D6;
+  --brand-blue-bright: #4F94F0;  /* dark mode accent (more luminous) */
+  --brand-blue-deep:   #0B3E8A;
+  --brand-signal:      #C2881A;  /* amber: prices, supersession, alerts */
+  --brand-signal-bright: #E8B84A; /* dark mode amber */
+  --brand-success:     #2F8A5B;
+  --brand-success-bright: #4FB07A; /* dark mode success */
+}
+
+/* ============================================================
+   LIGHT MODE — default theme
+   ============================================================
+   Philosophy: Paper-and-ink reference document.
+   Backgrounds are warm paper (#F5F6F9, white). Text is warm
+   near-black (#10131A). Blue is rare and means "action."
+   ============================================================ */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Surfaces — paper scale */
+  --surface-base:    #F5F6F9;   /* page background (paper-1) */
+  --surface-raised:  #FFFFFF;   /* cards, inputs, content blocks */
+  --surface-sunken:  #ECEEF2;   /* nested fills, table headers */
+  --surface-quiet:   #FAFAFB;   /* lightest tone for hover/odd rows */
+
+  /* Sidebar — intentionally dark even in light mode (see brand rule) */
+  --surface-sidebar:        #08090B;
+  --surface-sidebar-raised: #181C26;
+  --surface-sidebar-line:   #2A313E;
+
+  /* Foreground — ink scale */
+  --fg-primary:   #10131A;     /* body, headings */
+  --fg-secondary: #222834;     /* body alt */
+  --fg-tertiary:  #6B7685;     /* metadata, helper text (steel) */
+  --fg-quiet:     #7B8494;     /* muted, monospace metadata (fog) */
+  --fg-inverse:   #FFFFFF;     /* text on dark surfaces */
+
+  /* Borders — single thin scale */
+  --border-default: #E6E8ED;   /* default rule between paper surfaces */
+  --border-strong:  #C7CED8;   /* emphasis rule, around CTA */
+  --border-ink:     #10131A;   /* hero CTA border, primary buttons */
+
+  /* Accent — brand blue does the work */
+  --accent:           var(--brand-blue);
+  --accent-hover:     var(--brand-blue-deep);
+  --accent-fog:       #E5EEFB;     /* tinted active background */
+  --accent-on-accent: #FFFFFF;     /* text on solid blue */
+
+  /* State colors */
+  --state-success:    var(--brand-success);
+  --state-success-fog:#E1F0E8;
+  --state-signal:     var(--brand-signal);
+  --state-signal-fog: #F8EFD6;
+  --state-error:      #C2422F;
+  --state-error-fog:  #F6E1DD;
+
+  /* Shadows — used sparingly. ONLY on hero CTA and floating menus. */
+  --shadow-hero: 4px 4px 0 var(--border-ink);
+  --shadow-hero-hover: 5px 5px 0 var(--border-ink);
+  --shadow-floating: 0 1px 0 rgba(0,0,0,0.02), 0 16px 32px -16px rgba(8,9,11,0.16);
+
+  /* Logo paths */
+  --logo-url:           url('/logos/bmv-logo-header.svg');
+  --logo-monogram-url:  url('/logos/bmv-monogram-light.svg');
+}
+
+/* ============================================================
+   DARK MODE
+   ============================================================
+   Philosophy: Same product, lights off. The paper-and-ink
+   metaphor inverts but never loses contrast. Key adjustments:
+
+   1. Blue gets BRIGHTER (#4F94F0 instead of #1563D6) so it has
+      enough luminance to feel "active" against a dark surface.
+   2. Surfaces don't go to pure black (#000) — they sit on a
+      warm near-black scale so depth still reads.
+   3. Sidebar STAYS dark (it always was) — but the line color
+      shifts up so it separates from the main content.
+   4. Foreground text is never pure white — softened to #F0F2F6
+      to reduce eye strain on long catalog browsing sessions.
+   5. Amber/signal colors brighten too, for the same reason
+      as blue.
+
+   Rule: dark mode is a re-skin, not a redesign. Same hierarchy,
+   same density, same primary actions.
+   ============================================================ */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Surfaces — inverted paper scale */
+  --surface-base:    #0C0F14;   /* page background (deepest) */
+  --surface-raised:  #141821;   /* cards, inputs, content blocks */
+  --surface-sunken:  #181C26;   /* nested fills, table headers */
+  --surface-quiet:   #10131A;   /* odd-row hover, slight depression */
+
+  /* Sidebar — stays dark, slightly differentiated from main bg */
+  --surface-sidebar:        #08090B;
+  --surface-sidebar-raised: #181C26;
+  --surface-sidebar-line:   #2A313E;
+
+  /* Foreground — soft white scale */
+  --fg-primary:   #F0F2F6;     /* body, headings (not pure white) */
+  --fg-secondary: #C7CED8;     /* body alt */
+  --fg-tertiary:  #8892A0;     /* metadata, helper (steel) */
+  --fg-quiet:     #6B7685;     /* muted, monospace metadata */
+  --fg-inverse:   #10131A;     /* text on light surfaces */
+
+  /* Borders — single dark scale */
+  --border-default: #222834;   /* default rule */
+  --border-strong:  #333C4A;   /* emphasis rule, around CTA */
+  --border-ink:     #F0F2F6;   /* hero CTA border (now light, since bg is dark) */
+
+  /* Accent — brand blue, brightened for dark surfaces */
+  --accent:           var(--brand-blue-bright);
+  --accent-hover:     #6FA8F4;
+  --accent-fog:       rgba(79, 148, 240, 0.10);  /* tinted active bg, lower opacity */
+  --accent-on-accent: #08090B;                    /* dark text on bright blue */
+
+  /* State colors — brightened */
+  --state-success:    var(--brand-success-bright);
+  --state-success-fog:rgba(79, 176, 122, 0.10);
+  --state-signal:     var(--brand-signal-bright);
+  --state-signal-fog: rgba(232, 184, 74, 0.10);
+  --state-error:      #E07060;
+  --state-error-fog:  rgba(224, 112, 96, 0.10);
+
+  /* Shadows — different mechanic in dark mode (shadows don't read on dark bg).
+     We use a contrasting outline + shifted offset instead. */
+  --shadow-hero: 4px 4px 0 var(--border-ink);
+  --shadow-hero-hover: 5px 5px 0 var(--border-ink);
+  --shadow-floating: 0 16px 32px -16px rgba(0,0,0,0.6);
+
+  /* Logo paths */
+  --logo-url:           url('/logos/bmv-logo-header-dark.svg');
+  --logo-monogram-url:  url('/logos/bmv-monogram-dark.svg');
+}
+
+/* ============================================================
+   AUTO MODE — respect system preference
+   ============================================================ */
+@media (prefers-color-scheme: dark) {
+  [data-theme="auto"] {
+    color-scheme: dark;
+
+    --surface-base:    #0C0F14;
+    --surface-raised:  #141821;
+    --surface-sunken:  #181C26;
+    --surface-quiet:   #10131A;
+
+    --surface-sidebar:        #08090B;
+    --surface-sidebar-raised: #181C26;
+    --surface-sidebar-line:   #2A313E;
+
+    --fg-primary:   #F0F2F6;
+    --fg-secondary: #C7CED8;
+    --fg-tertiary:  #8892A0;
+    --fg-quiet:     #6B7685;
+    --fg-inverse:   #10131A;
+
+    --border-default: #222834;
+    --border-strong:  #333C4A;
+    --border-ink:     #F0F2F6;
+
+    --accent:           var(--brand-blue-bright);
+    --accent-hover:     #6FA8F4;
+    --accent-fog:       rgba(79, 148, 240, 0.10);
+    --accent-on-accent: #08090B;
+
+    --state-success:    var(--brand-success-bright);
+    --state-success-fog:rgba(79, 176, 122, 0.10);
+    --state-signal:     var(--brand-signal-bright);
+    --state-signal-fog: rgba(232, 184, 74, 0.10);
+
+    --logo-url:          url('/logos/bmv-logo-header-dark.svg');
+    --logo-monogram-url: url('/logos/bmv-monogram-dark.svg');
+  }
+}
+
+/* ============================================================
+   BASE STYLES — apply tokens to base elements
+   ============================================================ */
+html, body {
+  background: var(--surface-base);
+  color: var(--fg-primary);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--duration-base) var(--ease-out),
+              color var(--duration-base) var(--ease-out);
+}
+
+/* Monospace utility for part numbers, VINs, codes */
+.mono,
+code, kbd, samp {
+  font-family: var(--font-mono);
+  letter-spacing: var(--tracking-mono);
+}
+
+/* Small uppercase labels — used everywhere for column headers, eyebrow text */
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* Display emphasis: weight-shift inside heading, blue color */
+h1 em, h2 em, h3 em, .display em {
+  font-style: normal;
+  font-weight: 300;
+  color: var(--accent);
+}

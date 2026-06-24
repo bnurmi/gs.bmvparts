@@ -1,0 +1,6 @@
+# Quarantine: anything inside data/ista/ stays out of git.
+# This is exploration-only working space for Task #105 (ISTA+ SQLite
+# inventory). See docs/ista-sqlite-inventory.md for context.
+*
+!.gitignore
+!README.md

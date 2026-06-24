@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+  <!-- ConsoleAppender -->
+  <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+    <layout class="org.apache.log4j.PatternLayout">
+	  <param name="ConversionPattern" value="%5p [%C{1}#%M] - %m%n"/>
+    </layout>
+    <filter class="org.apache.log4j.varia.LevelRangeFilter">
+      <param name="LevelMin" value="WARN"/>
+    </filter>
+  </appender>
+
+  <!-- Rolling File Appender -->
+  <appender name="file" class="org.apache.log4j.RollingFileAppender">
+     <param name="File" value="migration.log"/>
+     <param name="Append" value="true"/>
+     <param name="MaxFileSize" value="500KB"/>
+     <param name="MaxBackupIndex" value="2"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{dd.MM.yyyy HH:mm:ss,SSS}>%-5.5p [%-5.5t:%-20.20C{1}#%-20.20M](L%-4.4L) - %m%n"/>
+    </layout>
+    <filter class="org.apache.log4j.varia.LevelRangeFilter">
+      <param name="LevelMin" value="INFO"/>
+    </filter>
+  </appender>
+
+  <!-- LogFactor5 Rolling File Appender -->
+  <appender name="lf5Roll" class="org.apache.log4j.RollingFileAppender">
+     <param name="File" value="migration_lf5.log"/>
+     <param name="Append" value="true"/>
+     <param name="MaxFileSize" value="500KB"/>
+     <param name="MaxBackupIndex" value="2"/>
+    <layout class="org.apache.log4j.PatternLayout">
+          <param name="ConversionPattern" value="[slf5s.start]%d{DATE}[slf5s.DATE]%n%p[slf5s.PRIORITY]%n%x[slf5s.NDC]%n%t[slf5s.THREAD]%n%c[slf5s.CATEGORY]%n%l[slf5s.LOCATION]%n%m[slf5s.MESSAGE]%n%n"/>
+    </layout>
+    <filter class="org.apache.log4j.varia.LevelRangeFilter">
+      <param name="LevelMin" value="INFO" />
+    </filter>
+  </appender>
+
+  <root>
+	<!-- Grundeinstellung -->
+	<!-- Gueltige Werte sind: OFF, FATAL, ERROR, WARN, INFO, DEBUG, ALL -->
+    <priority value="INFO"/>
+    <appender-ref ref="stdout"/>
+    <appender-ref ref="file"/>
+  </root>
+
+</log4j:configuration>

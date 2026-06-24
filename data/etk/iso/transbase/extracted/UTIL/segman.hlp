@@ -1,0 +1,11 @@
+Specify the size of the memory holding the information for page
+access in the data cache.
+During each page access of a transaction, one entry must be made 
+in this area. The necessary size depends on the degree of 
+transaction parallelism and the average number of simultaneously
+active SELECT queries (CURSORs) per transaction.
+The default size is sufficient in most cases.
+This cache is in shared memory.
+
+
+   -	Command Line Syntax :   ss=<size in KB>

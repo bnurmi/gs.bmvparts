@@ -1,0 +1,41 @@
+#
+# 
+#                  T r a n s B a s e / C D
+#                  $ProjectRevision: 4.119.1.19 $
+# 
+#	@(#) rc.tbjre
+#            $RCSfile: rc.tbjre $
+#            $Revision: 1.1 $
+#            $Date: 2004/03/24 12:37:55 $
+#
+#	Copyright (c) 1987 -
+#	Transaction Software GmbH
+#	D 81739 Munich
+# 
+#
+# Module begin
+if [ -d $TRANSBASE/tbjre ]; then
+    TBJVM=
+    if [ -d $TRANSBASE/tbjre/jre/lib ]; then
+        TBJVM=`find $TRANSBASE/tbjre/jre/lib -name 'libjava.so' -print`
+    else
+    if [ "$JAVA_HOME" != "" ]; then
+        TBJVM=`find $JAVA_HOME/lib -name 'libjava.so' -print`
+    fi
+    fi
+    if [ "$TBJVM" = "" ]; then
+	echo JAVA runtime environment not found
+    else
+        TBJRE=`dirname $TBJVM`
+        if [ -d $TBJRE/server ]; then
+    	    TBJRE=$TBJRE:$TBJRE/server
+        fi
+	if [ "$LD_LIBRARY_PATH" = "" ]; then 
+	    LD_LIBRARY_PATH=$TBJRE
+	else 
+	    LD_LIBRARY_PATH=$TBJRE:$LD_LIBRARY_PATH
+	fi 
+    fi
+export LD_LIBRARY_PATH 
+echo LD_LIBRARY_PATH set to "$LD_LIBRARY_PATH"
+fi

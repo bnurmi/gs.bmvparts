@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+# TransBase Environment Setting
+# 
+# 
+TRANSBASE=/home/bmw/transbase
+export TRANSBASE 
+TRANSBASE_SERVICENAMES=2024:2025
+export TRANSBASE_SERVICENAMES
+

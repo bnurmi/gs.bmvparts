@@ -1,0 +1,56 @@
+;  delivers table names which collide when mapped to UPPER 
+select s0.tname from "@@systable" s0,"@@systable" s1
+where  s0.tname <> s1.tname and
+			upper(s0.tname) = upper(s1.tname)
+;
+;  delivers domain names which collide when mapped to UPPER 
+select s0.constraintname from "@@sysconstraint" s0,"@@sysconstraint" s1
+where  s0.constraintname <> s1.constraintname and
+	upper(s0.constraintname) = upper(s1.constraintname)
+;
+;  delivers index names which collide when mapped to UPPER 
+select s0.iname from "@@sysindex" s0,"@@sysindex" s1
+where  s0.iname <> s1.iname and
+			upper(s0.iname) = upper(s1.iname)
+;
+;  delivers user names which collide when mapped to UPPER 
+select s0.username from "@@sysuser" s0,"@@sysuser" s1
+where  s0.username <> s1.username and
+			upper(s0.username) = upper(s1.username)
+;
+;  for column names: deliver those which were different  and are 
+;	identical when mapped to UPPER - these would either lead to
+;	errors (identical names in same table OR are dangerous for
+;	existing queries (because field name resolution would not
+;	work ..
+select tname,cname from "@@syscolumn","@@systable"
+where tsegno = segno and 
+upper(cname) in
+(
+   select upper(mincname) from
+   (
+	select min(cname) as mincname, max(cname)as maxcname
+	from 
+		( select cname, upper(cname) as upcname
+  		from "@@syscolumn"
+		)
+	group by upcname
+   )
+   where mincname <> maxcname 
+)
+;	
+;  delivers constraint names which collide when mapped to UPPER 
+select s0.cn from 
+       (select constraintname as cn from "@@sysconstraint" 
+	    union all
+        select constraintname as cn from "@@sysdomain"
+	    union all
+        select DISTINCT constraintname as cn from "@@sysrefconstraint") s0,
+       (select constraintname as cn from "@@sysconstraint" 
+	    union all
+        select constraintname as cn from "@@sysdomain"
+	    union all
+        select distinct constraintname as cn from "@@sysrefconstraint") s1
+where  s0.cn <> s1.cn and
+			upper(s0.cn) = upper(s1.cn)
+;

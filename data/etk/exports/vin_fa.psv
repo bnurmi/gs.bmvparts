@@ -1,0 +1,18 @@
+# Per-VIN factory option (FA / SA) dump.
+#
+# Format: VIN | sa1,sa2,sa3 | paintCode | upholsteryCode | YYYY-MM
+#
+# Sourced from BMW PartsLink24 FA exports (one VIN per line). Loaded on
+# server boot by `server/etk-vin-fa.ts`; can also be re-imported on
+# demand via `npx tsx scripts/import-vin-fa-dump.ts`. Comment lines
+# (prefixed with `#`) and blank lines are ignored.
+#
+# Source-priority on conflict (preserved by the loader):
+#   etk_fa_import (admin HTTP) > etk_fa_dump (this file)
+#                              > promoted_from_cache > e2e_fixture
+#
+# The first row below is the deterministic E2E fixture VIN that the
+# verify-vin-enrichment test suite asserts against — keep it present
+# (or override via an etk_fa_import row) so the strict first-party
+# regime can be regression-tested without touching bimmer.work.
+WBS32AY090FM28236|S206,S2VB,S2TB|475|FAAT|2020-09

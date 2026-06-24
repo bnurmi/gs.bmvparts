@@ -1,0 +1,11 @@
+Choose the path of the "Disk Recovery" Directory. 
+
+In this directory, "logfiles" are stored if the disk recovery option 
+is switched on. This option enables the reconstruction of a database 
+after database files are destroyed by disk failures (head crash etc.).
+TransBase writes each logfile to a specified size and then switches to 
+a new one such that the last one can be moved to tape.
+NOTE: Also without the disk recovery option the database is always
+	automatically protected against damage by machine crashes.
+
+   -	Command Line Syntax :   dr=<diskrecpath> [,<size MB>]

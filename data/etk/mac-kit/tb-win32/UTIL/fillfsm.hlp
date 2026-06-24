@@ -1,0 +1,14 @@
+You can avoid space reservation in the current diskfile by entering 'y'.
+
+Avoiding space reservation means that no NEW data block will ever be
+allocated by TransBase in that diskfile so it will never grow any more;
+if data blocks are released (by dropping or shrinking tables) the
+released blocks will be reused.
+
+Avoiding space reservation in a diskfile can be useful if the size of
+the diskfile has been configured larger than the physical disk can hold.
+In this case a new diskfile can be added and the space allocation of the
+old diskfile can be blocked by this mechanism.
+
+   -	Command Line Syntax :   none 
+

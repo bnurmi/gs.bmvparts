@@ -1,0 +1,136 @@
+BMV Parts Account Provisioning API Brief
+This document specifies the API endpoints that bmv.parts must implement to receive auto-provisioned accounts from GearSwap.
+
+Authentication
+All endpoints require a Bearer token via the Authorization header.
+
+Authorization: Bearer <BMV_ACCOUNT_PROVISION_KEY>
+
+The shared secret is stored as the BMV_ACCOUNT_PROVISION_KEY environment variable on both GearSwap and bmv.parts.
+
+Endpoint: POST /api/v1/accounts/provision
+Provision a single account. This endpoint must be idempotent on the source_user_id field — calling it again for the same source_user_id should return the existing account rather than creating a duplicate.
+
+Request Body (JSON)
+{
+  "source": "gearswap",
+  "source_user_id": 123,
+  "account_type": "staff",
+  "username": "john.doe",
+  "email": "john@example.com",
+  "full_name": "John Doe",
+  "company": "MPerformance Parts",
+  "phone": "+61400000000",
+  "country": "Australia",
+  "role": "warehouse_staff",
+  "tier": "advanced_staff",
+  "employer_source_id": 45,
+  "store_slug": "mperformance",
+  "store_name": "MPerformance Parts",
+  "metadata": {
+    "business_subdomain": "mperformance",
+    "preferred_brand": "BMW"
+  }
+}
+
+Field Notes
+Field	Required	Description
+source	Yes	Always "gearswap"
+source_user_id	Yes	GearSwap's internal User.id. Used as idempotency key.
+account_type	Yes	One of: staff, vendor, marketplace
+username	Yes	GearSwap username
+email	No	User's email address
+full_name	No	User's full name
+company	No	Company/business name
+phone	No	Phone number
+country	No	Country
+role	No	Maps from GearSwap's vendor_role field
+tier	No	Maps from GearSwap's staff_tier field
+employer_source_id	No	Only for staff accounts — the GearSwap User.id of the employer/vendor owner
+store_slug	No	Only for marketplace accounts — the store's URL slug
+store_name	No	Only for marketplace accounts — the store's display name
+metadata	No	Arbitrary key-value pairs (e.g. business_subdomain, preferred_brand)
+Success Response (200 or 201)
+{
+  "status": "created",
+  "bmv_user_id": "uuid-or-int",
+  "username": "john.doe",
+  "temporary_password": "auto-generated-if-new"
+}
+
+status — "created" for new accounts, "exists" for idempotent re-calls
+bmv_user_id — The bmv.parts internal user ID. GearSwap stores this for future reference.
+temporary_password — Only present when status is "created". bmv.parts generates credentials.
+Error Responses
+Status	Description
+401	Invalid or missing Bearer token
+409	Username conflict (different source_user_id but same username)
+422	Validation error (missing required fields)
+500	Server error
+Endpoint: POST /api/v1/accounts/provision/batch
+Provision multiple accounts in a single request. Used for initial bulk sync of existing GearSwap accounts.
+
+Request Body (JSON)
+{
+  "accounts": [
+    { ...same fields as single provision... },
+    { ...same fields as single provision... }
+  ]
+}
+
+Success Response (200 or 201)
+{
+  "results": [
+    {
+      "source_user_id": 123,
+      "status": "created",
+      "bmv_user_id": "uuid-or-int",
+      "username": "john.doe",
+      "temporary_password": "auto-generated"
+    },
+    {
+      "source_user_id": 456,
+      "status": "exists",
+      "bmv_user_id": "uuid-or-int-2",
+      "username": "jane.doe"
+    }
+  ]
+}
+
+Authentication
+Same Bearer token as the single provision endpoint.
+
+Endpoint: GET /api/v1/accounts/status
+Check if an account already exists on bmv.parts for a given GearSwap user.
+
+Query Parameters
+Parameter	Required	Description
+source_user_id	Yes	The GearSwap User.id to look up
+Success Response (200)
+{
+  "exists": true,
+  "bmv_user_id": "uuid-or-int"
+}
+
+If the account does not exist:
+
+{
+  "exists": false
+}
+
+Authentication
+Same Bearer token as above.
+
+GearSwap Trigger Points
+GearSwap calls the provisioning endpoint at the following points:
+
+Staff creation — When a vendor adds a new staff member via /profile/staff/add, GearSwap provisions a staff account.
+Vendor approval — When an admin approves a vendor user (sets is_approved=True and role='vendor'), GearSwap provisions a vendor account.
+Role change to vendor — When an admin sets a user's role to vendor via /admin/set-role, GearSwap provisions a vendor account (if the user is already approved).
+Marketplace store creation — When a vendor creates a new marketplace store via /vendor/marketplace/settings, GearSwap provisions a marketplace account.
+All provisioning calls are fire-and-forget with 1 retry (2-second delay). Failures are logged but never block the local operation.
+
+Environment Variables
+Variable	Side	Description
+BMW_CATALOGUE_API_URL	GearSwap	Base URL for bmv.parts (default: https://bmv.parts)
+BMV_ACCOUNT_PROVISION_KEY	Both	Shared secret for Bearer token authentication

@@ -1,0 +1,16 @@
+Specify the maximal size of the i-th diskfile.
+
+Each diskfile dynamically grows up to the specified maximal size.
+If all diskfiles are full, new diskfile(s) can be added via 
+"tbadmin -a ..".
+Note that it is not reasonable to specify a size which is larger 
+than the disk partition can ever hold, because the operating system 
+would complain about missing space before the diskfile is filled 
+from TransBases's point of view.
+
+   -	Command Line Syntax :   d=[<path>],<size in MB>
+   	Examples: 
+	$ tbadmin -cf <sampledb>  d=/db/tbdsk001,50000
+	  -->	specifies file /db/tbdsk001 with max size of about 100 MB
+   	$ tbadmin -cf <sampledb>  d=,50000
+	  -->	specifies a diskfile with default location and size about 100 MB

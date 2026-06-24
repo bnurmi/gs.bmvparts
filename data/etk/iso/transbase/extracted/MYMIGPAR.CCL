@@ -1,0 +1,272 @@
+//
+// 
+//                  T r a n s B a s e / C D
+//                  $ProjectRevision: 4.119.1.19 $
+// 
+//	@(#) mymigpar.ccl
+//            $RCSfile: mymigpar.ccl $
+//            $Revision: 1.5 $
+//            $Date: 1998/06/17 15:00:41 $
+//
+//	Copyright (c) 1987 -
+//	Transaction Software GmbH
+//	D 81739 Munich
+// 
+//
+// Module begin
+//
+//	This ccl script migrates an archive with no paragraphs to
+//	an archive with paragraphs
+//
+//	Usage: ccl mymigpar.ccl <archive> [<user> [<password>]]
+//
+
+local procedure usage
+begin
+    echo {Usage: ccl mymigpar.ccl <archive> [<user> [<password>]]}
+    exit 1
+end
+
+local procedure check_migration(archive)
+begin
+    // check number of columns of StdStructFields and MyDocClasses
+    // and existence of tablename MyParagraphs
+    run {select distinct
+	    (select colno from systable where tname='MyParagraphs'),
+	    (select colno from systable where tname='StdStructFields'),
+	    (select colno from systable where tname='MyDocClasses')
+	  from SecRanges
+    }
+    if not isnull(run.0) then
+	if $run.0 eq 5 and $run.1 eq 6 and $run.2 eq 4 then
+	    echo {Archive $archive already migrated, exiting}
+	    exit 1
+	else
+	    echo {There exists a table or view named 'MyParagraphs',} &&
+		 {please contact MYRIAD team}
+	    exit 1
+	fi
+    else
+	if $run.1 ne 5 or $run.2 ne 3 then
+	    echo {Found inconsistencies in MYRIAD scheme,} &&
+		 {please contact MYRIAD team}
+	    exit 1
+	fi
+    fi
+end
+
+local procedure create_MyParagraphs
+begin
+    echo {Create table MyParagraphs}
+
+    // create table MyParagraphs
+    run {create table MyParagraphs without ikaccess (
+		ParStart  integer  not null,
+		ParEnd    integer  not null,
+		UserData1 integer  not null,
+		ParId     smallint not null,
+		ParName   char(*)  not null
+	 ) key is ParName
+    }
+
+    // grant select to public
+    run {grant select on MyParagraphs to public}
+end
+
+local procedure alter_StdStructFields
+begin
+    // add SetPars to StdStructFields
+
+    echo {Alter table StdStructFields (add column SetPars)}
+
+    // create auxiliary table "@@StdStrF@@" with
+    // new scheme of StdStructFields
+    run {create table "@@StdStrF@@" (
+		Docno       integer	    not null,
+		Arch_datum  datetime[yy:mi] not null,
+		NumberWords integer	    not null,
+		DocClass    smallint	    not null,
+		SetSF       bits(*)	    not null,
+		SetPars     bits(*)	    not null
+	 ) key is Docno
+    }
+
+    // fill "@@StdStrF@@" with values from StdStructFields,
+    // thereby set last attribute (SetPars) to 0b0
+    run {insert into "@@StdStrF@@"
+	 select *, 0b0 from StdStructFields
+    }
+
+    // drop StdStructFields, this deletes implicitly
+    // all indexes on StdStructFields
+    run {drop table StdStructFields}
+
+    // rename "@@StdStrF@@" to StdStructFields in systable
+    run {update systable
+	 set   tname = 'StdStructFields'
+	 where tname = '@@StdStrF@@'
+    }
+
+    // recreate indexes on new StdStructFields
+    // currently no index on SetSF and SetPars
+    run {create index ix_Arch_datum
+	 on StdStructFields(Arch_datum,Docno)
+    }
+    run {create index ix_NumberWords
+	 on StdStructFields(NumberWords,Docno)
+    }
+    run {create index ix_DocClass
+	 on StdStructFields(DocClass,Docno)
+    }
+
+    // grant select to public
+    run {grant select on StdStructFields to public}
+
+    // grant rights to users in UserClass "myarch"
+    open archivers {
+	select UserName
+	from MyUser
+	where UserClass = 'myarch'
+    }
+    fetch archivers
+    while not eod(archivers) do
+	run {grant insert, delete, update(NumberWords,SetSF,SetPars)
+	     on StdStructFields
+	     to $archiver.0
+	}
+	fetch archivers
+    od
+    close archivers
+end
+
+local procedure alter_MyDocClasses
+begin
+    // add MappedPars to MyDocClasses
+
+    echo {Alter table MyDocClasses (add column MappedPars)}
+
+    // create auxiliary table "@@MyDCl@@" with
+    // new scheme of MyDocClasses
+    run {create table "@@MyDCl@@" (
+		ClassId		smallint not null,
+		ClassName	char(*)	 not null,
+		MappedSF	bits(*)  not null,
+		MappedPars	bits(*)  not null
+	 ) key is ClassId
+    }
+
+    // fill "@@MyDCl@@" with values from MyDocClasses,
+    // thereby set last attribute (MappedPars) to 0b0
+    run {insert into "@@MyDCl@@"
+	 select *, 0b0 from MyDocClasses
+    }
+
+    // drop MyDocClasses
+    run {drop table MyDocClasses}
+
+    // rename "@@MyDCl@@" to MyDocClasses in systable
+    run {update systable
+	 set   tname = 'MyDocClasses'
+	 where tname = '@@MyDCl@@'
+    }
+
+    // grant select to public
+    run {grant select on MyDocClasses to public}
+end
+
+local procedure move_BitPos_6(new_BitPos)
+begin
+    echo {Adapt structure field information of documents}
+
+    // move structure field on BitPos 6 to new_BitPos in StructFields
+    run {update StructFields
+ 	 set   BitPos = $new_BitPos
+ 	 where BitPos = 6
+    }
+ 
+    // move Bit 6 in SetSf of StdStructFields to new_BitPos
+    // and delete Bit 6 where it is set (no document has SetPars set)
+    run {update StdStructFields
+	 set   SetSF = SetSF bitor makebit($new_BitPos)
+	 where SetSF bitand 0x04 <> 0b0
+    }
+    run {update StdStructFields
+	 set SetSF =
+	     SetSF bitand bitnot (0x04 subrange(1, size of SetSF))
+    }
+	
+    // move Bit 6 in MappedSF of MyDocClasses to new_BitPos
+    // must not delete Bit 6, because it is set in all classes later
+    run {update MyDocClasses
+	 set   MappedSF = MappedSF bitor makebit($new_BitPos)
+	 where MappedSF bitand 0x04 <> 0b0
+    }
+end
+
+local procedure move_Bit6_and_insert_SetPars
+begin
+    // maintain bitvector SetSF of StdStructFields
+    // if BitPos 6 in StructFields is occupied, move structure field
+    // with BitPos 6 to first free BitPos;
+    // then SetPars gets BitPos 6 (bitvector with Bit 6 set is 0b000001,
+    // 0x04 resp.)
+
+    // check whether BitPos 6 is free
+    run {select BitPos from StructFields where BitPos = 6}
+    if not eod(run) then
+	// BitPos 6 occupied; search first free BitPos in StructFields
+	// and move structure field at BitPos 6 to new BitPos
+	run {select findbit(bitnot(b subrange(1, size of b + 1)))
+	     from (select sum(makebit(BitPos)) from StructFields)(b)
+	}
+	exec move_BitPos_6($run.0)
+    fi
+
+    // insert tuple of SetPars into StructFields
+    echo {Insert SetPars into StructFields}
+    run {insert into StructFields values
+	 (0, 0, 6, 6, 2, 'SetPars', 'bits(*)', 'StdStructFields', '')
+    }
+
+    // set Bit 6 of MappedSF (SetPars is mapped to all DocClasses)
+    echo {Map SetPars to all DocClasses}
+    run {update MyDocClasses set MappedSF = MappedSF bitor 0x04}
+end
+
+local procedure main(archive, user, passwd)
+begin
+    // check arguments
+    if not isset(archive) then exec usage fi
+
+    if not isset(user) then accept user prompt {login: } fi
+    if $user = myadmin then user := tbadmin fi
+
+    conn $archive
+
+    if isset(passwd) then login $user $passwd else login $user
+    fi
+
+    echo {}
+    exec check_migration($archive)
+    exec create_MyParagraphs
+    exec alter_StdStructFields
+    exec alter_MyDocClasses
+    exec move_Bit6_and_insert_SetPars
+
+    echo {Commit and disconnect}
+    ct
+    dconn
+    echo {}
+
+    exit 0
+end
+
+if isset(3) then
+    exec main($1, $2, $3)
+else if isset(2) then
+    exec main($1, $2) 
+else if isset(1) then
+    exec main($1)
+else
+    exec main
+fi fi fi

@@ -1,0 +1,17 @@
+RELDESC_BEGIN
+"@@sysuser" 
+33 1 -1 1
+6
+	char(*) "username" 0 1 1
+	char(*) "userclass" 1 0 1
+	char(*) "passwd" 2 0 1
+	integer "userid" 3 0 1
+	integer "d1" 4 0 0
+	char(*) "d2" 5 0 0
+0
+RELDESC_END
+
+(N0:sel
+	 (N001:rel  { "@@sysuser" }
+		  (N002:ivmk {eq}      
+			(N006:param  { string[1] } ))))

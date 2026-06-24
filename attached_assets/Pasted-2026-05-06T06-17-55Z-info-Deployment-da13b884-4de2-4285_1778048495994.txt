@@ -1,0 +1,81 @@
+2026-05-06T06:17:55Z info: Deployment: da13b884-4de2-4285-9acd-fec16a6d23d5
+2026-05-06T06:17:55Z info: Build: 1bdc70de-e0e8-4937-ba6e-a7a8b5e018e3
+2026-05-06T06:17:56Z info: Running Security Scan
+2026-05-06T06:18:32Z info: Security Scan Complete
+2026-05-06T06:18:39Z info: Installing packages
+--> npm install
+
+
+up to date, audited 698 packages in 3s
+
+  run `npm fund` for details
+
+
+16 vulnerabilities (6 low, 5 moderate, 5 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues possible (including breaking changes), run:
+  npm audit fix --force
+
+Some issues need review, and may require choosing
+a different dependency.
+
+Run `npm audit` for details.
+
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.13.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.13.0
+npm notice To update run: npm install -g npm@11.13.0
+npm notice
+
+2026-05-06T06:18:43Z info: Starting Build
+
+> rest-express@1.0.0 build
+> tsx script/build.ts
+
+
+[Pre-Deploy] Skipping backup (set REPLIT_DEPLOYMENT=1 or PRE_DEPLOY_BACKUP=1 to run).
+
+[Pre-Deploy] Skipping hub SEO check (set REPLIT_DEPLOYMENT=1 or PRE_DEPLOY_HUB_SEO=1 to run).
+
+building client...
+
+vite v7.3.0 building client environment for production...
+
+transforming...
+
+Browserslist: browsers data (caniuse-lite) is 7 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+
+
+A PostCSS plugin did not pass the `from` option to `postcss.parse`. This may cause imported assets to be incorrectly transformed. If you've recently added a PostCSS plugin that raised this warning, please contact the package author to fix the issue.
+
+✓ 1796 modules transformed.
+
+rendering chunks...
+
+computing gzip size...
+
+../dist/public/index.html                            5.10 kB │ gzip:   1.96 kB
+
+✓ built in 5.34s
+
+building server...
+
+
+  dist/index.cjs  2.5mb ⚠️
+
+⚡ Done in 646ms
+
+2026-05-06T06:18:57Z info: Pushing pid1 binary layer...
+2026-05-06T06:18:59Z info: Created pid1 binary layer
+2026-05-06T06:19:04Z info: Pushing Repl layer...
+2026-05-06T06:19:04Z info: Pushing hosting layer...
+2026-05-06T06:19:04Z info: Nix layers for this Repl are uncached.
+2026-05-06T06:19:04Z info: Pushing nix-0 layer...
+2026-05-06T06:19:04Z info: Retrieved cached nix layer
+2026-05-06T06:19:04Z info: Created hosting layer
+2026-05-06T06:19:35Z info: Created Repl layer

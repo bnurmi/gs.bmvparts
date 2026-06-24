@@ -1,0 +1,1874 @@
+[
+  {
+    "code": "S205",
+    "category": "transmission",
+    "names": {
+      "en": "Automatic transmission",
+      "de": "Automatik-Getriebe",
+      "es": "Caja de cambios automática",
+      "fr": "Boîte de vitesses automatique",
+      "it": "Cambio automatico",
+      "zh": "自动变速箱"
+    }
+  },
+  {
+    "code": "S206",
+    "category": "transmission",
+    "names": {
+      "en": "Automatic transmission with double clutch",
+      "de": "Automatik-Getriebe mit Doppelkupplung",
+      "es": "Caja automática de doble embrague",
+      "fr": "Boîte automatique à double embrayage",
+      "it": "Cambio automatico a doppia frizione",
+      "zh": "双离合自动变速箱"
+    }
+  },
+  {
+    "code": "S2VB",
+    "category": "transmission",
+    "names": {
+      "en": "Sport automatic transmission",
+      "de": "Sport-Automatic-Getriebe",
+      "es": "Caja de cambios automática deportiva",
+      "fr": "Boîte de vitesses automatique sport",
+      "it": "Cambio automatico sportivo",
+      "zh": "运动型自动变速箱"
+    }
+  },
+  {
+    "code": "S2VL",
+    "category": "transmission",
+    "names": {
+      "en": "8-speed Steptronic Sport transmission",
+      "de": "8-Gang-Steptronic Sport Getriebe",
+      "es": "Cambio Steptronic Sport de 8 velocidades",
+      "fr": "Boîte Steptronic Sport 8 rapports",
+      "it": "Cambio Steptronic Sport a 8 rapporti",
+      "zh": "8速 Steptronic Sport 变速箱"
+    }
+  },
+  {
+    "code": "S2TB",
+    "category": "drivetrain",
+    "names": {
+      "en": "M Sport differential",
+      "de": "M Sportdifferenzial",
+      "es": "Diferencial M Sport",
+      "fr": "Différentiel M Sport",
+      "it": "Differenziale M Sport",
+      "zh": "M 运动差速器"
+    }
+  },
+  {
+    "code": "S2T4",
+    "category": "drivetrain",
+    "names": {
+      "en": "M Sport differential",
+      "de": "M Sportdifferenzial",
+      "es": "Diferencial M Sport",
+      "fr": "Différentiel M Sport",
+      "it": "Differenziale M Sport",
+      "zh": "M 运动差速器"
+    }
+  },
+  {
+    "code": "S2VC",
+    "category": "wheels",
+    "names": {
+      "en": "Tyre repair set",
+      "de": "Reifen-Reparaturset",
+      "es": "Kit de reparación de neumáticos",
+      "fr": "Kit de réparation des pneus",
+      "it": "Kit di riparazione pneumatici",
+      "zh": "轮胎修补套件"
+    }
+  },
+  {
+    "code": "S2VF",
+    "category": "chassis",
+    "names": {
+      "en": "Adaptive M chassis",
+      "de": "Adaptives M Fahrwerk",
+      "es": "Suspensión M adaptativa",
+      "fr": "Châssis M adaptatif",
+      "it": "Assetto M adattivo",
+      "zh": "M 自适应底盘"
+    }
+  },
+  {
+    "code": "S2VR",
+    "category": "chassis",
+    "names": {
+      "en": "Adaptive suspension",
+      "de": "Adaptives Fahrwerk",
+      "es": "Suspensión adaptativa",
+      "fr": "Suspension adaptative",
+      "it": "Sospensioni adattive",
+      "zh": "自适应悬挂"
+    }
+  },
+  {
+    "code": "S2NH",
+    "category": "chassis",
+    "names": {
+      "en": "M Sport package Pro",
+      "de": "M Sportpaket Pro",
+      "es": "Paquete M Sport Pro",
+      "fr": "Pack M Sport Pro",
+      "it": "Pacchetto M Sport Pro",
+      "zh": "M 运动套装 Pro"
+    }
+  },
+  {
+    "code": "SL070",
+    "category": "battery",
+    "names": {
+      "en": "70 Ah battery",
+      "de": "Batterie 70 Ah",
+      "es": "Batería de 70 Ah",
+      "fr": "Batterie 70 Ah",
+      "it": "Batteria 70 Ah",
+      "zh": "70 安时蓄电池"
+    }
+  },
+  {
+    "code": "SL072",
+    "category": "battery",
+    "names": {
+      "en": "72 Ah battery",
+      "de": "Batterie 72 Ah",
+      "es": "Batería de 72 Ah",
+      "fr": "Batterie 72 Ah",
+      "it": "Batteria 72 Ah",
+      "zh": "72 安时蓄电池"
+    }
+  },
+  {
+    "code": "SL080",
+    "category": "battery",
+    "names": {
+      "en": "80 Ah battery",
+      "de": "Batterie 80 Ah",
+      "es": "Batería de 80 Ah",
+      "fr": "Batterie 80 Ah",
+      "it": "Batteria 80 Ah",
+      "zh": "80 安时蓄电池"
+    }
+  },
+  {
+    "code": "SL090",
+    "category": "battery",
+    "names": {
+      "en": "90 Ah battery",
+      "de": "Batterie 90 Ah",
+      "es": "Batería de 90 Ah",
+      "fr": "Batterie 90 Ah",
+      "it": "Batteria 90 Ah",
+      "zh": "90 安时蓄电池"
+    }
+  },
+  {
+    "code": "S1T8",
+    "category": "wheels",
+    "names": {
+      "en": "BMW M light-alloy wheel 826M",
+      "de": "BMW M Leichtmetallrad 826 M",
+      "es": "Llanta de aleación ligera BMW M 826M",
+      "fr": "Jante en alliage léger BMW M 826M",
+      "it": "Cerchio in lega BMW M 826M",
+      "zh": "BMW M 轻合金轮毂 826M"
+    }
+  },
+  {
+    "code": "S1T9",
+    "category": "wheels",
+    "names": {
+      "en": "BMW M light-alloy wheel 825M",
+      "de": "BMW M Leichtmetallrad 825 M",
+      "es": "Llanta de aleación ligera BMW M 825M",
+      "fr": "Jante en alliage léger BMW M 825M",
+      "it": "Cerchio in lega BMW M 825M",
+      "zh": "BMW M 轻合金轮毂 825M"
+    }
+  },
+  {
+    "code": "S2H1",
+    "category": "wheels",
+    "names": {
+      "en": "Light-alloy wheels with mixed tyres",
+      "de": "Leichtmetallräder mit Mischbereifung",
+      "es": "Llantas de aleación ligera con neumáticos mixtos",
+      "fr": "Jantes en alliage léger avec pneus mixtes",
+      "it": "Cerchi in lega con pneumatici misti",
+      "zh": "轻合金轮毂带混合轮胎"
+    }
+  },
+  {
+    "code": "S2H2",
+    "category": "wheels",
+    "names": {
+      "en": "Light-alloy wheels",
+      "de": "Leichtmetallräder",
+      "es": "Llantas de aleación ligera",
+      "fr": "Jantes en alliage léger",
+      "it": "Cerchi in lega leggera",
+      "zh": "轻合金轮毂"
+    }
+  },
+  {
+    "code": "S2H6",
+    "category": "wheels",
+    "names": {
+      "en": "M light-alloy wheels",
+      "de": "M Leichtmetallräder",
+      "es": "Llantas de aleación M",
+      "fr": "Jantes en alliage M",
+      "it": "Cerchi in lega M",
+      "zh": "M 轻合金轮毂"
+    }
+  },
+  {
+    "code": "S1MB",
+    "category": "package",
+    "names": {
+      "en": "M Drive Professional",
+      "de": "M Drive Professional",
+      "es": "M Drive Professional",
+      "fr": "M Drive Professional",
+      "it": "M Drive Professional",
+      "zh": "M Drive Professional"
+    }
+  },
+  {
+    "code": "S1NA",
+    "category": "package",
+    "names": {
+      "en": "M Sport package",
+      "de": "M Sportpaket",
+      "es": "Paquete M Sport",
+      "fr": "Pack M Sport",
+      "it": "Pacchetto M Sport",
+      "zh": "M 运动套装"
+    }
+  },
+  {
+    "code": "S2T6",
+    "category": "package",
+    "names": {
+      "en": "M Sport brakes",
+      "de": "M Sportbremse",
+      "es": "Frenos M Sport",
+      "fr": "Freins M Sport",
+      "it": "Freni M Sport",
+      "zh": "M 运动刹车系统"
+    }
+  },
+  {
+    "code": "S337",
+    "category": "package",
+    "names": {
+      "en": "M Sport package",
+      "de": "M Sportpaket",
+      "es": "Paquete M Sport",
+      "fr": "Pack M Sport",
+      "it": "Pacchetto M Sport",
+      "zh": "M 运动套装"
+    }
+  },
+  {
+    "code": "S336",
+    "category": "package",
+    "names": {
+      "en": "Sport package",
+      "de": "Sportpaket",
+      "es": "Paquete deportivo",
+      "fr": "Pack Sport",
+      "it": "Pacchetto Sport",
+      "zh": "运动套装"
+    }
+  },
+  {
+    "code": "S320",
+    "category": "package",
+    "names": {
+      "en": "Premium package",
+      "de": "Premium-Paket",
+      "es": "Paquete Premium",
+      "fr": "Pack Premium",
+      "it": "Pacchetto Premium",
+      "zh": "高级套装"
+    }
+  },
+  {
+    "code": "S319",
+    "category": "package",
+    "names": {
+      "en": "Comfort package",
+      "de": "Komfort-Paket",
+      "es": "Paquete Confort",
+      "fr": "Pack Confort",
+      "it": "Pacchetto Comfort",
+      "zh": "舒适套装"
+    }
+  },
+  {
+    "code": "S230",
+    "category": "package",
+    "names": {
+      "en": "European-specific equipment",
+      "de": "Sonderausstattung Europa",
+      "es": "Equipamiento específico europeo",
+      "fr": "Équipements spécifiques Europe",
+      "it": "Equipaggiamenti specifici per l'Europa",
+      "zh": "欧洲专属配置"
+    }
+  },
+  {
+    "code": "S231",
+    "category": "package",
+    "names": {
+      "en": "Office package",
+      "de": "Office-Paket",
+      "es": "Paquete Office",
+      "fr": "Pack Office",
+      "it": "Pacchetto Office",
+      "zh": "办公套装"
+    }
+  },
+  {
+    "code": "S255",
+    "category": "interior",
+    "names": {
+      "en": "Sport leather steering wheel",
+      "de": "Sport-Lederlenkrad",
+      "es": "Volante deportivo de cuero",
+      "fr": "Volant sport en cuir",
+      "it": "Volante sportivo in pelle",
+      "zh": "运动型真皮方向盘"
+    }
+  },
+  {
+    "code": "S2MK",
+    "category": "interior",
+    "names": {
+      "en": "M leather steering wheel",
+      "de": "M Lederlenkrad",
+      "es": "Volante M de cuero",
+      "fr": "Volant M en cuir",
+      "it": "Volante M in pelle",
+      "zh": "M 真皮方向盘"
+    }
+  },
+  {
+    "code": "S2ML",
+    "category": "interior",
+    "names": {
+      "en": "M leather steering wheel with shift paddles",
+      "de": "M Lederlenkrad mit Schaltwippen",
+      "es": "Volante M de cuero con levas de cambio",
+      "fr": "Volant M en cuir avec palettes au volant",
+      "it": "Volante M in pelle con palette del cambio",
+      "zh": "带换挡拨片的 M 真皮方向盘"
+    }
+  },
+  {
+    "code": "S256",
+    "category": "interior",
+    "names": {
+      "en": "Multi-function steering wheel",
+      "de": "Multifunktions-Lenkrad",
+      "es": "Volante multifunción",
+      "fr": "Volant multifonction",
+      "it": "Volante multifunzione",
+      "zh": "多功能方向盘"
+    }
+  },
+  {
+    "code": "S257",
+    "category": "interior",
+    "names": {
+      "en": "Heated steering wheel",
+      "de": "Lenkradheizung",
+      "es": "Volante con calefacción",
+      "fr": "Volant chauffant",
+      "it": "Volante riscaldato",
+      "zh": "方向盘加热"
+    }
+  },
+  {
+    "code": "S459",
+    "category": "interior",
+    "names": {
+      "en": "Electric seat adjustment with memory",
+      "de": "Sitzverstellung elektrisch mit Memory",
+      "es": "Ajuste eléctrico de asientos con memoria",
+      "fr": "Sièges à réglage électrique avec mémoire",
+      "it": "Regolazione elettrica dei sedili con memoria",
+      "zh": "带记忆功能的电动座椅调节"
+    }
+  },
+  {
+    "code": "S488",
+    "category": "interior",
+    "names": {
+      "en": "Lumbar support, driver and passenger",
+      "de": "Lordosenstütze für Fahrer und Beifahrer",
+      "es": "Soporte lumbar para conductor y acompañante",
+      "fr": "Soutien lombaire pour conducteur et passager",
+      "it": "Supporto lombare per conducente e passeggero",
+      "zh": "驾驶席与副驾席腰部支撑"
+    }
+  },
+  {
+    "code": "S493",
+    "category": "interior",
+    "names": {
+      "en": "Storage compartment package",
+      "de": "Ablagenpaket",
+      "es": "Paquete de compartimentos portaobjetos",
+      "fr": "Pack rangements",
+      "it": "Pacchetto vani portaoggetti",
+      "zh": "储物空间套装"
+    }
+  },
+  {
+    "code": "S494",
+    "category": "interior",
+    "names": {
+      "en": "Heated front seats",
+      "de": "Sitzheizung Fahrer/Beifahrer",
+      "es": "Calefacción de asientos delanteros",
+      "fr": "Sièges avant chauffants",
+      "it": "Riscaldamento sedili anteriori",
+      "zh": "前排座椅加热"
+    }
+  },
+  {
+    "code": "S496",
+    "category": "interior",
+    "names": {
+      "en": "Heated rear seats",
+      "de": "Sitzheizung Fond",
+      "es": "Calefacción de asientos traseros",
+      "fr": "Sièges arrière chauffants",
+      "it": "Riscaldamento sedili posteriori",
+      "zh": "后排座椅加热"
+    }
+  },
+  {
+    "code": "S456",
+    "category": "interior",
+    "names": {
+      "en": "Comfort seats, driver and passenger",
+      "de": "Komfortsitze Fahrer und Beifahrer",
+      "es": "Asientos confort para conductor y acompañante",
+      "fr": "Sièges confort conducteur et passager",
+      "it": "Sedili comfort conducente e passeggero",
+      "zh": "驾驶席与副驾席舒适座椅"
+    }
+  },
+  {
+    "code": "S458",
+    "category": "interior",
+    "names": {
+      "en": "Sport seats, driver and passenger",
+      "de": "Sportsitze Fahrer und Beifahrer",
+      "es": "Asientos deportivos para conductor y acompañante",
+      "fr": "Sièges sport conducteur et passager",
+      "it": "Sedili sportivi conducente e passeggero",
+      "zh": "驾驶席与副驾席运动座椅"
+    }
+  },
+  {
+    "code": "S481",
+    "category": "interior",
+    "names": {
+      "en": "Sport seats",
+      "de": "Sportsitze",
+      "es": "Asientos deportivos",
+      "fr": "Sièges sport",
+      "it": "Sedili sportivi",
+      "zh": "运动座椅"
+    }
+  },
+  {
+    "code": "S48C",
+    "category": "interior",
+    "names": {
+      "en": "M Carbon bucket seats",
+      "de": "M Carbon-Schalensitze",
+      "es": "Asientos baquet M Carbon",
+      "fr": "Sièges baquet M Carbon",
+      "it": "Sedili a guscio M Carbon",
+      "zh": "M Carbon 桶形座椅"
+    }
+  },
+  {
+    "code": "S48H",
+    "category": "interior",
+    "names": {
+      "en": "M Sport seats",
+      "de": "M Sportsitze",
+      "es": "Asientos M Sport",
+      "fr": "Sièges M Sport",
+      "it": "Sedili M Sport",
+      "zh": "M 运动座椅"
+    }
+  },
+  {
+    "code": "S4F1",
+    "category": "interior",
+    "names": {
+      "en": "Active seat ventilation",
+      "de": "Aktive Sitzbelüftung",
+      "es": "Ventilación activa de asientos",
+      "fr": "Ventilation active des sièges",
+      "it": "Ventilazione attiva dei sedili",
+      "zh": "主动式座椅通风"
+    }
+  },
+  {
+    "code": "S4FL",
+    "category": "interior",
+    "names": {
+      "en": "Massage function for front seats",
+      "de": "Massagefunktion Vordersitze",
+      "es": "Función de masaje en asientos delanteros",
+      "fr": "Fonction massage des sièges avant",
+      "it": "Funzione massaggio sedili anteriori",
+      "zh": "前排座椅按摩功能"
+    }
+  },
+  {
+    "code": "S4GQ",
+    "category": "interior",
+    "names": {
+      "en": "M seat belts",
+      "de": "M Sicherheitsgurte",
+      "es": "Cinturones de seguridad M",
+      "fr": "Ceintures de sécurité M",
+      "it": "Cinture di sicurezza M",
+      "zh": "M 安全带"
+    }
+  },
+  {
+    "code": "S465",
+    "category": "interior",
+    "names": {
+      "en": "Through-loading system",
+      "de": "Durchladesystem",
+      "es": "Sistema de carga pasante",
+      "fr": "Système de chargement traversant",
+      "it": "Sistema di carico passante",
+      "zh": "贯穿式装载系统"
+    }
+  },
+  {
+    "code": "S4T7",
+    "category": "interior",
+    "names": {
+      "en": "Floor mats in velour",
+      "de": "Velours-Fußmatten",
+      "es": "Alfombrillas de velour",
+      "fr": "Tapis de sol en velours",
+      "it": "Tappetini in velour",
+      "zh": "丝绒脚垫"
+    }
+  },
+  {
+    "code": "S4MC",
+    "category": "interior",
+    "names": {
+      "en": "Carbon fibre interior trims",
+      "de": "Innenleisten Carbon",
+      "es": "Embellecedores interiores en fibra de carbono",
+      "fr": "Décors intérieurs en fibre de carbone",
+      "it": "Modanature interne in fibra di carbonio",
+      "zh": "碳纤维内饰"
+    }
+  },
+  {
+    "code": "S4FK",
+    "category": "interior",
+    "names": {
+      "en": "Aluminium Rhombicle interior trim",
+      "de": "Interieurleisten Aluminium Rhombicle",
+      "es": "Embellecedores interiores en aluminio Rhombicle",
+      "fr": "Décors intérieurs en aluminium Rhombicle",
+      "it": "Modanature interne in alluminio Rhombicle",
+      "zh": "Rhombicle 铝制内饰"
+    }
+  },
+  {
+    "code": "S4FM",
+    "category": "interior",
+    "names": {
+      "en": "Aluminium Tetragon interior trim",
+      "de": "Interieurleisten Aluminium Tetragon",
+      "es": "Embellecedores interiores en aluminio Tetragon",
+      "fr": "Décors intérieurs en aluminium Tetragon",
+      "it": "Modanature interne in alluminio Tetragon",
+      "zh": "Tetragon 铝制内饰"
+    }
+  },
+  {
+    "code": "S4U0",
+    "category": "interior",
+    "names": {
+      "en": "Electroplated cover for control elements",
+      "de": "Galvanisierte Blenden für Bedienelemente",
+      "es": "Embellecedores galvanizados de los mandos",
+      "fr": "Habillages galvanisés des commandes",
+      "it": "Cornici galvanizzate degli elementi di comando",
+      "zh": "电镀控制元件饰条"
+    }
+  },
+  {
+    "code": "S4U1",
+    "category": "interior",
+    "names": {
+      "en": "Ambient interior lighting",
+      "de": "Ambientes Licht",
+      "es": "Iluminación ambiental interior",
+      "fr": "Éclairage d'ambiance intérieur",
+      "it": "Illuminazione ambient interna",
+      "zh": "氛围照明"
+    }
+  },
+  {
+    "code": "S322",
+    "category": "comfort",
+    "names": {
+      "en": "Comfort access",
+      "de": "Komfortzugang",
+      "es": "Acceso confort",
+      "fr": "Accès confort",
+      "it": "Accesso confort",
+      "zh": "舒适进入系统"
+    }
+  },
+  {
+    "code": "S302",
+    "category": "comfort",
+    "names": {
+      "en": "Alarm system",
+      "de": "Alarmanlage",
+      "es": "Sistema de alarma",
+      "fr": "Système d'alarme",
+      "it": "Sistema d'allarme",
+      "zh": "防盗报警系统"
+    }
+  },
+  {
+    "code": "S316",
+    "category": "comfort",
+    "names": {
+      "en": "Automatic tailgate operation",
+      "de": "Automatische Heckklappenbetätigung",
+      "es": "Apertura automática del portón trasero",
+      "fr": "Hayon à ouverture automatique",
+      "it": "Portellone posteriore ad apertura automatica",
+      "zh": "电动尾门"
+    }
+  },
+  {
+    "code": "S313",
+    "category": "comfort",
+    "names": {
+      "en": "Soft-close automatic for doors",
+      "de": "Soft Close Automatik für Türen",
+      "es": "Cierre automático suave de puertas",
+      "fr": "Fermeture automatique douce des portes",
+      "it": "Chiusura automatica dolce delle porte",
+      "zh": "门自动软关闭"
+    }
+  },
+  {
+    "code": "S407",
+    "category": "comfort",
+    "names": {
+      "en": "Sun-protection glazing",
+      "de": "Sonnenschutz-Verglasung",
+      "es": "Cristales atérmicos",
+      "fr": "Vitrage athermique",
+      "it": "Vetri atermici",
+      "zh": "防晒玻璃"
+    }
+  },
+  {
+    "code": "S420",
+    "category": "comfort",
+    "names": {
+      "en": "Sun-blinds for rear side windows",
+      "de": "Sonnenrollos für Seitenfenster hinten",
+      "es": "Cortinillas para ventanillas traseras",
+      "fr": "Rideaux pare-soleil arrière",
+      "it": "Tendine parasole posteriori",
+      "zh": "后侧窗遮阳帘"
+    }
+  },
+  {
+    "code": "S423",
+    "category": "comfort",
+    "names": {
+      "en": "Floor mats, velours",
+      "de": "Fußmatten Velours",
+      "es": "Alfombrillas de velour",
+      "fr": "Tapis de sol velours",
+      "it": "Tappetini in velour",
+      "zh": "丝绒脚垫"
+    }
+  },
+  {
+    "code": "S428",
+    "category": "comfort",
+    "names": {
+      "en": "Warning triangle and first-aid kit",
+      "de": "Warndreieck und Verbandstasche",
+      "es": "Triángulo de emergencia y botiquín",
+      "fr": "Triangle de signalisation et trousse de premiers secours",
+      "it": "Triangolo d'emergenza e kit di pronto soccorso",
+      "zh": "警示三角架和急救包"
+    }
+  },
+  {
+    "code": "S430",
+    "category": "comfort",
+    "names": {
+      "en": "Interior/exterior mirror with auto-dip",
+      "de": "Innen-/Außenspiegel mit Abblendautomatik",
+      "es": "Espejo interior/exterior fotosensible",
+      "fr": "Rétroviseurs intérieur et extérieur électrochromes",
+      "it": "Specchio interno/esterno fotocromatico",
+      "zh": "内外后视镜自动防眩"
+    }
+  },
+  {
+    "code": "S431",
+    "category": "comfort",
+    "names": {
+      "en": "Interior mirror with automatic anti-dazzle",
+      "de": "Innenspiegel mit Abblendautomatik",
+      "es": "Espejo interior fotosensible",
+      "fr": "Rétroviseur intérieur électrochrome",
+      "it": "Specchio interno fotocromatico",
+      "zh": "内后视镜自动防眩"
+    }
+  },
+  {
+    "code": "S521",
+    "category": "comfort",
+    "names": {
+      "en": "Rain sensor with auto headlight activation",
+      "de": "Regensensor mit Lichtautomatik",
+      "es": "Sensor de lluvia con luces automáticas",
+      "fr": "Capteur de pluie et allumage automatique des feux",
+      "it": "Sensore pioggia con accensione automatica luci",
+      "zh": "雨量感应器和大灯自动控制"
+    }
+  },
+  {
+    "code": "S534",
+    "category": "comfort",
+    "names": {
+      "en": "Automatic air conditioning",
+      "de": "Klimaautomatik",
+      "es": "Climatización automática",
+      "fr": "Climatisation automatique",
+      "it": "Climatizzatore automatico",
+      "zh": "自动空调"
+    }
+  },
+  {
+    "code": "S544",
+    "category": "comfort",
+    "names": {
+      "en": "Cruise control",
+      "de": "Geschwindigkeits-Regelung",
+      "es": "Control de velocidad de crucero",
+      "fr": "Régulateur de vitesse",
+      "it": "Cruise control",
+      "zh": "定速巡航"
+    }
+  },
+  {
+    "code": "S548",
+    "category": "comfort",
+    "names": {
+      "en": "Speedometer in km/h",
+      "de": "Tacho in km/h",
+      "es": "Velocímetro en km/h",
+      "fr": "Compteur de vitesse en km/h",
+      "it": "Tachimetro in km/h",
+      "zh": "公里/小时速度表"
+    }
+  },
+  {
+    "code": "S563",
+    "category": "comfort",
+    "names": {
+      "en": "Light package",
+      "de": "Lichtpaket",
+      "es": "Paquete de iluminación",
+      "fr": "Pack lumière",
+      "it": "Pacchetto luci",
+      "zh": "灯光套装"
+    }
+  },
+  {
+    "code": "S575",
+    "category": "comfort",
+    "names": {
+      "en": "Cigarette lighter and ashtray",
+      "de": "Anzünder und Ascher",
+      "es": "Encendedor y cenicero",
+      "fr": "Allume-cigare et cendrier",
+      "it": "Accendisigari e portacenere",
+      "zh": "点烟器和烟灰缸"
+    }
+  },
+  {
+    "code": "S5DC",
+    "category": "comfort",
+    "names": {
+      "en": "Folding rear-seat headrests",
+      "de": "Klappbare Kopfstützen hinten",
+      "es": "Reposacabezas traseros abatibles",
+      "fr": "Appuie-tête arrière rabattables",
+      "it": "Poggiatesta posteriori ribaltabili",
+      "zh": "后排可折叠头枕"
+    }
+  },
+  {
+    "code": "S5DN",
+    "category": "assistance",
+    "names": {
+      "en": "Parking Assistant Plus",
+      "de": "Parkassistent Plus",
+      "es": "Asistente de aparcamiento Plus",
+      "fr": "Assistant de stationnement Plus",
+      "it": "Parking Assistant Plus",
+      "zh": "停车辅助系统 Plus"
+    }
+  },
+  {
+    "code": "S5DP",
+    "category": "assistance",
+    "names": {
+      "en": "Park Distance Control front and rear",
+      "de": "Park Distance Control vorn und hinten",
+      "es": "Sensores de aparcamiento delante y detrás",
+      "fr": "Aide au stationnement avant et arrière",
+      "it": "Park Distance Control anteriore e posteriore",
+      "zh": "前后驻车距离控制"
+    }
+  },
+  {
+    "code": "S5AC",
+    "category": "assistance",
+    "names": {
+      "en": "High-beam assistant",
+      "de": "Fernlichtassistent",
+      "es": "Asistente de luces de carretera",
+      "fr": "Assistant de feux de route",
+      "it": "Assistente abbaglianti",
+      "zh": "远光辅助"
+    }
+  },
+  {
+    "code": "S5AL",
+    "category": "assistance",
+    "names": {
+      "en": "Active Protection",
+      "de": "Active Protection",
+      "es": "Protección activa",
+      "fr": "Protection active",
+      "it": "Active Protection",
+      "zh": "主动保护系统"
+    }
+  },
+  {
+    "code": "S5AS",
+    "category": "assistance",
+    "names": {
+      "en": "Active cruise control with stop & go",
+      "de": "Aktive Geschwindigkeitsregelung mit Stop & Go",
+      "es": "Control de crucero activo con función Stop & Go",
+      "fr": "Régulateur de vitesse actif avec fonction Stop & Go",
+      "it": "Cruise control attivo con funzione Stop & Go",
+      "zh": "带 Stop & Go 的主动巡航"
+    }
+  },
+  {
+    "code": "S5AT",
+    "category": "assistance",
+    "names": {
+      "en": "Driving Assistant",
+      "de": "Driving Assistant",
+      "es": "Driving Assistant",
+      "fr": "Driving Assistant",
+      "it": "Driving Assistant",
+      "zh": "驾驶辅助系统"
+    }
+  },
+  {
+    "code": "S5AU",
+    "category": "assistance",
+    "names": {
+      "en": "Driving Assistant Professional",
+      "de": "Driving Assistant Professional",
+      "es": "Driving Assistant Professional",
+      "fr": "Driving Assistant Professional",
+      "it": "Driving Assistant Professional",
+      "zh": "驾驶辅助系统 Professional"
+    }
+  },
+  {
+    "code": "S5AV",
+    "category": "assistance",
+    "names": {
+      "en": "Active Guard",
+      "de": "Active Guard",
+      "es": "Active Guard",
+      "fr": "Active Guard",
+      "it": "Active Guard",
+      "zh": "主动安全防护"
+    }
+  },
+  {
+    "code": "S5AZ",
+    "category": "lighting",
+    "names": {
+      "en": "BMW Laserlight",
+      "de": "BMW Laserlicht",
+      "es": "Faros BMW Laserlight",
+      "fr": "BMW Laserlight",
+      "it": "BMW Laserlight",
+      "zh": "BMW 激光大灯"
+    }
+  },
+  {
+    "code": "S524",
+    "category": "lighting",
+    "names": {
+      "en": "Adaptive headlights",
+      "de": "Adaptive LED-Scheinwerfer",
+      "es": "Faros adaptativos",
+      "fr": "Phares adaptatifs",
+      "it": "Fari adattivi",
+      "zh": "自适应前大灯"
+    }
+  },
+  {
+    "code": "S552",
+    "category": "lighting",
+    "names": {
+      "en": "Adaptive LED headlights",
+      "de": "Adaptive LED-Scheinwerfer",
+      "es": "Faros LED adaptativos",
+      "fr": "Phares LED adaptatifs",
+      "it": "Fari LED adattivi",
+      "zh": "自适应 LED 大灯"
+    }
+  },
+  {
+    "code": "S3MF",
+    "category": "lighting",
+    "names": {
+      "en": "M Shadowline lights",
+      "de": "M Lights Shadow Line",
+      "es": "Luces Shadow Line M",
+      "fr": "Optiques Shadow Line M",
+      "it": "Luci Shadow Line M",
+      "zh": "M 暗黑线条灯组"
+    }
+  },
+  {
+    "code": "S3MA",
+    "category": "lighting",
+    "names": {
+      "en": "Adaptive headlights with cornering function",
+      "de": "Adaptive Scheinwerfer mit Kurvenlicht",
+      "es": "Faros adaptativos con luz de curva",
+      "fr": "Phares adaptatifs avec éclairage en virage",
+      "it": "Fari adattivi con luce in curva",
+      "zh": "带转向辅助的自适应大灯"
+    }
+  },
+  {
+    "code": "S5DF",
+    "category": "assistance",
+    "names": {
+      "en": "Surround View with 3D View",
+      "de": "Umgebungsansicht mit 3D-Ansicht",
+      "es": "Surround View con visión 3D",
+      "fr": "Vue panoramique avec vue 3D",
+      "it": "Surround View con vista 3D",
+      "zh": "全景影像与 3D 视图"
+    }
+  },
+  {
+    "code": "S609",
+    "category": "infotainment",
+    "names": {
+      "en": "Navigation system Professional",
+      "de": "Navigationssystem Professional",
+      "es": "Sistema de navegación Professional",
+      "fr": "Système de navigation Professionnel",
+      "it": "Sistema di navigazione Professional",
+      "zh": "专业导航系统"
+    }
+  },
+  {
+    "code": "S610",
+    "category": "infotainment",
+    "names": {
+      "en": "Head-up display",
+      "de": "Head-Up Display",
+      "es": "Head-Up Display",
+      "fr": "Head-Up Display",
+      "it": "Head-Up Display",
+      "zh": "平视显示器"
+    }
+  },
+  {
+    "code": "S614",
+    "category": "infotainment",
+    "names": {
+      "en": "WLAN Hotspot",
+      "de": "WLAN Hotspot",
+      "es": "Punto de acceso WLAN",
+      "fr": "Hotspot WLAN",
+      "it": "Hotspot WLAN",
+      "zh": "无线热点"
+    }
+  },
+  {
+    "code": "S615",
+    "category": "infotainment",
+    "names": {
+      "en": "BMW Operating System 8",
+      "de": "BMW Operating System 8",
+      "es": "BMW Operating System 8",
+      "fr": "BMW Operating System 8",
+      "it": "BMW Operating System 8",
+      "zh": "BMW 操作系统 8"
+    }
+  },
+  {
+    "code": "S620",
+    "category": "infotainment",
+    "names": {
+      "en": "Voice control",
+      "de": "Sprachsteuerung",
+      "es": "Control por voz",
+      "fr": "Commande vocale",
+      "it": "Comando vocale",
+      "zh": "语音控制"
+    }
+  },
+  {
+    "code": "S627",
+    "category": "infotainment",
+    "names": {
+      "en": "BMW Online",
+      "de": "BMW Online",
+      "es": "BMW Online",
+      "fr": "BMW Online",
+      "it": "BMW Online",
+      "zh": "BMW Online"
+    }
+  },
+  {
+    "code": "S654",
+    "category": "infotainment",
+    "names": {
+      "en": "DAB tuner",
+      "de": "DAB-Tuner",
+      "es": "Sintonizador DAB",
+      "fr": "Tuner DAB",
+      "it": "Sintonizzatore DAB",
+      "zh": "DAB 数字广播"
+    }
+  },
+  {
+    "code": "S655",
+    "category": "infotainment",
+    "names": {
+      "en": "Satellite radio preparation",
+      "de": "Vorbereitung SatRadio",
+      "es": "Preparación para radio por satélite",
+      "fr": "Préparation radio satellite",
+      "it": "Predisposizione radio satellitare",
+      "zh": "卫星广播预装"
+    }
+  },
+  {
+    "code": "S676",
+    "category": "infotainment",
+    "names": {
+      "en": "HiFi loudspeaker system",
+      "de": "HiFi Lautsprecher System",
+      "es": "Sistema de altavoces HiFi",
+      "fr": "Système haut-parleurs HiFi",
+      "it": "Sistema altoparlanti HiFi",
+      "zh": "HiFi 音响系统"
+    }
+  },
+  {
+    "code": "S688",
+    "category": "infotainment",
+    "names": {
+      "en": "Harman Kardon surround sound system",
+      "de": "Harman Kardon Surround Sound System",
+      "es": "Sistema de sonido envolvente Harman Kardon",
+      "fr": "Système son surround Harman Kardon",
+      "it": "Sistema audio surround Harman Kardon",
+      "zh": "Harman Kardon 环绕音响系统"
+    }
+  },
+  {
+    "code": "S6F1",
+    "category": "infotainment",
+    "names": {
+      "en": "Bowers & Wilkins Diamond surround sound",
+      "de": "Bowers & Wilkins Diamond Surround Sound",
+      "es": "Sonido envolvente Bowers & Wilkins Diamond",
+      "fr": "Son surround Bowers & Wilkins Diamond",
+      "it": "Sistema audio Bowers & Wilkins Diamond",
+      "zh": "Bowers & Wilkins Diamond 环绕音响"
+    }
+  },
+  {
+    "code": "S6FL",
+    "category": "infotainment",
+    "names": {
+      "en": "Apple CarPlay preparation",
+      "de": "Apple CarPlay Vorbereitung",
+      "es": "Preparación para Apple CarPlay",
+      "fr": "Préparation Apple CarPlay",
+      "it": "Predisposizione Apple CarPlay",
+      "zh": "Apple CarPlay 预装"
+    }
+  },
+  {
+    "code": "S6NS",
+    "category": "infotainment",
+    "names": {
+      "en": "Smartphone integration",
+      "de": "Smartphone-Integration",
+      "es": "Integración del smartphone",
+      "fr": "Intégration du smartphone",
+      "it": "Integrazione smartphone",
+      "zh": "智能手机集成"
+    }
+  },
+  {
+    "code": "S6NV",
+    "category": "infotainment",
+    "names": {
+      "en": "Telephony with wireless charging",
+      "de": "Telefonie mit Wireless Charging",
+      "es": "Telefonía con carga inalámbrica",
+      "fr": "Téléphonie avec recharge sans fil",
+      "it": "Telefonia con ricarica wireless",
+      "zh": "无线充电与电话功能"
+    }
+  },
+  {
+    "code": "S6U3",
+    "category": "infotainment",
+    "names": {
+      "en": "BMW Live Cockpit Professional",
+      "de": "BMW Live Cockpit Professional",
+      "es": "BMW Live Cockpit Professional",
+      "fr": "BMW Live Cockpit Professional",
+      "it": "BMW Live Cockpit Professional",
+      "zh": "BMW 智能驾驶座舱 Professional"
+    }
+  },
+  {
+    "code": "S6WB",
+    "category": "infotainment",
+    "names": {
+      "en": "Live Cockpit Plus",
+      "de": "Live Cockpit Plus",
+      "es": "Live Cockpit Plus",
+      "fr": "Live Cockpit Plus",
+      "it": "Live Cockpit Plus",
+      "zh": "智能驾驶座舱 Plus"
+    }
+  },
+  {
+    "code": "S6WC",
+    "category": "infotainment",
+    "names": {
+      "en": "BMW Curved Display",
+      "de": "BMW Curved Display",
+      "es": "BMW Curved Display",
+      "fr": "BMW Curved Display",
+      "it": "BMW Curved Display",
+      "zh": "BMW 曲面显示屏"
+    }
+  },
+  {
+    "code": "S6WD",
+    "category": "infotainment",
+    "names": {
+      "en": "Augmented View navigation",
+      "de": "Augmented View Navigation",
+      "es": "Navegación con vista aumentada",
+      "fr": "Navigation Augmented View",
+      "it": "Navigazione Augmented View",
+      "zh": "增强现实导航"
+    }
+  },
+  {
+    "code": "S6AC",
+    "category": "connected",
+    "names": {
+      "en": "Intelligent Emergency Call",
+      "de": "Intelligenter Notruf",
+      "es": "Llamada de emergencia inteligente",
+      "fr": "Appel d'urgence intelligent",
+      "it": "Chiamata d'emergenza intelligente",
+      "zh": "智能紧急呼叫"
+    }
+  },
+  {
+    "code": "S6AE",
+    "category": "connected",
+    "names": {
+      "en": "Teleservices",
+      "de": "TeleServices",
+      "es": "Servicios remotos",
+      "fr": "TeleServices",
+      "it": "TeleServices",
+      "zh": "远程服务"
+    }
+  },
+  {
+    "code": "S6AK",
+    "category": "connected",
+    "names": {
+      "en": "ConnectedDrive Services",
+      "de": "ConnectedDrive Services",
+      "es": "Servicios ConnectedDrive",
+      "fr": "Services ConnectedDrive",
+      "it": "Servizi ConnectedDrive",
+      "zh": "ConnectedDrive 服务"
+    }
+  },
+  {
+    "code": "S6AP",
+    "category": "connected",
+    "names": {
+      "en": "Remote Services",
+      "de": "Remote Services",
+      "es": "Servicios remotos",
+      "fr": "Remote Services",
+      "it": "Remote Services",
+      "zh": "远程服务"
+    }
+  },
+  {
+    "code": "S6C3",
+    "category": "connected",
+    "names": {
+      "en": "Connected Package Professional",
+      "de": "Connected Package Professional",
+      "es": "Connected Package Professional",
+      "fr": "Connected Package Professional",
+      "it": "Connected Package Professional",
+      "zh": "Connected Package Professional"
+    }
+  },
+  {
+    "code": "S6C4",
+    "category": "connected",
+    "names": {
+      "en": "Real-time traffic information",
+      "de": "Echtzeit-Verkehrsinformationen",
+      "es": "Información de tráfico en tiempo real",
+      "fr": "Informations trafic en temps réel",
+      "it": "Informazioni sul traffico in tempo reale",
+      "zh": "实时路况信息"
+    }
+  },
+  {
+    "code": "S2NK",
+    "category": "exterior",
+    "names": {
+      "en": "M Carbon exterior package",
+      "de": "M Carbon Exterieurpaket",
+      "es": "Paquete M Carbon Exterior",
+      "fr": "Pack M Carbon Extérieur",
+      "it": "Pacchetto M Carbon Esterno",
+      "zh": "M Carbon 外饰套装"
+    }
+  },
+  {
+    "code": "S715",
+    "category": "exterior",
+    "names": {
+      "en": "M Aerodynamics package",
+      "de": "M Aerodynamikpaket",
+      "es": "Paquete aerodinámico M",
+      "fr": "Pack aérodynamique M",
+      "it": "Pacchetto aerodinamico M",
+      "zh": "M 空气动力学套装"
+    }
+  },
+  {
+    "code": "S760",
+    "category": "exterior",
+    "names": {
+      "en": "BMW Individual high-gloss Shadow Line",
+      "de": "BMW Individual Hochglanz Shadow Line",
+      "es": "BMW Individual Shadow Line de alto brillo",
+      "fr": "BMW Individual Shadow Line brillant",
+      "it": "BMW Individual Shadow Line lucido",
+      "zh": "BMW Individual 高光泽暗色饰条"
+    }
+  },
+  {
+    "code": "S775",
+    "category": "exterior",
+    "names": {
+      "en": "Anthracite headliner",
+      "de": "Dachhimmel Anthrazit",
+      "es": "Techo interior antracita",
+      "fr": "Pavillon anthracite",
+      "it": "Cielo abitacolo antracite",
+      "zh": "炭黑色车顶内衬"
+    }
+  },
+  {
+    "code": "S7M9",
+    "category": "exterior",
+    "names": {
+      "en": "M Shadowline extended trim",
+      "de": "M Shadow Line mit erweiterten Umfängen",
+      "es": "M Shadow Line con embellecedores ampliados",
+      "fr": "M Shadow Line étendue",
+      "it": "M Shadow Line estesa",
+      "zh": "M 暗黑线条扩展饰件"
+    }
+  },
+  {
+    "code": "S704",
+    "category": "exterior",
+    "names": {
+      "en": "M Sport suspension",
+      "de": "M Sportfahrwerk",
+      "es": "Suspensión M Sport",
+      "fr": "Suspension M Sport",
+      "it": "Sospensioni M Sport",
+      "zh": "M 运动悬挂"
+    }
+  },
+  {
+    "code": "S710",
+    "category": "exterior",
+    "names": {
+      "en": "M leather steering wheel",
+      "de": "M Lederlenkrad",
+      "es": "Volante M de cuero",
+      "fr": "Volant M en cuir",
+      "it": "Volante M in pelle",
+      "zh": "M 真皮方向盘"
+    }
+  },
+  {
+    "code": "S850",
+    "category": "exterior",
+    "names": {
+      "en": "Country option Germany",
+      "de": "Länderausführung Deutschland",
+      "es": "Versión país Alemania",
+      "fr": "Version pays Allemagne",
+      "it": "Versione paese Germania",
+      "zh": "国家版本：德国"
+    }
+  },
+  {
+    "code": "S879",
+    "category": "exterior",
+    "names": {
+      "en": "On-board literature, German",
+      "de": "Bordliteratur Deutsch",
+      "es": "Documentación a bordo en alemán",
+      "fr": "Documentation à bord en allemand",
+      "it": "Manualistica di bordo in tedesco",
+      "zh": "车载手册（德语）"
+    }
+  },
+  {
+    "code": "S880",
+    "category": "exterior",
+    "names": {
+      "en": "On-board literature, English",
+      "de": "Bordliteratur Englisch",
+      "es": "Documentación a bordo en inglés",
+      "fr": "Documentation à bord en anglais",
+      "it": "Manualistica di bordo in inglese",
+      "zh": "车载手册（英语）"
+    }
+  },
+  {
+    "code": "S853",
+    "category": "exterior",
+    "names": {
+      "en": "Language version, English",
+      "de": "Sprachausführung Englisch",
+      "es": "Versión idioma inglés",
+      "fr": "Version langue anglaise",
+      "it": "Versione lingua inglese",
+      "zh": "语言版本：英语"
+    }
+  },
+  {
+    "code": "S810",
+    "category": "exterior",
+    "names": {
+      "en": "Country option Australia",
+      "de": "Länderausführung Australien",
+      "es": "Versión país Australia",
+      "fr": "Version pays Australie",
+      "it": "Versione paese Australia",
+      "zh": "国家版本：澳大利亚"
+    }
+  },
+  {
+    "code": "S825",
+    "category": "exterior",
+    "names": {
+      "en": "Radio control Oceania",
+      "de": "Radioausführung Ozeanien",
+      "es": "Versión de radio Oceanía",
+      "fr": "Version radio Océanie",
+      "it": "Versione radio Oceania",
+      "zh": "大洋洲版广播"
+    }
+  },
+  {
+    "code": "S8EK",
+    "category": "tracking",
+    "names": {
+      "en": "Placeholder SALAPA marker",
+      "de": "Dummy-SALAPA Markierung",
+      "es": "Marcador SALAPA de relleno",
+      "fr": "Marqueur SALAPA de remplissage",
+      "it": "Marcatore SALAPA segnaposto",
+      "zh": "占位 SALAPA 标记"
+    }
+  },
+  {
+    "code": "S8KA",
+    "category": "service",
+    "names": {
+      "en": "Oil-service interval 24 months / 30,000 km",
+      "de": "Ölservice-Intervall 24 Monate / 30.000 km",
+      "es": "Intervalo de servicio de aceite 24 meses / 30.000 km",
+      "fr": "Intervalle de vidange 24 mois / 30 000 km",
+      "it": "Intervallo cambio olio 24 mesi / 30.000 km",
+      "zh": "机油保养周期 24 个月 / 30,000 公里"
+    }
+  },
+  {
+    "code": "S8KP",
+    "category": "service",
+    "names": {
+      "en": "Condition Based Service",
+      "de": "Condition Based Service",
+      "es": "Servicio según condiciones",
+      "fr": "Service selon conditions",
+      "it": "Service basato sulle condizioni",
+      "zh": "基于状况的保养"
+    }
+  },
+  {
+    "code": "S8S3",
+    "category": "service",
+    "names": {
+      "en": "Automatic locking when starting off",
+      "de": "Automatische Verriegelung beim Anfahren",
+      "es": "Bloqueo automático al arrancar",
+      "fr": "Verrouillage automatique au démarrage",
+      "it": "Bloccaggio automatico all'avvio",
+      "zh": "起步时自动落锁"
+    }
+  },
+  {
+    "code": "S8SM",
+    "category": "service",
+    "names": {
+      "en": "Vehicle ID number visible from outside",
+      "de": "Fahrzeug-Ident-Nr. von außen sichtbar",
+      "es": "Número de identificación visible desde el exterior",
+      "fr": "Numéro d'identification visible de l'extérieur",
+      "it": "Numero di telaio visibile dall'esterno",
+      "zh": "车辆识别号外部可见"
+    }
+  },
+  {
+    "code": "S8SX",
+    "category": "service",
+    "names": {
+      "en": "Telematics provider control",
+      "de": "Providersteuerung Telematik",
+      "es": "Control de proveedor de telemática",
+      "fr": "Pilotage opérateur télématique",
+      "it": "Gestione provider telematica",
+      "zh": "远程信息提供商控制"
+    }
+  },
+  {
+    "code": "S8TF",
+    "category": "service",
+    "names": {
+      "en": "Active pedestrian protection",
+      "de": "Aktiver Fußgängerschutz",
+      "es": "Protección activa de peatones",
+      "fr": "Protection active des piétons",
+      "it": "Protezione attiva pedoni",
+      "zh": "主动行人保护"
+    }
+  },
+  {
+    "code": "S8TG",
+    "category": "service",
+    "names": {
+      "en": "Anti-theft device",
+      "de": "Diebstahlsicherung",
+      "es": "Dispositivo antirrobo",
+      "fr": "Dispositif antivol",
+      "it": "Dispositivo antifurto",
+      "zh": "防盗装置"
+    }
+  },
+  {
+    "code": "S8TR",
+    "category": "service",
+    "names": {
+      "en": "Coding for additional functions",
+      "de": "Codierung Zusatzfunktionen",
+      "es": "Codificación de funciones adicionales",
+      "fr": "Codage de fonctions supplémentaires",
+      "it": "Codifica funzioni aggiuntive",
+      "zh": "附加功能编码"
+    }
+  },
+  {
+    "code": "S8TT",
+    "category": "service",
+    "names": {
+      "en": "BMW TeleServices included",
+      "de": "BMW TeleServices integriert",
+      "es": "BMW TeleServices incluidos",
+      "fr": "BMW TeleServices inclus",
+      "it": "BMW TeleServices inclusi",
+      "zh": "包含 BMW 远程服务"
+    }
+  },
+  {
+    "code": "S99A",
+    "category": "service",
+    "names": {
+      "en": "Number-plate holder mounting",
+      "de": "Steuerung Kennzeichenbefestigung",
+      "es": "Soporte de matrícula",
+      "fr": "Support de plaque d'immatriculation",
+      "it": "Supporto targa",
+      "zh": "车牌固定装置"
+    }
+  },
+  {
+    "code": "S925",
+    "category": "tracking",
+    "names": {
+      "en": "Placeholder SALAPA marker",
+      "de": "Dummy-SALAPA Markierung",
+      "es": "Marcador SALAPA de relleno",
+      "fr": "Marqueur SALAPA de remplissage",
+      "it": "Marcatore SALAPA segnaposto",
+      "zh": "占位 SALAPA 标记"
+    }
+  },
+  {
+    "code": "S393",
+    "category": "tyres",
+    "names": {
+      "en": "Tyre pressure monitoring",
+      "de": "Reifendruck-Kontrolle",
+      "es": "Control de presión de neumáticos",
+      "fr": "Contrôle de pression des pneus",
+      "it": "Controllo pressione pneumatici",
+      "zh": "胎压监测"
+    }
+  },
+  {
+    "code": "S401",
+    "category": "comfort",
+    "names": {
+      "en": "Panoramic glass roof",
+      "de": "Panorama-Glasdach",
+      "es": "Techo panorámico de cristal",
+      "fr": "Toit en verre panoramique",
+      "it": "Tetto panoramico in vetro",
+      "zh": "全景玻璃天窗"
+    }
+  },
+  {
+    "code": "S402",
+    "category": "comfort",
+    "names": {
+      "en": "Panorama glass roof Sky Lounge",
+      "de": "Panorama-Glasdach Sky Lounge",
+      "es": "Techo panorámico Sky Lounge",
+      "fr": "Toit panoramique Sky Lounge",
+      "it": "Tetto panoramico Sky Lounge",
+      "zh": "Sky Lounge 全景玻璃天窗"
+    }
+  },
+  {
+    "code": "S413",
+    "category": "comfort",
+    "names": {
+      "en": "Roof rails",
+      "de": "Dachreling",
+      "es": "Barras de techo",
+      "fr": "Barres de toit",
+      "it": "Mancorrenti sul tetto",
+      "zh": "车顶行李架"
+    }
+  },
+  {
+    "code": "S418",
+    "category": "comfort",
+    "names": {
+      "en": "Stowage net for partition net",
+      "de": "Trennnetz",
+      "es": "Red separadora",
+      "fr": "Filet de séparation",
+      "it": "Rete divisoria",
+      "zh": "分隔网"
+    }
+  },
+  {
+    "code": "S502",
+    "category": "wheels",
+    "names": {
+      "en": "Headlight cleaning system",
+      "de": "Scheinwerferreinigung",
+      "es": "Lavafaros",
+      "fr": "Lave-phares",
+      "it": "Lavafari",
+      "zh": "大灯清洗装置"
+    }
+  },
+  {
+    "code": "S508",
+    "category": "wheels",
+    "names": {
+      "en": "Park Distance Control rear",
+      "de": "Park Distance Control hinten",
+      "es": "Sensor de aparcamiento trasero",
+      "fr": "Aide au stationnement arrière",
+      "it": "Park Distance Control posteriore",
+      "zh": "后驻车雷达"
+    }
+  },
+  {
+    "code": "S522",
+    "category": "wheels",
+    "names": {
+      "en": "Xenon headlights",
+      "de": "Xenon-Scheinwerfer",
+      "es": "Faros de xenón",
+      "fr": "Phares au xénon",
+      "it": "Fari allo xeno",
+      "zh": "氙气大灯"
+    }
+  },
+  {
+    "code": "S475",
+    "category": "paint-marker",
+    "names": {
+      "en": "Paint: Black-Sapphire metallic",
+      "de": "Lackierung: Saphirschwarz metallic",
+      "es": "Pintura: Negro Zafiro metalizado",
+      "fr": "Peinture: noir saphir métallisé",
+      "it": "Vernice: Nero Zaffiro metallizzato",
+      "zh": "车漆：蓝宝石黑金属漆"
+    }
+  },
+  {
+    "code": "S668",
+    "category": "paint-marker",
+    "names": {
+      "en": "Paint: Jet Black non-metallic",
+      "de": "Lackierung: Schwarz uni",
+      "es": "Pintura: Negro liso",
+      "fr": "Peinture: noir uni",
+      "it": "Vernice: Nero non metallizzato",
+      "zh": "车漆：纯黑漆"
+    }
+  },
+  {
+    "code": "S300",
+    "category": "paint-marker",
+    "names": {
+      "en": "Paint: Alpine White III",
+      "de": "Lackierung: Alpinweiß III",
+      "es": "Pintura: Blanco Alpino III",
+      "fr": "Peinture: blanc Alpin III",
+      "it": "Vernice: Bianco Alpino III",
+      "zh": "车漆：阿尔卑斯白 III"
+    }
+  },
+  {
+    "code": "SX3KX",
+    "category": "upholstery-marker",
+    "names": {
+      "en": "Full leather Merino, Kyalami orange / black",
+      "de": "Vollleder Merino Kyalami orange/schwarz",
+      "es": "Cuero Merino completo, naranja Kyalami / negro",
+      "fr": "Cuir intégral Merino, orange Kyalami / noir",
+      "it": "Pelle Merino integrale, arancione Kyalami / nero",
+      "zh": "全 Merino 真皮，Kyalami 橙/黑"
+    }
+  },
+  {
+    "code": "SX3SW",
+    "category": "upholstery-marker",
+    "names": {
+      "en": "Full leather Merino, black",
+      "de": "Vollleder Merino schwarz",
+      "es": "Cuero Merino completo, negro",
+      "fr": "Cuir intégral Merino noir",
+      "it": "Pelle Merino integrale nera",
+      "zh": "全 Merino 真皮，黑色"
+    }
+  },
+  {
+    "code": "P337A",
+    "category": "package",
+    "names": {
+      "en": "M Sport package",
+      "de": "M Sportpaket",
+      "es": "Paquete M Sport",
+      "fr": "Pack M Sport",
+      "it": "Pacchetto M Sport",
+      "zh": "M 运动套装"
+    }
+  },
+  {
+    "code": "P7LDA",
+    "category": "package",
+    "names": {
+      "en": "Cold-Weather package",
+      "de": "Cold-Weather-Paket",
+      "es": "Paquete clima frío",
+      "fr": "Pack climat froid",
+      "it": "Pacchetto clima freddo",
+      "zh": "寒冷气候套装"
+    }
+  },
+  {
+    "code": "P7M0A",
+    "category": "package",
+    "names": {
+      "en": "Premium package",
+      "de": "Premium-Paket",
+      "es": "Paquete Premium",
+      "fr": "Pack Premium",
+      "it": "Pacchetto Premium",
+      "zh": "高级套装"
+    }
+  },
+  {
+    "code": "P7P0A",
+    "category": "package",
+    "names": {
+      "en": "Driving Assistance Professional",
+      "de": "Driving Assistance Professional",
+      "es": "Driving Assistance Professional",
+      "fr": "Driving Assistance Professional",
+      "it": "Driving Assistance Professional",
+      "zh": "驾驶辅助专业版"
+    }
+  },
+  {
+    "code": "P7M2A",
+    "category": "package",
+    "names": {
+      "en": "Executive package",
+      "de": "Executive-Paket",
+      "es": "Paquete Executive",
+      "fr": "Pack Executive",
+      "it": "Pacchetto Executive",
+      "zh": "行政套装"
+    }
+  },
+  {
+    "code": "P7P9A",
+    "category": "package",
+    "names": {
+      "en": "Parking Assistance package",
+      "de": "Parkassistenz-Paket",
+      "es": "Paquete asistencia al aparcamiento",
+      "fr": "Pack assistance au stationnement",
+      "it": "Pacchetto assistenza al parcheggio",
+      "zh": "停车辅助套装"
+    }
+  },
+  {
+    "code": "S2RF",
+    "category": "wheels",
+    "names": {
+      "en": "Run-flat tyres",
+      "de": "Notlaufeigenschaften",
+      "es": "Neumáticos run-flat",
+      "fr": "Pneus run-flat",
+      "it": "Pneumatici run-flat",
+      "zh": "缺气保用轮胎"
+    }
+  },
+  {
+    "code": "S2H7",
+    "category": "wheels",
+    "names": {
+      "en": "Light-alloy wheels Y-spoke",
+      "de": "Leichtmetallräder Y-Speiche",
+      "es": "Llantas de aleación radios en Y",
+      "fr": "Jantes en alliage à branches en Y",
+      "it": "Cerchi in lega a razze a Y",
+      "zh": "Y 形辐条轻合金轮毂"
+    }
+  },
+  {
+    "code": "S710A",
+    "category": "interior",
+    "names": {
+      "en": "M sports pedals",
+      "de": "M Sportpedale",
+      "es": "Pedales M Sport",
+      "fr": "Pédalier M Sport",
+      "it": "Pedaliera M Sport",
+      "zh": "M 运动踏板"
+    }
+  },
+  {
+    "code": "S2VS",
+    "category": "chassis",
+    "names": {
+      "en": "M Servotronic",
+      "de": "M Servotronic",
+      "es": "M Servotronic",
+      "fr": "M Servotronic",
+      "it": "M Servotronic",
+      "zh": "M Servotronic"
+    }
+  }
+]

@@ -1,0 +1,392 @@
+; creation of 4 catalogue tables: 
+; 		@@sysexternal, @@sysexternalmethod, @@sysexternalpriv
+; 		@@systrigger
+
+; create them with name which is not protected, then update
+;  name in systable .. 
+CREATE TABLE "@@@sysexternal" [ 105 ] (
+	rkey		INTEGER NOT NULL,
+	rtype		TINYINT NOT NULL,
+	owner		INTEGER NOT NULL,
+	enabled		BOOL NOT NULL,
+	debug		BOOL NOT NULL,
+	lastmodified	DATETIME[YY:SS],
+	rname		CHAR(*) NOT NULL,
+	rblob		BLOB,
+	sblob		BLOB,
+	comment		CHAR(*),
+	d1		INTEGER,
+	d2		CHAR(*))
+KEY IS rkey,rname
+;
+CREATE TABLE "@@@sysexternalmethod" [ 113 ] (
+	rkey		INTEGER NOT NULL,
+	mkey		INTEGER NOT NULL,
+	enabled		BOOL NOT NULL,
+	callonnull	BOOL NOT NULL,
+	determ		BOOL NOT NULL,
+	checkexcept	BOOL NOT NULL,
+	ownerrights	BOOL NOT NULL,
+	sqlaccess	TINYINT NOT NULL,
+	dynasets	TINYINT NOT NULL,
+	resulttype	CHAR(1) NOT NULL,
+	sqlname		CHAR(*) NOT NULL,
+	sqlsig		CHAR(*) NOT NULL,
+	extsig 		CHAR(*),
+	parammodes	CHAR(*) NOT NULL,
+	paramnames	CHAR(*),
+	sqltabsig	CHAR(*),
+	exttabsig 	CHAR(*),
+	methodname	CHAR(*) NOT NULL,
+	comment		CHAR(*),
+	d1		INTEGER,
+	d2		CHAR(*))
+KEY IS sqlname,sqlsig
+;
+CREATE TABLE "@@@sysexternalpriv" [ 121 ] (
+	grantee		INTEGER NOT NULL,
+	rkey		INTEGER NOT NULL,
+	mkey		INTEGER,
+	grantor		INTEGER NOT NULL,
+	use_priv	CHAR NOT NULL,
+	d1		INTEGER,
+	d2		CHAR(*))
+KEY IS grantee, rkey, mkey
+;
+CREATE TABLE "@@@systrigger" [ 129 ] (
+	triggername	CHAR(*) NOT NULL,
+	owner		INTEGER NOT NULL,
+	tsegno		INTEGER NOT NULL,
+	event		CHAR(*) NOT NULL,  -- INSERT/DELETE/UPDATE OF a,b,c
+	aliasnew	CHAR(*),
+	aliasold	CHAR(*),
+	actions		CHAR(*) NOT NULL,
+	firetime	CHAR(*) NOT NULL,  -- BEFORE/AFTER
+	statement_row 	CHAR(*) NOT NULL,  -- ROW/STATEMENT
+	search_cond 	CHAR(*),
+	creation_date	TIMESTAMP NOT NULL,
+	enabled		INTEGER,
+	d1		INTEGER,
+	d2		CHAR(*))
+KEY IS triggername
+;
+
+update "@@systable"
+set tname = (if exists (select * from "@@systable"
+		   where tname = '@@SYSTABLE' )
+	     then '@@SYSEXTERNAL'
+	     else '@@sysexternal'
+	     fi)
+where tname in ('@@@sysexternal', '@@@SYSEXTERNAL')
+;
+update "@@systable"
+set tname = (if exists (select * from "@@systable"
+		   where tname = '@@SYSTABLE' )
+	     then '@@SYSEXTERNALMETHOD'
+	     else '@@sysexternalmethod'
+	     fi)
+where tname in ('@@@sysexternalmethod', '@@@SYSEXTERNALMETHOD')
+;
+update "@@systable"
+set tname = (if exists (select * from "@@systable"
+		   where tname = '@@SYSTABLE' )
+	     then '@@SYSEXTERNALPRIV'
+	     else '@@sysexternalpriv'
+	     fi)
+where tname in ('@@@sysexternalpriv', '@@@SYSEXTERNALPRIV')
+;
+update "@@systable"
+set tname = (if exists (select * from "@@systable"
+		   where tname = '@@SYSTABLE' )
+	     then '@@SYSTRIGGER'
+	     else '@@systrigger'
+	     fi)
+where tname in ('@@@systrigger', '@@@SYSTRIGGER')
+;
+
+
+UPDATE "@@systable"
+SET ttype = 'S'
+where tname in ('@@sysexternal', '@@SYSEXTERNAL',
+		'@@sysexternalmethod', '@@SYSEXTERNALMETHOD',
+		'@@sysexternalpriv', '@@SYSEXTERNALPRIV',
+		'@@systrigger', '@@SYSTRIGGER')
+;
+
+UPDATE "@@systable"
+SET ttype = 'v'
+where tname in ('sysexternal', 'SYSEXTERNAL',
+		'sysexternalmethod', 'SYSEXTERNALMETHOD',
+		'sysexternalpriv', 'SYSEXTERNALPRIV',
+		'systrigger', 'SYSTRIGGER')
+;
+
+INSERT INTO "@@sysexternal" TABLE (
+(-1,0,1,TRUE,FALSE,CURRENTDATE,'',NULL,NULL,'CLASSPATH option for external jar files',NULL,NULL),
+(-2,0,1,TRUE,FALSE,CURRENTDATE,'',NULL,NULL,'Path to the local JDK, NULL for default JDK',NULL,NULL),
+(-3,0,1,TRUE,FALSE,CURRENTDATE,'transport=dt_socket,address=5000,suspend=y,server=y',NULL,NULL,'Options for remote debugging',NULL,NULL),
+(-4,0,1,TRUE,FALSE,CURRENTDATE,'-Xms2m -Xmx64m',NULL,NULL,'Extra Options for the JVM',NULL,NULL)
+)
+;
+
+INSERT INTO "@@sysexternalmethod" TABLE (
+(-2,0,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'Z','isInfinite','D',NULL,'I',NULL,NULL,NULL,'java.lang.Double.isInfinite',NULL,NULL,NULL),
+(-2,1,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'Z','isNaN','D',NULL,'I',NULL,NULL,NULL,'java.lang.Double.isNaN',NULL,NULL,NULL),
+(-2,2,TRUE,FALSE,TRUE,TRUE,FALSE,0,0,'i','decodeInt','a',NULL,'I',NULL,NULL,NULL,'java.lang.Integer.decode',NULL,NULL,NULL),
+(-2,3,TRUE,FALSE,TRUE,TRUE,FALSE,0,0,'I','parseInt','aI',NULL,'II',NULL,NULL,NULL,'java.lang.Integer.parseInt',NULL,NULL,NULL),
+(-2,4,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'a','toBinaryString','I',NULL,'I',NULL,NULL,NULL,'java.lang.Integer.toBinaryString',NULL,NULL,NULL),
+(-2,5,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'a','toHexString','I',NULL,'I',NULL,NULL,NULL,'java.lang.Integer.toHexString',NULL,NULL,NULL),
+(-2,6,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'a','toOctalString','I',NULL,'I',NULL,NULL,NULL,'java.lang.Integer.toOctalString',NULL,NULL,NULL),
+(-2,7,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'a','toString','II',NULL,'II',NULL,NULL,NULL,'java.lang.Integer.toString',NULL,NULL,NULL),
+(-2,8,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'n','abs','n',NULL,'M',NULL,NULL,NULL,'java.math.BigDecimal.abs',NULL,NULL,NULL),
+(-2,9,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'n','getMax','nn',NULL,'MI',NULL,NULL,NULL,'java.math.BigDecimal.max',NULL,NULL,NULL),
+(-2,10,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'n','getMin','nn',NULL,'MI',NULL,NULL,NULL,'java.math.BigDecimal.min',NULL,NULL,NULL),
+(-2,11,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'n','movePointLeft','nI',NULL,'MI',NULL,NULL,NULL,'java.math.BigDecimal.movePointLeft',NULL,NULL,NULL),
+(-2,12,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'n','movePointRight','nI',NULL,'MI',NULL,NULL,NULL,'java.math.BigDecimal.movePointRight',NULL,NULL,NULL),
+(-2,13,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'I','scale','n',NULL,'M',NULL,NULL,NULL,'java.math.BigDecimal.scale',NULL,NULL,NULL),
+(-2,14,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'I','signum','n',NULL,'M',NULL,NULL,NULL,'java.math.BigDecimal.signum',NULL,NULL,NULL),
+(-2,15,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'D','acos','D',NULL,'I',NULL,NULL,NULL,'java.lang.Math.acos',NULL,NULL,NULL),
+(-2,16,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'D','asin','D',NULL,'I',NULL,NULL,NULL,'java.lang.Math.asin',NULL,NULL,NULL),
+(-2,17,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'D','atan','D',NULL,'I',NULL,NULL,NULL,'java.lang.Math.atan',NULL,NULL,NULL),
+(-2,18,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'D','atan2','DD',NULL,'II',NULL,NULL,NULL,'java.lang.Math.atan2',NULL,NULL,NULL),
+(-2,19,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'D','ceil','D',NULL,'I',NULL,NULL,NULL,'java.lang.Math.ceil',NULL,NULL,NULL),
+(-2,20,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'D','cos','D',NULL,'I',NULL,NULL,NULL,'java.lang.Math.cos',NULL,NULL,NULL),
+(-2,21,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'D','exp','D',NULL,'I',NULL,NULL,NULL,'java.lang.Math.exp',NULL,NULL,NULL),
+(-2,22,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'D','floor','D',NULL,'I',NULL,NULL,NULL,'java.lang.Math.floor',NULL,NULL,NULL),
+(-2,23,TRUE,FALSE,TRUE,TRUE,FALSE,0,0,'D','log','D',NULL,'I',NULL,NULL,NULL,'java.lang.Math.log',NULL,NULL,NULL),
+(-2,24,TRUE,FALSE,TRUE,TRUE,FALSE,0,0,'D','pow','DD',NULL,'II',NULL,NULL,NULL,'java.lang.Math.pow',NULL,NULL,NULL),
+(-2,25,TRUE,FALSE,FALSE,FALSE,FALSE,0,0,'D','random','',NULL,'',NULL,NULL,NULL,'java.lang.Math.random',NULL,NULL,NULL),
+(-2,26,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'D','rint','D',NULL,'I',NULL,NULL,NULL,'java.lang.Math.rint',NULL,NULL,NULL),
+(-2,27,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'I','round','F',NULL,'I',NULL,NULL,NULL,'java.lang.Math.round',NULL,NULL,NULL),
+(-2,28,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'D','sin','D',NULL,'I',NULL,NULL,NULL,'java.lang.Math.sin',NULL,NULL,NULL),
+(-2,29,TRUE,FALSE,TRUE,TRUE,FALSE,0,0,'D','sqrt','D',NULL,'I',NULL,NULL,NULL,'java.lang.Math.sqrt',NULL,NULL,NULL),
+(-2,30,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'D','tan','D',NULL,'I',NULL,NULL,NULL,'java.lang.Math.tan',NULL,NULL,NULL),
+(-2,31,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'D','toDegrees','D',NULL,'I',NULL,NULL,NULL,'java.lang.Math.toDegrees',NULL,NULL,NULL),
+(-2,32,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'D','toRadians','D',NULL,'I',NULL,NULL,NULL,'java.lang.Math.toRadians',NULL,NULL,NULL),
+(-2,33,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'I','compareTo','aa',NULL,'MI',NULL,NULL,NULL,'java.lang.String.compareTo',NULL,NULL,NULL),
+(-2,34,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'a','concat','aa',NULL,'MI',NULL,NULL,NULL,'java.lang.String.concat',NULL,NULL,NULL),
+(-2,35,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'Z','endsWith','aa',NULL,'MI',NULL,NULL,NULL,'java.lang.String.endsWith',NULL,NULL,NULL),
+(-2,36,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'Z','equalsIgnoreCase','aa',NULL,'MI',NULL,NULL,NULL,'java.lang.String.equalsIgnoreCase',NULL,NULL,NULL),
+(-2,37,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'I','indexOf','aa',NULL,'MI',NULL,NULL,NULL,'java.lang.String.indexOf',NULL,NULL,NULL),
+(-2,38,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'I','indexOf','aaI',NULL,'MII',NULL,NULL,NULL,'java.lang.String.indexOf',NULL,NULL,NULL),
+(-2,39,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'I','lastIndexOf','aa',NULL,'MI',NULL,NULL,NULL,'java.lang.String.lastIndexOf',NULL,NULL,NULL),
+(-2,40,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'I','lastIndexOf','aaI',NULL,'MII',NULL,NULL,NULL,'java.lang.String.lastIndexOf',NULL,NULL,NULL),
+(-2,41,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'I','length','a',NULL,'M',NULL,NULL,NULL,'java.lang.String.length',NULL,NULL,NULL),
+(-2,42,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'Z','regionMatches','aIaII',NULL,'MIIII',NULL,NULL,NULL,'java.lang.String.regionMatches',NULL,NULL,NULL),
+(-2,43,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'Z','regionMatches','aZIaII',NULL,'MIIIII',NULL,NULL,NULL,'java.lang.String.regionMatches',NULL,NULL,NULL),
+(-2,44,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'Z','startsWith','aa',NULL,'MI',NULL,NULL,NULL,'java.lang.String.startsWith',NULL,NULL,NULL),
+(-2,45,TRUE,FALSE,TRUE,FALSE,FALSE,0,0,'Z','startsWith','aaI',NULL,'MII',NULL,NULL,NULL,'java.lang.String.startsWith',NULL,NULL,NULL),
+(-2,46,TRUE,TRUE,TRUE,TRUE,FALSE,2,0,'Z','jdbcproccolinfo','aaaaaa',NULL,'IIIIII','PROCEDURE_CAT,PROCEDURE_SCHEM,PROCEDURE_NAME,COLUMN_NAME,COLUMN_TYPE,DATA_TYPE,TYPE_NAME,PRECISION,LENGTH,SCALE,RADIX,NULLABLE,REMARKS','aaaaSSaIISISa',NULL,'transbase.tbx.coman.TBXComanAPIMetaData.PROCEDURE_COLUMNS_JDBC','result set for getProcedureColumns JDBC info call, parameters: api: JDBC, rowset: GETPROCEDURECOLUMNS, catalog, schemaPattern, procedureNamePattern, columnNamePattern',NULL,NULL),
+(-2,47,TRUE,TRUE,TRUE,TRUE,FALSE,2,0,'Z','jdbcprocinfo','aaaaaa',NULL,'IIIIII','PROCEDURE_CAT,PROCEDURE_SCHEM,PROCEDURE_NAME,RESERVED1,RESERVED2,RESERVED3,REMARKS,PROCEDURE_TYPE','aaaaaaaS',NULL,'transbase.tbx.coman.TBXComanAPIMetaData.PROCEDURES_JDBC','result set for getProcedures JDBC info call, parameters: api: JDBC, rowset: GETPROCEDURES, catalog, schemaPattern, procedureNamePattern, NULL',NULL,NULL),
+(-2,48,TRUE,TRUE,TRUE,TRUE,FALSE,2,0,'Z','odbcproccolinfo','aaaaaa',NULL,'IIIIII','PROCEDURE_CAT,PROCEDURE_SCHEM,PROCEDURE_NAME,COLUMN_NAME,COLUMN_TYPE,DATA_TYPE,TYPE_NAME,COLUMN_SIZE,BUFFER_LENGTH,DECIMAL_DIGITS,NUM_PREC_RADIX,NULLABLE,REMARKS,COLUMN_DEF,SQL_DATA_TYPE,SQL_DATETIME_SUB,CHAR_OCTET_LENGTH,ORDINAL_POSITION,IS_NULLABLE','aaaaSSaiissSaaSsiIa',NULL,'transbase.tbx.coman.TBXComanAPIMetaData.PROCEDURE_COLUMNS_ODBC','result set for SQLProcedures ODBC info call, parameters: api: ODBC, rowset: SQLPROCEDURECOLUMNS, CatalogName, SchemaName, ProcName, ColumnName',NULL,NULL),
+(-2,49,TRUE,TRUE,TRUE,TRUE,FALSE,2,0,'Z','odbcprocinfo','aaaaaa',NULL,'IIIIII','PROCEDURE_CAT,PROCEDURE_SCHEM,PROCEDURE_NAME,NUM_INPUT_PARAMS,NUM_OUTPUT_PARAMS,NUM_RESULT_SETS,REMARKS,PROCEDURE_TYPE','aaaaaaaS',NULL,'transbase.tbx.coman.TBXComanAPIMetaData.PROCEDURES_ODBC','result set for SQLProcedures ODBC info call, parameters: api: ODBC, rowset: SQLPROCEDURES, CatalogName, SchemaName, ProcName, NULL',NULL,NULL),
+(-2,50,TRUE,TRUE,TRUE,TRUE,FALSE,2,0,'Z','oledbproccolinfo','aaaaaa',NULL,'IIIIII','PROCEDURE_CATALOG,PROCEDURE_SCHEMA,PROCEDURE_NAME,COLUMN_NAME,COLUMN_GUID,COLUMN_PROPID,ROWSET_NUMBER,ORDINAL_POSITION,IS_NULLABLE,DATA_TYPE,TYPE_GUID,CHARACTER_MAXIMUM_LENGTH,CHARACTER_OCTET_LENGTH,NUMERIC_PRECISION,NUMERIC_SCALE,DESCRIPTION','aaaaaIIiZSaiissa',NULL,'transbase.tbx.coman.TBXComanAPIMetaData.PROCEDURE_COLUMNS_OLEDB','result set for PROCEDURE_COLUMNS OLEDB info call, parameters: api: OLEDB, rowset: PROCEDURE_COLUMNS, PROCEDURE_CATALOG, PROCEDURE_SCHEMA, PROCEDURE_NAME, COLUMN_NAME',NULL,NULL),
+(-2,51,TRUE,TRUE,TRUE,TRUE,FALSE,2,0,'Z','oledbprocinfo','aaaaaa',NULL,'IIIIII','PROCEDURE_CATALOG,PROCEDURE_SCHEMA,PROCEDURE_NAME,PROCEDURE_TYPE,PROCEDURE_DEFINITION,DESCRIPTION,DATE_CREATED,DATE_MODIFIED','aaaSaacc','([Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;[S[Ljava/lang/String;[Ljava/lang/String;[Ljava/sql/Date;[Ljava/sql/Date;)Z','transbase.tbx.coman.TBXComanAPIMetaData.PROCEDURES_OLEDB','result set for PROCEDURES OLEDB info call, parameters: api: OLEDB, rowset: PROCEDURES, PROCEDURE_CATALOG, PROCEDURE_SCHEMA, PROCEDURE_NAME, NULL',NULL,NULL),
+(-2,52,TRUE,TRUE,TRUE,TRUE,FALSE,2,0,'Z','oledbprocparaminfo','aaaaaa',NULL,'IIIIII','PROCEDURE_CATALOG,PROCEDURE_SCHEMA,PROCEDURE_NAME,PARAMETER_NAME,ORDINAL_POSITION,PARAMETER_TYPE,PARAMETER_HASDEFAULT,PARAMETER_DEFAULT,IS_NULLABLE,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH,CHARACTER_OCTET_LENGTH,NUMERIC_PRECISION,NUMERIC_SCALE,DESCRIPTION,TYPE_NAME,LOCAL_TYPE_NAME','aaaaSsZaZSiissaaa',NULL,'transbase.tbx.coman.TBXComanAPIMetaData.PROCEDURE_PARAMETERS_OLEDB','result set for PROCEDURE_PARAMETERS OLEDB info call, parameters: api: OLEDB, rowset: PROCEDURE_PARAMETERS, PROCEDURE_CATALOG, PROCEDURE_SCHEMA, PROCEDURE_NAME, PARAMETER_NAME',NULL,NULL)
+)
+;
+
+CREATE VIEW sysblob(
+	rsno, bcont
+	) AS SELECT
+	rsno, bcont
+	FROM "@@sysblob";
+
+CREATE VIEW syscolumn(
+	tsegno,cname,ctype,domainname,defaultvalue,suppressed,cpos, ckey,notnull, surrid, surref
+	) AS SELECT
+	tsegno,cname,ctype,domainname,defaultvalue,suppressed,cpos,ckey,notnull, surrid, surref
+	FROM "@@syscolumn"
+	;
+
+CREATE VIEW syscolumnpriv(
+	grantee,tsegno,grantor, cpos, upd_priv
+	) AS SELECT
+	grantee,tsegno,grantor, cpos, upd_priv
+	FROM "@@syscolumnpriv";
+
+CREATE VIEW sysconstraint(
+	segno,constraintname,attributes,constrainttext,cpos,ubtrees
+	) AS SELECT
+	segno,constraintname,attributes,constrainttext,cpos,ubtrees
+	FROM "@@sysconstraint";
+
+CREATE VIEW sysdomain(
+	name, owner,basetype,defaultvalue,constraintname,
+		attributes, constrainttext
+	) AS SELECT
+	name, owner,basetype,defaultvalue,constraintname,
+		attributes, constrainttext
+	FROM "@@sysdomain";
+
+CREATE VIEW sysindex(
+	tsegno,iname,weight,cpos,isuniq,isegno,indextype,wlistsegno,
+	stowosegno,charmapsegno,delimsegno,ftxttype,wlisttype
+	) AS SELECT
+	tsegno,iname,weight,cpos,isuniq,isegno,indextype,wlistsegno,
+	stowosegno,charmapsegno,delimsegno,ftxttype,wlisttype
+	FROM "@@sysindex";
+
+CREATE VIEW sysrefconstraint(
+	constraintname,attributes,srcsegno,srccpos,
+		tarsegno, tarcpos, delact, updact, matchtype
+	) AS SELECT
+	constraintname,attributes,srcsegno,srccpos,
+		tarsegno, tarcpos, delact, updact, matchtype
+	FROM "@@sysrefconstraint";
+
+CREATE VIEW systable(
+	tname,owner,ttype,segno,colno,"date","cluster",version,indextype
+	) AS SELECT
+	tname,owner,ttype,segno,colno,"date","cluster",version,indextype
+	FROM "@@systable"
+	WHERE tname NOT IN (
+		'@@systable',
+		'@@syscolumn',
+		'@@sysindex',
+		'@@sysuser',
+		'@@sysview',
+		'@@sysblob',
+		'@@systablepriv',
+		'@@syscolumnpriv',
+		'@@sysviewdep',
+		'@@sysdomain',
+		'@@sysconstraint',
+		'@@sysrefconstraint',
+		'@@syssurrogate',
+		'@@sysexternal',
+		'@@sysexternalmethod',
+		'@@sysexternalpriv',
+		'@@systrigger'
+		);
+
+CREATE VIEW systablepriv(
+	grantee,tsegno,grantor, sel_priv, del_priv, ins_priv, upd_priv
+	) AS SELECT
+	grantee,tsegno,grantor, sel_priv, del_priv, ins_priv, upd_priv
+	FROM "@@systablepriv";
+
+CREATE VIEW sysuser(
+	username,userclass,passwd,userid
+	) AS SELECT
+	username,userclass,passwd,userid
+	FROM "@@sysuser";
+
+CREATE VIEW sysview(
+	vsegno,viewtext,checkopt,updatable,viewtree
+	) AS SELECT
+	vsegno,viewtext,checkopt,updatable,viewtree
+	FROM "@@sysview";
+
+CREATE VIEW sysviewdep(
+	basesegno, vsegno
+	) AS SELECT
+	basesegno, vsegno
+	FROM "@@sysviewdep";
+
+CREATE VIEW syssurrogate(
+	surrid, segno, level, cpos, siblings
+	) AS SELECT
+	surrid, segno, level, cpos, siblings
+	FROM "@@syssurrogate";
+
+CREATE VIEW sysexternal(
+	rkey, rtype, owner, enabled, debug, lastmodified,
+	rname, rblob, sblob, comment) 
+	AS SELECT
+	rkey, rtype, owner, enabled, debug, lastmodified,
+	rname, rblob, sblob, comment
+	FROM "@@sysexternal";
+
+CREATE VIEW sysexternalmethod(
+	rkey, mkey, enabled, callonnull, determ, checkexcept,
+	ownerrights, sqlaccess, dynasets, resulttype, sqlname,
+	sqlsig, extsig, parammodes, paramnames, sqltabsig,
+	exttabsig, methodname, comment)
+	AS SELECT
+	rkey, mkey, enabled, callonnull, determ	, checkexcept,
+	ownerrights, sqlaccess, dynasets, resulttype, sqlname,
+	sqlsig, extsig, parammodes, paramnames, sqltabsig,
+	exttabsig, methodname, comment
+	FROM "@@sysexternalmethod";
+
+CREATE VIEW sysexternalpriv(
+	grantee, rkey, mkey, grantor, use_priv)
+	AS SELECT
+	grantee, rkey, mkey, grantor, use_priv
+	FROM "@@sysexternalpriv";
+
+CREATE VIEW systrigger(
+	triggername, owner, tsegno, event, aliasnew,aliasold,
+	actions, firetime, statement_row, search_cond, creation_date,enabled)
+	AS SELECT
+	triggername, owner, tsegno, event, aliasnew,aliasold,
+	actions, firetime, statement_row, search_cond, creation_date,enabled 
+	FROM "@@systrigger";
+
+GRANT SELECT ON sysblob TO PUBLIC;
+GRANT SELECT ON syscolumn TO PUBLIC;
+GRANT SELECT ON syscolumnpriv TO PUBLIC;
+GRANT SELECT ON sysconstraint TO PUBLIC;
+GRANT SELECT ON sysdomain TO PUBLIC;
+GRANT SELECT ON sysindex TO PUBLIC;
+GRANT SELECT ON sysrefconstraint TO PUBLIC;
+GRANT SELECT ON systable TO PUBLIC;
+GRANT SELECT ON systablepriv TO PUBLIC;
+GRANT SELECT ON sysuser TO PUBLIC;
+GRANT SELECT ON sysview TO PUBLIC;
+GRANT SELECT ON sysviewdep TO PUBLIC;
+GRANT SELECT ON syssurrogate TO PUBLIC;
+GRANT SELECT ON sysexternal TO PUBLIC;
+GRANT SELECT ON sysexternalmethod TO PUBLIC;
+GRANT SELECT ON sysexternalpriv TO PUBLIC;
+GRANT SELECT ON systrigger TO PUBLIC;
+
+GRANT SELECT ON "@@sysblob" TO PUBLIC;
+GRANT SELECT ON "@@syscolumn" TO PUBLIC;
+GRANT SELECT ON "@@syscolumnpriv" TO PUBLIC;
+GRANT SELECT ON "@@sysconstraint" TO PUBLIC;
+GRANT SELECT ON "@@sysdomain" TO PUBLIC;
+GRANT SELECT ON "@@sysindex" TO PUBLIC;
+GRANT SELECT ON "@@sysrefconstraint" TO PUBLIC;
+GRANT SELECT ON "@@systable" TO PUBLIC;
+GRANT SELECT ON "@@systablepriv" TO PUBLIC;
+GRANT SELECT ON "@@sysuser" TO PUBLIC;
+GRANT SELECT ON "@@sysview" TO PUBLIC;
+GRANT SELECT ON "@@sysviewdep" TO PUBLIC;
+GRANT SELECT ON "@@syssurrogate" TO PUBLIC;
+GRANT SELECT ON "@@sysexternal" TO PUBLIC;
+GRANT SELECT ON "@@sysexternalmethod" TO PUBLIC;
+GRANT SELECT ON "@@sysexternalpriv" TO PUBLIC;
+GRANT SELECT ON "@@systrigger" TO PUBLIC;
+
+UPDATE "@@systable" 
+SET ttype='v' 
+WHERE   tname IN (
+	'sysblob',
+	'syscolumn',
+	'syscolumnpriv',
+	'sysconstraint',
+	'sysdomain',
+	'sysindex',
+	'sysrefconstraint',
+	'systable',
+	'systablepriv',
+	'sysuser',
+	'sysview',
+	'sysviewdep',
+	'syssurrogate',
+	'sysexternal',
+	'sysexternalmethod',
+	'sysexternalpriv',
+	'systrigger'
+	)
+;
+create index sysconstraint_ix on "@@sysconstraint"(constraintname)
+;
+create index sysrefconstraint_ix on "@@sysrefconstraint"(constraintname)
+;
+create index systrigger_ix  on "@@systrigger"(
+	tsegno, triggername, owner, event, aliasnew,aliasold, 
+	actions, firetime, statement_row, search_cond, creation_date,enabled )
+;

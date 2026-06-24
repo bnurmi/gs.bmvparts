@@ -1,0 +1,60 @@
+; use dummy catalogue entry 'd1' in systable as 
+; version counter for TransbaseD
+
+UPDATE "@@syscolumn"
+SET cname = 
+		(if exists (select * from "@@systable"
+		   where tname = '@@SYSTABLE' )
+		then 'VERSION'
+		else 'version'
+		fi)
+WHERE cname IN ('d1','D1')  AND tsegno = (SELECT segno FROM "@@systable" WHERE tname IN ('@@systable', '@@SYSTABLE'))
+;
+
+UPDATE "@@systable"
+SET version=1 
+WHERE version IS NULL
+;
+
+ALTER TABLE "@@systable" ADD COLUMN referentials char(*);
+ALTER TABLE "@@systable" ADD COLUMN d1 integer;
+ALTER TABLE "@@systable" ADD COLUMN d2 integer;
+ALTER TABLE "@@systable" ADD COLUMN d3 char(*);
+ALTER TABLE "@@systable" ADD COLUMN d4 char(*);
+
+UPDATE "@@systable" s SET referentials =
+   if exists (select * from "@@systrigger" where tsegno = s.segno and
+	event like insensitive 'insert%' and 
+	statement_row like insensitive 'row%')
+	then 'Y' else 'N' fi 
+   ||
+   if exists (select * from "@@systrigger" where tsegno = s.segno and
+	event like insensitive 'insert%' and 
+	statement_row like insensitive 'statement%')
+	then 'Y' else 'N' fi 
+   ||
+   if exists (select * from "@@systrigger" where tsegno = s.segno and
+	event like insensitive 'update%' and 
+	statement_row like insensitive 'row%')
+	then 'Y' else 'N' fi 
+   ||
+   if exists (select * from "@@systrigger" where tsegno = s.segno and
+	event like insensitive 'update%' and 
+	statement_row like insensitive 'statement%')
+	then 'Y' else 'N' fi 
+   ||
+   if exists (select * from "@@systrigger" where tsegno = s.segno and
+	event like insensitive 'delete%' and 
+	statement_row like insensitive 'row%')
+	then 'Y' else 'N' fi
+   ||
+   if exists (select * from "@@systrigger" where tsegno = s.segno and
+	event like insensitive 'delete%' and 
+	statement_row like insensitive 'statement%')
+	then 'Y' else 'N' fi 
+;
+
+UPDATE "@@systrigger" SET event = lower(event),
+			firetime = lower(firetime),
+			statement_row = lower(statement_row)
+;

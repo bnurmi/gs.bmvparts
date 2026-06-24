@@ -1,0 +1,20 @@
+CONTROL KEYS FOR RELEDIT:
+
+        ESC (or ^L)  DISPLAY MENU
+        RETURN       SELECT FIRST MENU OPERATION
+
+        ^S           CURSOR LEFT CHAR           
+        ^D           CURSOR RIGHT CHAR          
+        ^E           CURSOR UP FIELD             
+        ^X           CURSOR DOWN FIELD  (same as TAB)
+ 
+        ^H           DELETE CHAR LEFT
+        ^G           DELETE CHAR RIGHT
+        ^Y           DELETE FIELD
+
+        ^O           TOGGLE INSERTION ON/OFF
+        ^R           TOGGLE RELOP MODE ON/OFF
+        BLANK        SCROLL THROUGH RELOPs (only RELOP mode)
+
+
+HIT ANY KEY TO CONTINUE

@@ -1,0 +1,19 @@
+RELDESC_BEGIN
+"@@sysview" 
+25 1 -1 1
+7
+	integer "vsegno" 0 1 1
+	char(*) "viewtext" 1 0 0
+	char(*) "checkopt" 2 0 1
+	char(*) "updatable" 3 0 1
+	char(*) "viewtree" 4 0 0
+	integer "d1" 5 0 0
+	char(*) "d2" 6 0 0
+0
+RELDESC_END
+
+(N0:sel
+	(N001:rel  { "@@sysview" } 
+		(N002:ivmk  { eq } 
+			(N003:param  { integer[1] } ))))
+

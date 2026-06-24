@@ -1,0 +1,16 @@
+Choose the size of one diskrecovery logfile.
+
+If this size is chosen as 0, then all transactions are run with
+the BFIM recovery technique.
+This is advantageous if large volumes of new data is built up.
+If the size is chosen > 0 (default is 10MB) then TransBase uses
+the page logging technique for transaction recovery which is faster than
+the BFIM recovery technique for small update transactions (OLAP).
+Logfiles are written up to the specified size before a logfile switch
+is made.
+
+NOTE that the diskrecovery option is only possible with the logging
+recovery variant (a size of 0 requires that the diskrecovery option
+has been switched off).
+
+   -	Command Line Syntax :   dr=<diskrecpath> [,<size MB>]

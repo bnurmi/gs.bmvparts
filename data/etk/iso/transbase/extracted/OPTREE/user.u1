@@ -1,0 +1,25 @@
+RELDESC_BEGIN
+"@@sysuser" 
+33 1 -1 1
+6
+	char(*) "username" 0 1 1
+	char(*) "userclass" 1 0 1
+	char(*) "passwd" 2 0 1
+	integer "userid" 3 0 1
+	integer "d1" 4 0 0
+	char(*) "d2" 5 0 0
+0
+RELDESC_END
+
+(N000:upd  { "@@sysuser"  on_the_fly } 
+	(N001:proj 
+		(N002:rel  { "@@sysuser" } 
+			(N003:ivmk  { eq } 
+				(N004:param  { string[1] } )))
+		(N005:build 
+			(N006:attr  { N001[1] } )
+			(N007:param { string[2] } )
+			(N008:param { string[3] } )
+			(N009:attr  { N001[4] } )
+			(N010:attr  { N001[5] } )
+			(N011:attr  { N001[6] } ))))

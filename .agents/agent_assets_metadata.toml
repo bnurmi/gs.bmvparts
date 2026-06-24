@@ -1,0 +1,44 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "6PRCIsWyRQbyvERYoPP67"
+uri = "file://G82_M4_Estimate2073_Parts.csv"
+type = "table"
+title = "Estimate 2073 — G82 M4 Competition OEM Parts & Pricing (Fixed)"
+
+[[outputs]]
+id = "Mtd4w8B4XasUEmiRTDZzN"
+uri = "file://G82_M4_Estimate2073_CrossRef.csv"
+type = "table"
+title = "Estimate 2073 — G82 M4 Cross-Reference (DB vs AI Quote)"
+
+[[outputs]]
+id = "FYrb6lH0UsWh6pDovk7Sv"
+uri = "file://G82_M4_Estimate2073_Final.csv"
+type = "table"
+title = "Estimate 2073 — G82 M4 Final Parts Pricing (corrected)"
+
+[[outputs]]
+id = "zDE9uJLQNI4HMCwqJ1LFV"
+uri = "file://API.md"
+type = "text"
+title = "BMV.parts — Full API Reference"
+
+[[outputs]]
+id = "vH4xt--eErlUFeoRNllxx"
+uri = "file://G80_M3_PhotoQuote_WBS42AY000FT45458.csv"
+type = "table"
+title = "G80 M3 — mperformance Pricing Format (VIN WBS42AY000FT45458)"
+
+[[outputs]]
+id = "0s5oe5mmIm_xcZxsmZWI9"
+uri = "file://.local/affiliate-links-implementation-guide.md"
+type = "text"
+title = "Affiliate Links — Implementation Guide"
+
+[[outputs]]
+id = "Lw-bDHm5K2xoJz_FfM5cf"
+uri = "file://bmv-production-urls.md"
+type = "text"
+title = "BMV Production URL Reference"

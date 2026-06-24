@@ -1,0 +1,8 @@
+Specify the size of the memory holding the lock information.
+
+Locking is necessary in a multiuser database to coordinate parallel
+access of applications onto the same table data.
+The default size is sufficient in most cases.
+This cache is in shared memory.
+
+   -	Command Line Syntax :   ls=<size in KB>

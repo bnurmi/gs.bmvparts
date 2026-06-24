@@ -1,0 +1,62 @@
+Stop changing Drizzle/schema/indexes until you prove the layer that is failing.
+
+The publish error is:
+
+Failed to check for database diff: timeout exceeded when trying to connect
+
+This happens before provisioning/build starts. Therefore runtime fixes, serverReady fixes, SEO predeploy fixes, and old 503 healthcheck logs are not proof of the current publish failure.
+
+New objective:
+Diagnose the Replit Publish database-diff precheck connection path.
+
+Do these steps only:
+
+1. Confirm whether a new build/deployment record is created when Publish fails.
+   - If no new build exists, stop looking at runtime logs.
+   - Old 503 logs are irrelevant.
+
+2. Identify every DB URL involved:
+   - development DATABASE_URL
+   - production DATABASE_URL
+   - any Replit Postgres module/env vars:
+     PGHOST, PGPORT, PGDATABASE, PGUSER, PGPASSWORD
+   - any Drizzle config DATABASE_URL usage
+   - any Replit deployment database integration config
+
+3. For each DB URL, print only sanitized connection metadata:
+   - host
+   - port
+   - database name
+   - SSL mode
+   - whether host is localhost/internal/private/public
+   - do not print passwords
+
+4. Test connectivity from the Replit shell to each DB:
+   - pg_isready if available
+   - psql SELECT 1
+   - node postgres client SELECT 1
+   - timeout each test at 10 seconds
+
+5. Determine whether the publish precheck is trying to connect to a database host that is only reachable from the dev repl/container, not from Replit’s publish/diff service.
+
+6. Revert unrelated schema churn unless clearly required:
+   - schema-dk.ts
+   - tablesFilter experiments
+   - repeated constraint/index changes
+   - any workaround that was not proven to affect the publish precheck
+
+7. Check if Replit has a way to bypass/disable the database diff check for this deployment.
+   - If yes, use it temporarily.
+   - If no, open a minimal Replit support ticket with:
+     a) app id / repl id
+     b) deployment id
+     c) exact error
+     d) timestamp
+     e) confirmation that no build record is created
+     f) sanitized DB hosts and connectivity results
+
+8. Only after publish gets past database-diff precheck should you debug:
+   - build script
+   - runPreDeployHubSeo()
+   - serverReady
+   - runtime 503

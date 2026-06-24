@@ -1,0 +1,157 @@
+- which clients call it, especially GearSwap
+- safe smoke-test command that does not mutate data
+
+Include OpenAPI/Swagger docs if present.
+
+10. Auth/security
+
+Inspect auth mechanisms:
+
+- API keys
+- bearer tokens
+- OAuth
+- SSO
+- admin users
+- provisioning endpoints
+- internal-only routes
+- public unauthenticated routes
+
+Flag any endpoints that allow data mutation, account creation, sync, import, or admin access.
+
+11. Background jobs/schedulers
+
+Identify all scheduled/background work:
+
+- cron jobs
+- APScheduler
+- queue workers
+- Replit scheduled deployments
+- startup jobs
+- sync/import jobs
+- cache warmers
+
+For each:
+
+- file/function
+- schedule
+- whether it can run more than once safely
+- whether it should become a separate Docker service
+
+12. Startup side effects
+
+Inspect app startup/import path and report whether startup performs:
+
+- DB migrations
+- data imports
+- cache rebuilds
+- external API calls
+- scheduler startup
+- file writes
+- admin account creation
+- long-running tasks
+
+List exact files/functions.
+
+13. Docker requirements
+
+Based on the repo, recommend the Docker image requirements:
+
+- Python/Node version
+- system packages
+- browser dependencies if any
+- build tools
+- timezone
+- gunicorn/uvicorn/node command
+- app port
+- healthcheck command
+
+14. DNS/domain/cutover
+
+Confirm how bmv.parts is currently routed:
+
+- Replit domain settings
+- custom domain config
+- whether Cloudflare is used
+- current DNS target if visible
+- TLS/cert handling
+- any hardcoded public URLs in code
+
+15. GearSwap integration
+
+Find all places where GearSwap or other systems are expected to call this service.
+
+Return:
+
+- expected base URL
+- required API keys/token names
+- route list used by GearSwap
+- example authenticated request with fake token
+- whether the current GearSwap env vars BMW_CATALOGUE_API_URL, BMW_CATALOGUE_API_KEY, BMV_PARTS_API_KEY, PARTS_CATALOGUE_API_KEY, BMV_SSO_SECRET, BMV_ACCOUNT_PROVISION_KEY, and BMV_OAUTH_CLIENT_IDS are used by this service
+
+16. Migration risks
+
+Produce a ranked risk list:
+
+- data loss risks
+- downtime risks
+- auth/security risks
+- dependency risks
+- DNS/cutover risks
+- background job duplication risks
+- paid API/rate-limit risks
+
+17. Deliverables
+
+Please provide:
+
+- migration dossier as markdown
+- .env.example with fake values
+- real .env.vps as a downloadable file, not pasted
+- repo archive or GitHub link/branch
+- database export if required
+- storage export plan if required
+- one safe smoke-test endpoint
+- one authenticated smoke-test endpoint using placeholder token
+
+---
+
+Also ask it to export these files
+
+If Replit can provide them, I want:
+
+- full source repo as zip, or GitHub repo access
+- .replit
+- replit.nix
+- dependency lockfile
+- .env.example
+- real .env.vps as a file
+- database dump if applicable
+- object storage manifest if applicable
+- any existing Dockerfile or deploy docs
+- API docs if present
+
+What I will do once you get that back
+
+I’ll turn it into:
+
+1. Dockerfile
+2. docker-compose service
+3. Caddy route for bmv.parts
+4. env file on the VPS
+5. local smoke test
+6. authenticated GearSwap-to-BMV test
+7. DNS cutover plan
+8. rollback plan back to Replit
+
+Most important things not to miss
+
+Tell the Replit agent to specifically answer these:
+
+- Is there any database or local persistent data?
+- Does it use Replit Object Storage?
+- What exact command starts the app?
+- What port does it bind to?
+- What routes does GearSwap call?
+- Which secrets are required?
+- Does anything run on startup besides starting the web server?
+- Are there cron/scheduler jobs?

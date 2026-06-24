@@ -1,0 +1,134 @@
+Generated migrations to apply to production database
+
+Migrations are generated based on changes made by the agent in your app, learn more.
+CREATE TABLE "password_reset_tokens" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"user_id" varchar NOT NULL,
+	"token_hash" text NOT NULL,
+	"expires_at" timestamp NOT NULL,
+	"used_at" timestamp,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "password_reset_tokens_token_hash_unique" UNIQUE("token_hash")
+);
+CREATE TABLE "photo_quotes" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"quote_ref" text NOT NULL,
+	"user_id" varchar NOT NULL,
+	"vin" text,
+	"vehicle" text NOT NULL,
+	"photo_urls" jsonb DEFAULT '[]'::jsonb NOT NULL,
+	"ai_analysis_json" jsonb,
+	"quote_rows" jsonb DEFAULT '[]'::jsonb NOT NULL,
+	"total_bmw_new" real DEFAULT 0 NOT NULL,
+	"total_our_price" real DEFAULT 0 NOT NULL,
+	"total_saving" real DEFAULT 0 NOT NULL,
+	"csv_url" text,
+	"customer_name" text,
+	"customer_email" text,
+	"customer_phone" text,
+	"customer_postcode" text,
+	"vehicle_year" text,
+	"vehicle_colour" text,
+	"mperformance_ref" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "photo_quotes_quote_ref_unique" UNIQUE("quote_ref")
+);
+CREATE TABLE "ista_ecu_parts" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"ecu_name" text NOT NULL,
+	"brv_code" text NOT NULL,
+	"part_number" text NOT NULL,
+	"part_number_clean" text,
+	"bestell_option" text,
+	"ecu_description" text,
+	"diag_address" text,
+	"ista_version" text DEFAULT '4.59' NOT NULL,
+	"imported_at" timestamp DEFAULT now()
+);
+CREATE TABLE "seo_audit_log" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"timestamp" timestamp DEFAULT now() NOT NULL,
+	"actor" text NOT NULL,
+	"token_label" text,
+	"action" text NOT NULL,
+	"content_type" text,
+	"target_id" integer,
+	"target_slug" text,
+	"target_url" text,
+	"summary" text,
+	"status" text DEFAULT 'ok' NOT NULL,
+	"error" text
+);
+CREATE TABLE "seo_publisher_pages" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"slug" text NOT NULL,
+	"content_type" text DEFAULT 'page' NOT NULL,
+	"status" text DEFAULT 'draft' NOT NULL,
+	"approved" boolean DEFAULT false NOT NULL,
+	"title" text NOT NULL,
+	"meta_description" text,
+	"canonical_url" text,
+	"h1" text,
+	"body_html" text,
+	"excerpt" text,
+	"schema_json" jsonb,
+	"internal_links" jsonb,
+	"featured_image_url" text,
+	"og_title" text,
+	"og_description" text,
+	"og_image_url" text,
+	"category" text,
+	"tags" text[],
+	"source" text DEFAULT 'roman-hermes' NOT NULL,
+	"author" text,
+	"domain" text DEFAULT 'bmv.parts' NOT NULL,
+	"published_at" timestamp,
+	"archived_at" timestamp,
+	"updated_by" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+ALTER TABLE "bmw_models" DROP CONSTRAINT "bmw_models_chassis_type_code_key";
+DROP INDEX "idx_parts_description_trgm";
+DROP INDEX "idx_parts_part_number_trgm";
+DROP INDEX "users_email_unique";
+DROP INDEX "category_editorial_key_idx";
+ALTER TABLE "session" ALTER COLUMN "sess" SET DATA TYPE jsonb;
+ALTER TABLE "session" ALTER COLUMN "expire" SET DATA TYPE timestamp;
+ALTER TABLE "vin_backfill_daily_counts" ALTER COLUMN "updated_at" SET NOT NULL;
+ALTER TABLE "ai_faq_cache" ALTER COLUMN "generated_at" SET DATA TYPE timestamp;
+ALTER TABLE "ai_faq_cache" ALTER COLUMN "generated_at" SET DEFAULT now();
+ALTER TABLE "password_reset_tokens" ADD CONSTRAINT "password_reset_tokens_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "photo_quotes" ADD CONSTRAINT "photo_quotes_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+CREATE INDEX "password_reset_tokens_expires_idx" ON "password_reset_tokens" USING btree ("expires_at");
+CREATE INDEX "password_reset_tokens_user_idx" ON "password_reset_tokens" USING btree ("user_id");
+CREATE UNIQUE INDEX "photo_quotes_ref_idx" ON "photo_quotes" USING btree ("quote_ref");
+CREATE INDEX "photo_quotes_user_idx" ON "photo_quotes" USING btree ("user_id");
+CREATE INDEX "ista_ecu_parts_brv_idx" ON "ista_ecu_parts" USING btree ("brv_code");
+CREATE INDEX "ista_ecu_parts_ecu_idx" ON "ista_ecu_parts" USING btree ("ecu_name");
+CREATE INDEX "ista_ecu_parts_part_idx" ON "ista_ecu_parts" USING btree ("part_number_clean");
+CREATE UNIQUE INDEX "ista_ecu_parts_unique_idx" ON "ista_ecu_parts" USING btree ("ecu_name","part_number","brv_code");
+CREATE INDEX "seo_audit_log_actor_idx" ON "seo_audit_log" USING btree ("actor");
+CREATE INDEX "seo_audit_log_target_idx" ON "seo_audit_log" USING btree ("target_slug");
+CREATE INDEX "seo_audit_log_timestamp_idx" ON "seo_audit_log" USING btree ("timestamp");
+CREATE INDEX "seo_publisher_pages_domain_idx" ON "seo_publisher_pages" USING btree ("domain");
+CREATE INDEX "seo_publisher_pages_slug_domain_idx" ON "seo_publisher_pages" USING btree ("slug","domain");
+CREATE UNIQUE INDEX "seo_publisher_pages_slug_domain_unique" ON "seo_publisher_pages" USING btree ("slug","domain");
+CREATE INDEX "seo_publisher_pages_slug_idx" ON "seo_publisher_pages" USING btree ("slug");
+CREATE INDEX "seo_publisher_pages_source_idx" ON "seo_publisher_pages" USING btree ("source");
+CREATE INDEX "seo_publisher_pages_status_idx" ON "seo_publisher_pages" USING btree ("status");
+ALTER TABLE "provisioned_accounts" ADD CONSTRAINT "provisioned_accounts_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "user_cars" ADD CONSTRAINT "user_cars_matched_car_id_cars_id_fk" FOREIGN KEY ("matched_car_id") REFERENCES "public"."cars"("id") ON DELETE no action ON UPDATE no action;
+ALTER TABLE "user_cars" ADD CONSTRAINT "user_cars_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "subcategory_realoem_map" ADD CONSTRAINT "subcategory_realoem_map_car_id_cars_id_fk" FOREIGN KEY ("car_id") REFERENCES "public"."cars"("id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "subcategory_realoem_map" ADD CONSTRAINT "subcategory_realoem_map_subcategory_id_subcategories_id_fk" FOREIGN KEY ("subcategory_id") REFERENCES "public"."subcategories"("id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "realoem_unmatched_diagrams" ADD CONSTRAINT "realoem_unmatched_diagrams_car_id_cars_id_fk" FOREIGN KEY ("car_id") REFERENCES "public"."cars"("id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "realoem_audit_findings" ADD CONSTRAINT "realoem_audit_findings_car_id_cars_id_fk" FOREIGN KEY ("car_id") REFERENCES "public"."cars"("id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "realoem_audit_findings" ADD CONSTRAINT "realoem_audit_findings_subcategory_id_subcategories_id_fk" FOREIGN KEY ("subcategory_id") REFERENCES "public"."subcategories"("id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "seo_refresh_queue" ADD CONSTRAINT "seo_refresh_queue_page_id_seo_content_pages_id_fk" FOREIGN KEY ("page_id") REFERENCES "public"."seo_content_pages"("id") ON DELETE cascade ON UPDATE no action;
+CREATE UNIQUE INDEX "bmw_models_chassis_type_code_key" ON "bmw_models" USING btree ("chassis","type_code");
+CREATE INDEX "language_request_stats_locale_day_idx" ON "language_request_stats" USING btree ("locale","day");
+CREATE INDEX "part_editorial_notes_pn_locale_idx" ON "part_editorial_notes" USING btree ("part_number_clean","locale");
+CREATE INDEX "category_editorial_key_idx" ON "category_editorial" USING btree ("category_key","subcategory_key","locale");
+ALTER TABLE "users" ADD CONSTRAINT "users_email_unique" UNIQUE("email");

@@ -1,0 +1,1 @@
+..\javaclient\jre1.8.0_92\bin\java -classpath ".;migration.jar;..\javaclient\libs\log4j.jar;tbjdbc.jar;xmlapi.jar;commons-httpclient.jar;commons-logging.jar;jakarta-xerces.jar" webetk.migration.framework.MainViewController %1

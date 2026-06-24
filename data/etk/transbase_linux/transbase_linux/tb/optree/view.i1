@@ -1,0 +1,24 @@
+RELDESC_BEGIN
+"@@sysview" 
+25 1 -1 1
+7
+	integer "vsegno" 0 1 1
+	char(*) "viewtext" 1 0 0
+	char(*) "checkopt" 2 0 1
+	char(*) "updatable" 3 0 1
+	char(*) "viewtree" 4 0 0
+	integer "d1" 5 0 0
+	char(*) "d2" 6 0 0
+0
+RELDESC_END
+
+(N000:ins  { "@@sysview" on_the_fly } 
+	(N001:set 
+		(N002:build 
+			(N003:param  { integer[1] } )
+			(N004:param  { string[2] } )
+			(N005:param  { string[3] } )
+			(N006:param  { string[4] } )
+			(N007:param  { string[5] } )
+			(N008:const  { null } )
+			(N009:const  { null } ))))

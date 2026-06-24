@@ -1,0 +1,12 @@
+Specify the Database Path.
+
+Database Path is the top directory of the created database 
+where all files are stored by default. 
+The DB description file 'tbdesc' is always stored within this 
+directory, all other files and subdirectories can also be placed 
+elsewhere.
+The default for the Database Directory is './dbname@machine'
+
+   -	This DB parameter cannot be changed after DB creation.
+
+   -	Command Line Syntax :   h=<path>

@@ -1,0 +1,8 @@
+Choose the size of a database page (block).
+
+Recommended size is 2KB.
+Note that the pagesize also limits the size of a database tuple (BLOB's
+are excluded from this limitation). 
+
+   -	This DB parameter cannot be changed after DB creation.
+   -	Command Line Syntax :  ps=1024|2048|4095|8192|16384|32768|65536

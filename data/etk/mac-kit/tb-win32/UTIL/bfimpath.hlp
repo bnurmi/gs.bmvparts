@@ -1,0 +1,12 @@
+Choose the path of the "Before Image" Directory. 
+In this directory all before image files are stored. They enable 
+application-initiated transaction abort and database recovery 
+after machine crash.
+The total size of before image files is the sum of all pages 
+changed by the current transactions.  
+
+NOTE: If this directory is placed on a NFS mounted file system, 
+	crash recovery is not reliable!
+
+
+   -	Command Line Syntax :  bf=<path>

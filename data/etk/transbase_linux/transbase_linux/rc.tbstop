@@ -1,0 +1,42 @@
+
+
+#
+# TransBase daemons shutdown script 
+# 
+# Note that all "echo" commands are in parentheses. This is done 
+# because all commands that redirect the output to /dev/console 
+# must be done in a child of the main shell, so that the main shell 
+# does not open a terminal and get its process group set.  Since 
+# "echo" is a builtin command, redirection for it will be done 
+# in the main shell unless the command is run in a subshell. 
+# 
+
+if [ $# -eq 0 ]; then
+	FLAG=-snv
+else
+	FLAG=$1nv
+fi
+TRANSBASE=/home/bmw/transbase
+export TRANSBASE 
+. $TRANSBASE/rc.tbenv
+cd $TRANSBASE
+(echo "running rc.tbstop on `date`" >>nohup.out)
+if [ -w /dev/console ]; then 
+	CONS=/dev/console
+else 
+	CONS=/dev/tty
+fi 
+(echo "shutting down TransBase databases ..." >$CONS)
+if [ -f $TRANSBASE/myadmin ]; then 
+	ADM=$TRANSBASE/myadmin
+else
+	ADM=$TRANSBASE/tbadmin
+fi 
+$ADM $FLAG >>nohup.out
+if [ $? -ne 0 ]; then exit $?; fi 
+sleep 1 
+if [ -f $TRANSBASE/tbstop ]; then 
+	(echo "stopping TransBase daemons ..." >$CONS)
+	$TRANSBASE/tbstop >>nohup.out
+fi 
+exit 0 

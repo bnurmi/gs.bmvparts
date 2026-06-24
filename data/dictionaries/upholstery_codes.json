@@ -1,0 +1,470 @@
+[
+  {
+    "code": "FAAT",
+    "material": "cloth",
+    "rgb": "#1A1A1A",
+    "names": {
+      "en": "Cloth Anthracite",
+      "de": "Stoff Anthrazit",
+      "es": "Tela Antracita",
+      "fr": "Tissu Anthracite",
+      "it": "Tessuto Antracite",
+      "zh": "织物 炭灰"
+    }
+  },
+  {
+    "code": "FAAW",
+    "material": "cloth",
+    "rgb": "#222222",
+    "names": {
+      "en": "Cloth Anthracite (W variant)",
+      "de": "Stoff Anthrazit (W-Variante)",
+      "es": "Tela Antracita (variante W)",
+      "fr": "Tissu Anthracite (variante W)",
+      "it": "Tessuto Antracite (variante W)",
+      "zh": "织物 炭灰（W 款）"
+    }
+  },
+  {
+    "code": "FCSW",
+    "material": "cloth",
+    "rgb": "#1B1B1B",
+    "names": {
+      "en": "Cloth Sport Anthracite",
+      "de": "Stoff Sport Anthrazit",
+      "es": "Tela Sport Antracita",
+      "fr": "Tissu Sport Anthracite",
+      "it": "Tessuto Sport Antracite",
+      "zh": "Sport 织物 炭灰"
+    }
+  },
+  {
+    "code": "KAAT",
+    "material": "leatherette",
+    "rgb": "#1A1A1A",
+    "names": {
+      "en": "SensaTec Anthracite",
+      "de": "SensaTec Anthrazit",
+      "es": "SensaTec Antracita",
+      "fr": "SensaTec Anthracite",
+      "it": "SensaTec Antracite",
+      "zh": "SensaTec 炭灰"
+    }
+  },
+  {
+    "code": "KCSW",
+    "material": "leatherette",
+    "rgb": "#1A1A1A",
+    "names": {
+      "en": "SensaTec Sport Anthracite",
+      "de": "SensaTec Sport Anthrazit",
+      "es": "SensaTec Sport Antracita",
+      "fr": "SensaTec Sport Anthracite",
+      "it": "SensaTec Sport Antracite",
+      "zh": "SensaTec Sport 炭灰"
+    }
+  },
+  {
+    "code": "KHSW",
+    "material": "leatherette",
+    "rgb": "#3A2618",
+    "names": {
+      "en": "SensaTec Mocha",
+      "de": "SensaTec Mokka",
+      "es": "SensaTec Moca",
+      "fr": "SensaTec Moka",
+      "it": "SensaTec Moka",
+      "zh": "SensaTec 摩卡"
+    }
+  },
+  {
+    "code": "LCD9",
+    "material": "leather",
+    "rgb": "#191919",
+    "names": {
+      "en": "Leather Vernasca Black",
+      "de": "Leder Vernasca Schwarz",
+      "es": "Cuero Vernasca Negro",
+      "fr": "Cuir Vernasca Noir",
+      "it": "Pelle Vernasca Nero",
+      "zh": "Vernasca 真皮 黑色"
+    }
+  },
+  {
+    "code": "LCDR",
+    "material": "leather",
+    "rgb": "#5A1F1F",
+    "names": {
+      "en": "Leather Vernasca Coral Red",
+      "de": "Leder Vernasca Korallrot",
+      "es": "Cuero Vernasca Rojo Coral",
+      "fr": "Cuir Vernasca Rouge Corail",
+      "it": "Pelle Vernasca Rosso Corallo",
+      "zh": "Vernasca 真皮 珊瑚红"
+    }
+  },
+  {
+    "code": "LCFG",
+    "material": "leather",
+    "rgb": "#A38863",
+    "names": {
+      "en": "Leather Vernasca Cognac",
+      "de": "Leder Vernasca Cognac",
+      "es": "Cuero Vernasca Cognac",
+      "fr": "Cuir Vernasca Cognac",
+      "it": "Pelle Vernasca Cognac",
+      "zh": "Vernasca 真皮 干邑色"
+    }
+  },
+  {
+    "code": "LCK7",
+    "material": "leather",
+    "rgb": "#1A1A1A",
+    "names": {
+      "en": "Leather Vernasca Anthracite blue stitching",
+      "de": "Leder Vernasca Anthrazit Blau-Steppung",
+      "es": "Cuero Vernasca Antracita pespunte azul",
+      "fr": "Cuir Vernasca Anthracite surpiqûres bleues",
+      "it": "Pelle Vernasca Antracite cuciture blu",
+      "zh": "Vernasca 真皮 炭灰蓝缝线"
+    }
+  },
+  {
+    "code": "LCSO",
+    "material": "leather",
+    "rgb": "#1A1A1A",
+    "names": {
+      "en": "Leather Vernasca Sport Black",
+      "de": "Leder Vernasca Sport Schwarz",
+      "es": "Cuero Vernasca Sport Negro",
+      "fr": "Cuir Vernasca Sport Noir",
+      "it": "Pelle Vernasca Sport Nero",
+      "zh": "Vernasca Sport 真皮 黑色"
+    }
+  },
+  {
+    "code": "LCSW",
+    "material": "leather",
+    "rgb": "#1B1B1B",
+    "names": {
+      "en": "Leather Vernasca Black with M piping",
+      "de": "Leder Vernasca Schwarz mit M-Paspel",
+      "es": "Cuero Vernasca Negro con perfil M",
+      "fr": "Cuir Vernasca Noir avec passepoil M",
+      "it": "Pelle Vernasca Nero con bordino M",
+      "zh": "Vernasca 真皮 黑色带 M 滚边"
+    }
+  },
+  {
+    "code": "LHGT",
+    "material": "leather",
+    "rgb": "#7A2424",
+    "names": {
+      "en": "Leather Tartufo brown",
+      "de": "Leder Tartufo braun",
+      "es": "Cuero Tartufo marrón",
+      "fr": "Cuir Tartufo brun",
+      "it": "Pelle Tartufo marrone",
+      "zh": "Tartufo 真皮 棕色"
+    }
+  },
+  {
+    "code": "LHSW",
+    "material": "leather",
+    "rgb": "#1A1A1A",
+    "names": {
+      "en": "Leather Dakota Black",
+      "de": "Leder Dakota Schwarz",
+      "es": "Cuero Dakota Negro",
+      "fr": "Cuir Dakota Noir",
+      "it": "Pelle Dakota Nero",
+      "zh": "Dakota 真皮 黑色"
+    }
+  },
+  {
+    "code": "LMCV",
+    "material": "leather",
+    "rgb": "#A6692E",
+    "names": {
+      "en": "Merino leather Tartufo",
+      "de": "Merino-Leder Tartufo",
+      "es": "Cuero Merino Tartufo",
+      "fr": "Cuir Merino Tartufo",
+      "it": "Pelle Merino Tartufo",
+      "zh": "Merino 真皮 Tartufo"
+    }
+  },
+  {
+    "code": "LMK1",
+    "material": "leather",
+    "rgb": "#1A1A1A",
+    "names": {
+      "en": "Merino leather Black",
+      "de": "Merino-Leder Schwarz",
+      "es": "Cuero Merino Negro",
+      "fr": "Cuir Merino Noir",
+      "it": "Pelle Merino Nero",
+      "zh": "Merino 真皮 黑色"
+    }
+  },
+  {
+    "code": "LMSW",
+    "material": "leather",
+    "rgb": "#1A1A1A",
+    "names": {
+      "en": "Merino leather Black with M piping",
+      "de": "Merino-Leder Schwarz mit M-Paspel",
+      "es": "Cuero Merino Negro con perfil M",
+      "fr": "Cuir Merino Noir avec passepoil M",
+      "it": "Pelle Merino Nero con bordino M",
+      "zh": "Merino 真皮 黑色带 M 滚边"
+    }
+  },
+  {
+    "code": "X3KX",
+    "material": "leather",
+    "rgb": "#E26B2D",
+    "names": {
+      "en": "Full Merino leather Kyalami orange / black",
+      "de": "Vollleder Merino Kyalami orange/schwarz",
+      "es": "Cuero Merino completo, naranja Kyalami / negro",
+      "fr": "Cuir Merino intégral orange Kyalami / noir",
+      "it": "Pelle Merino integrale arancione Kyalami / nero",
+      "zh": "全 Merino 真皮 Kyalami 橙/黑"
+    }
+  },
+  {
+    "code": "X3SW",
+    "material": "leather",
+    "rgb": "#1A1A1A",
+    "names": {
+      "en": "Full Merino leather Black",
+      "de": "Vollleder Merino Schwarz",
+      "es": "Cuero Merino completo, negro",
+      "fr": "Cuir Merino intégral noir",
+      "it": "Pelle Merino integrale nera",
+      "zh": "全 Merino 真皮 黑色"
+    }
+  },
+  {
+    "code": "X3CW",
+    "material": "leather",
+    "rgb": "#7C2A2A",
+    "names": {
+      "en": "Full Merino leather Sakhir Orange",
+      "de": "Vollleder Merino Sakhir Orange",
+      "es": "Cuero Merino completo, naranja Sakhir",
+      "fr": "Cuir Merino intégral orange Sakhir",
+      "it": "Pelle Merino integrale arancione Sakhir",
+      "zh": "全 Merino 真皮 Sakhir 橙"
+    }
+  },
+  {
+    "code": "XBSW",
+    "material": "leather",
+    "rgb": "#1A1A1A",
+    "names": {
+      "en": "BMW Individual full Merino leather Black",
+      "de": "BMW Individual Vollleder Merino Schwarz",
+      "es": "BMW Individual cuero Merino completo, negro",
+      "fr": "BMW Individual cuir Merino intégral noir",
+      "it": "BMW Individual pelle Merino integrale nera",
+      "zh": "BMW Individual 全 Merino 真皮 黑色"
+    }
+  },
+  {
+    "code": "XBSO",
+    "material": "leather",
+    "rgb": "#291710",
+    "names": {
+      "en": "BMW Individual full Merino leather Smoke White / Black",
+      "de": "BMW Individual Vollleder Merino Smoke White/Schwarz",
+      "es": "BMW Individual cuero Merino completo, blanco humo / negro",
+      "fr": "BMW Individual cuir Merino intégral blanc fumé / noir",
+      "it": "BMW Individual pelle Merino integrale bianco fumé / nero",
+      "zh": "BMW Individual 全 Merino 真皮 烟雾白/黑"
+    }
+  },
+  {
+    "code": "LCFR",
+    "material": "leather",
+    "rgb": "#3D2A1A",
+    "names": {
+      "en": "Leather Vernasca Mocha",
+      "de": "Leder Vernasca Mokka",
+      "es": "Cuero Vernasca Moca",
+      "fr": "Cuir Vernasca Moka",
+      "it": "Pelle Vernasca Moka",
+      "zh": "Vernasca 真皮 摩卡"
+    }
+  },
+  {
+    "code": "LHCN",
+    "material": "leather",
+    "rgb": "#9A6533",
+    "names": {
+      "en": "Leather Dakota Cognac",
+      "de": "Leder Dakota Cognac",
+      "es": "Cuero Dakota Cognac",
+      "fr": "Cuir Dakota Cognac",
+      "it": "Pelle Dakota Cognac",
+      "zh": "Dakota 真皮 干邑色"
+    }
+  },
+  {
+    "code": "LHCY",
+    "material": "leather",
+    "rgb": "#7A2424",
+    "names": {
+      "en": "Leather Dakota Coral Red",
+      "de": "Leder Dakota Korallrot",
+      "es": "Cuero Dakota Rojo Coral",
+      "fr": "Cuir Dakota Rouge Corail",
+      "it": "Pelle Dakota Rosso Corallo",
+      "zh": "Dakota 真皮 珊瑚红"
+    }
+  },
+  {
+    "code": "LHIA",
+    "material": "leather",
+    "rgb": "#5C5C5C",
+    "names": {
+      "en": "Leather Dakota Ivory White",
+      "de": "Leder Dakota Elfenbeinweiß",
+      "es": "Cuero Dakota Blanco Marfil",
+      "fr": "Cuir Dakota Blanc Ivoire",
+      "it": "Pelle Dakota Bianco Avorio",
+      "zh": "Dakota 真皮 象牙白"
+    }
+  },
+  {
+    "code": "LHMG",
+    "material": "leather",
+    "rgb": "#3F2E26",
+    "names": {
+      "en": "Leather Dakota Mocha",
+      "de": "Leder Dakota Mokka",
+      "es": "Cuero Dakota Moca",
+      "fr": "Cuir Dakota Moka",
+      "it": "Pelle Dakota Moka",
+      "zh": "Dakota 真皮 摩卡"
+    }
+  },
+  {
+    "code": "LCC4",
+    "material": "leather",
+    "rgb": "#1A1A1A",
+    "names": {
+      "en": "Leather Vernasca Black with red contrast stitching",
+      "de": "Leder Vernasca Schwarz mit roter Kontrastnaht",
+      "es": "Cuero Vernasca Negro con pespunte rojo",
+      "fr": "Cuir Vernasca Noir avec surpiqûres rouges",
+      "it": "Pelle Vernasca Nero con cuciture rosse a contrasto",
+      "zh": "Vernasca 真皮 黑色红色撞色缝线"
+    }
+  },
+  {
+    "code": "LCEW",
+    "material": "leather",
+    "rgb": "#1A1A1A",
+    "names": {
+      "en": "Leather Vernasca M Performance",
+      "de": "Leder Vernasca M Performance",
+      "es": "Cuero Vernasca M Performance",
+      "fr": "Cuir Vernasca M Performance",
+      "it": "Pelle Vernasca M Performance",
+      "zh": "Vernasca 真皮 M Performance"
+    }
+  },
+  {
+    "code": "LMSO",
+    "material": "leather",
+    "rgb": "#7C2A2A",
+    "names": {
+      "en": "Merino leather Tacora Red / Black",
+      "de": "Merino-Leder Tacora Rot/Schwarz",
+      "es": "Cuero Merino Tacora Rojo / Negro",
+      "fr": "Cuir Merino rouge Tacora / noir",
+      "it": "Pelle Merino Rosso Tacora / nero",
+      "zh": "Merino 真皮 Tacora 红/黑"
+    }
+  },
+  {
+    "code": "LMV2",
+    "material": "leather",
+    "rgb": "#9D4F2A",
+    "names": {
+      "en": "Merino leather Fjord Blue / Black",
+      "de": "Merino-Leder Fjordblau/Schwarz",
+      "es": "Cuero Merino Azul Fiordo / Negro",
+      "fr": "Cuir Merino bleu Fjord / noir",
+      "it": "Pelle Merino Blu Fiordo / nero",
+      "zh": "Merino 真皮 峡湾蓝/黑"
+    }
+  },
+  {
+    "code": "LMV3",
+    "material": "leather",
+    "rgb": "#2C2C2C",
+    "names": {
+      "en": "Merino leather Silverstone / Black",
+      "de": "Merino-Leder Silverstone/Schwarz",
+      "es": "Cuero Merino Silverstone / Negro",
+      "fr": "Cuir Merino Silverstone / noir",
+      "it": "Pelle Merino Silverstone / nero",
+      "zh": "Merino 真皮 银石/黑"
+    }
+  },
+  {
+    "code": "LMV4",
+    "material": "leather",
+    "rgb": "#A37953",
+    "names": {
+      "en": "Merino leather Cognac / Black",
+      "de": "Merino-Leder Cognac/Schwarz",
+      "es": "Cuero Merino Cognac / Negro",
+      "fr": "Cuir Merino Cognac / noir",
+      "it": "Pelle Merino Cognac / nero",
+      "zh": "Merino 真皮 干邑/黑"
+    }
+  },
+  {
+    "code": "KP3W",
+    "material": "cloth",
+    "rgb": "#1A1A1A",
+    "names": {
+      "en": "Cloth/SensaTec combination Anthracite",
+      "de": "Stoff/SensaTec-Kombination Anthrazit",
+      "es": "Combinación tela/SensaTec antracita",
+      "fr": "Combinaison tissu/SensaTec anthracite",
+      "it": "Combinazione tessuto/SensaTec antracite",
+      "zh": "织物/SensaTec 组合 炭灰"
+    }
+  },
+  {
+    "code": "FMCH",
+    "material": "cloth",
+    "rgb": "#1A1A1A",
+    "names": {
+      "en": "M cloth/Alcantara Anthracite blue stripes",
+      "de": "M Stoff/Alcantara Anthrazit blaue Streifen",
+      "es": "Tela M/Alcantara antracita rayas azules",
+      "fr": "Tissu M/Alcantara anthracite rayures bleues",
+      "it": "Tessuto M/Alcantara antracite con righe blu",
+      "zh": "M 织物/Alcantara 炭灰蓝条纹"
+    }
+  },
+  {
+    "code": "FMSW",
+    "material": "cloth",
+    "rgb": "#1A1A1A",
+    "names": {
+      "en": "M cloth/Alcantara Black with M piping",
+      "de": "M Stoff/Alcantara Schwarz mit M-Paspel",
+      "es": "Tela M/Alcantara negro con perfil M",
+      "fr": "Tissu M/Alcantara noir avec passepoil M",
+      "it": "Tessuto M/Alcantara nero con bordino M",
+      "zh": "M 织物/Alcantara 黑色带 M 滚边"
+    }
+  }
+]

@@ -1,0 +1,10 @@
+To configure a database for being multiplexed please set
+	'Number of max. multiplexed kernels' 
+to a value greater than 0
+
+The value
+	'Number of min. multiplexed kernels'
+must be less equal to the maximum value and greater equal to 0.
+
+If both values are equal to zero the database is not multiplexed.
+

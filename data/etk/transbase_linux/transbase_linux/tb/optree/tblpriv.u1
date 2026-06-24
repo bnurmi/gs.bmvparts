@@ -1,0 +1,37 @@
+RELDESC_BEGIN
+"@@systablepriv" 
+41 1 -1 1
+9
+	integer "grantee" 0 1 1
+	integer "tsegno" 1 2 1
+	integer "grantor" 2 3 1
+	char(*) "sel_priv" 3 0 1
+	char(*) "del_priv" 4 0 1
+	char(*) "ins_priv" 5 0 1
+	char(*) "upd_priv" 6 0 1
+	integer "d1" 7 0 0
+	char(*) "d2" 8 0 0
+0
+RELDESC_END
+
+(upd  { "@@systablepriv"  on_the_fly } 
+   (N001:proj 
+	(rel  { "@@systablepriv" } 
+	   (times { }
+	   	(times { }
+		   (ivmk  { eq } 
+		   	(param  { integer[1] } ))
+		   (ivmk  { eq } 
+		   	(param  { integer[2] } )))
+		(ivmk  { eq } 
+		   (param  { integer[3] } ))))
+          (N013:build 
+               (N014:attr  { N001[1] } )
+               (N015:attr  { N001[2] } )
+               (N016:attr  { N001[3] } )
+               (N017:param  { string[4] } )
+               (N018:param  { string[5] } )
+               (N019:param  { string[6] } )
+               (N020:param  { string[7] } )
+               (N021:attr  { N001[8] } )
+               (N022:attr  { N001[9] } ))))

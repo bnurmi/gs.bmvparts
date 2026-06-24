@@ -1,0 +1,730 @@
+[
+  {
+    "code": "300",
+    "finish": "non-metallic",
+    "rgb": "#FFFFFF",
+    "names": {
+      "en": "Alpine White III",
+      "de": "Alpinweiß III",
+      "es": "Blanco Alpino III",
+      "fr": "Blanc Alpin III",
+      "it": "Bianco Alpino III",
+      "zh": "阿尔卑斯白 III"
+    }
+  },
+  {
+    "code": "668",
+    "finish": "non-metallic",
+    "rgb": "#0A0A0A",
+    "names": {
+      "en": "Jet Black",
+      "de": "Schwarz",
+      "es": "Negro",
+      "fr": "Noir",
+      "it": "Nero",
+      "zh": "纯黑色"
+    }
+  },
+  {
+    "code": "A52",
+    "finish": "metallic",
+    "rgb": "#9DACBA",
+    "names": {
+      "en": "Space Grey metallic",
+      "de": "Spacegrau metallic",
+      "es": "Gris Espacial metalizado",
+      "fr": "Gris espace métallisé",
+      "it": "Grigio Spazio metallizzato",
+      "zh": "太空灰金属漆"
+    }
+  },
+  {
+    "code": "475",
+    "finish": "metallic",
+    "rgb": "#191B1F",
+    "names": {
+      "en": "Black Sapphire metallic",
+      "de": "Saphirschwarz metallic",
+      "es": "Negro Zafiro metalizado",
+      "fr": "Noir Saphir métallisé",
+      "it": "Nero Zaffiro metallizzato",
+      "zh": "蓝宝石黑金属漆"
+    }
+  },
+  {
+    "code": "A89",
+    "finish": "metallic",
+    "rgb": "#3F576B",
+    "names": {
+      "en": "Imperial Blue Brilliant Effect",
+      "de": "Imperialblau brillanteffekt",
+      "es": "Azul Imperial brillante",
+      "fr": "Bleu Impérial brillant",
+      "it": "Blu Imperiale brillante",
+      "zh": "皇家蓝亮彩漆"
+    }
+  },
+  {
+    "code": "A90",
+    "finish": "metallic",
+    "rgb": "#9C2235",
+    "names": {
+      "en": "Vermillion Red metallic",
+      "de": "Vermillionrot metallic",
+      "es": "Rojo Bermellón metalizado",
+      "fr": "Rouge Vermillon métallisé",
+      "it": "Rosso Vermiglio metallizzato",
+      "zh": "朱红色金属漆"
+    }
+  },
+  {
+    "code": "A96",
+    "finish": "metallic",
+    "rgb": "#E0E2E5",
+    "names": {
+      "en": "Mineral White metallic",
+      "de": "Mineralweiß metallic",
+      "es": "Blanco Mineral metalizado",
+      "fr": "Blanc Minéral métallisé",
+      "it": "Bianco Minerale metallizzato",
+      "zh": "矿石白金属漆"
+    }
+  },
+  {
+    "code": "B39",
+    "finish": "metallic",
+    "rgb": "#7C8186",
+    "names": {
+      "en": "Mineral Grey metallic",
+      "de": "Mineralgrau metallic",
+      "es": "Gris Mineral metalizado",
+      "fr": "Gris Minéral métallisé",
+      "it": "Grigio Minerale metallizzato",
+      "zh": "矿石灰金属漆"
+    }
+  },
+  {
+    "code": "B45",
+    "finish": "metallic",
+    "rgb": "#3D424B",
+    "names": {
+      "en": "Sophisto Grey metallic",
+      "de": "Sophistograu metallic",
+      "es": "Gris Sophisto metalizado",
+      "fr": "Gris Sophisto métallisé",
+      "it": "Grigio Sophisto metallizzato",
+      "zh": "雅士灰金属漆"
+    }
+  },
+  {
+    "code": "C10",
+    "finish": "metallic",
+    "rgb": "#1B2C3D",
+    "names": {
+      "en": "Mediterranean Blue metallic",
+      "de": "Mittelmeerblau metallic",
+      "es": "Azul Mediterráneo metalizado",
+      "fr": "Bleu Méditerranée métallisé",
+      "it": "Blu Mediterraneo metallizzato",
+      "zh": "地中海蓝金属漆"
+    }
+  },
+  {
+    "code": "C1M",
+    "finish": "metallic",
+    "rgb": "#363B40",
+    "names": {
+      "en": "Bluestone metallic",
+      "de": "Bluestone metallic",
+      "es": "Bluestone metalizado",
+      "fr": "Bluestone métallisé",
+      "it": "Bluestone metallizzato",
+      "zh": "蓝灰石金属漆"
+    }
+  },
+  {
+    "code": "C2Y",
+    "finish": "metallic",
+    "rgb": "#1F2E37",
+    "names": {
+      "en": "Tanzanite Blue II metallic",
+      "de": "Tansanitblau II metallic",
+      "es": "Azul Tanzanita II metalizado",
+      "fr": "Bleu Tanzanite II métallisé",
+      "it": "Blu Tanzanite II metallizzato",
+      "zh": "坦桑尼蓝 II 金属漆"
+    }
+  },
+  {
+    "code": "C3D",
+    "finish": "metallic",
+    "rgb": "#445C75",
+    "names": {
+      "en": "Phytonic Blue metallic",
+      "de": "Phytonicblau metallic",
+      "es": "Azul Phytonic metalizado",
+      "fr": "Bleu Phytonic métallisé",
+      "it": "Blu Phytonic metallizzato",
+      "zh": "费托蓝金属漆"
+    }
+  },
+  {
+    "code": "C4E",
+    "finish": "metallic",
+    "rgb": "#7C9085",
+    "names": {
+      "en": "Aventurine Red metallic",
+      "de": "Aventurinrot metallic",
+      "es": "Rojo Aventurin metalizado",
+      "fr": "Rouge Aventurine métallisé",
+      "it": "Rosso Aventurine metallizzato",
+      "zh": "砂金石红金属漆"
+    }
+  },
+  {
+    "code": "C57",
+    "finish": "metallic",
+    "rgb": "#3B6FA1",
+    "names": {
+      "en": "Estoril Blue II metallic",
+      "de": "Estorilblau II metallic",
+      "es": "Azul Estoril II metalizado",
+      "fr": "Bleu Estoril II métallisé",
+      "it": "Blu Estoril II metallizzato",
+      "zh": "埃斯特蓝 II 金属漆"
+    }
+  },
+  {
+    "code": "P0B",
+    "finish": "individual",
+    "rgb": "#262C36",
+    "names": {
+      "en": "Frozen Black metallic",
+      "de": "Frozen Black metallic",
+      "es": "Negro Frozen metalizado",
+      "fr": "Noir Frozen métallisé",
+      "it": "Nero Frozen metallizzato",
+      "zh": "冰冻黑金属漆"
+    }
+  },
+  {
+    "code": "P7M",
+    "finish": "individual",
+    "rgb": "#5A6E7C",
+    "names": {
+      "en": "Frozen Pure Grey metallic",
+      "de": "Frozen Pure Grey metallic",
+      "es": "Gris Puro Frozen metalizado",
+      "fr": "Gris Pur Frozen métallisé",
+      "it": "Grigio Puro Frozen metallizzato",
+      "zh": "冰冻纯灰金属漆"
+    }
+  },
+  {
+    "code": "X02",
+    "finish": "individual",
+    "rgb": "#7E2A2D",
+    "names": {
+      "en": "BMW Individual Aventurine Red metallic",
+      "de": "BMW Individual Aventurinrot metallic",
+      "es": "BMW Individual Rojo Aventurin metalizado",
+      "fr": "BMW Individual Rouge Aventurine métallisé",
+      "it": "BMW Individual Rosso Aventurine metallizzato",
+      "zh": "BMW Individual 砂金石红金属漆"
+    }
+  },
+  {
+    "code": "X1A",
+    "finish": "individual",
+    "rgb": "#1F1F1F",
+    "names": {
+      "en": "BMW Individual Ruby Black metallic",
+      "de": "BMW Individual Rubinschwarz metallic",
+      "es": "BMW Individual Negro Rubí metalizado",
+      "fr": "BMW Individual Noir Rubis métallisé",
+      "it": "BMW Individual Nero Rubino metallizzato",
+      "zh": "BMW Individual 红宝石黑金属漆"
+    }
+  },
+  {
+    "code": "Z0F",
+    "finish": "individual",
+    "rgb": "#1B202C",
+    "names": {
+      "en": "BMW Individual Tanzanite Blue II metallic",
+      "de": "BMW Individual Tansanitblau II metallic",
+      "es": "BMW Individual Azul Tanzanita II metalizado",
+      "fr": "BMW Individual Bleu Tanzanite II métallisé",
+      "it": "BMW Individual Blu Tanzanite II metallizzato",
+      "zh": "BMW Individual 坦桑尼蓝 II 金属漆"
+    }
+  },
+  {
+    "code": "P7M0",
+    "finish": "individual",
+    "rgb": "#5A6E7C",
+    "names": {
+      "en": "Frozen Pure Grey II metallic",
+      "de": "Frozen Pure Grey II metallic",
+      "es": "Gris Puro Frozen II metalizado",
+      "fr": "Gris Pur Frozen II métallisé",
+      "it": "Grigio Puro Frozen II metallizzato",
+      "zh": "冰冻纯灰 II 金属漆"
+    }
+  },
+  {
+    "code": "P7Y",
+    "finish": "individual",
+    "rgb": "#404B57",
+    "names": {
+      "en": "Frozen Deep Grey metallic",
+      "de": "Frozen Deep Grey metallic",
+      "es": "Gris Profundo Frozen metalizado",
+      "fr": "Gris Profond Frozen métallisé",
+      "it": "Grigio Profondo Frozen metallizzato",
+      "zh": "冰冻深灰金属漆"
+    }
+  },
+  {
+    "code": "C4F",
+    "finish": "metallic",
+    "rgb": "#A8AAAD",
+    "names": {
+      "en": "Brooklyn Grey metallic",
+      "de": "Brooklyngrau metallic",
+      "es": "Gris Brooklyn metalizado",
+      "fr": "Gris Brooklyn métallisé",
+      "it": "Grigio Brooklyn metallizzato",
+      "zh": "布鲁克林灰金属漆"
+    }
+  },
+  {
+    "code": "C36",
+    "finish": "metallic",
+    "rgb": "#1A2335",
+    "names": {
+      "en": "Carbon Black metallic",
+      "de": "Carbonschwarz metallic",
+      "es": "Negro Carbón metalizado",
+      "fr": "Noir Carbone métallisé",
+      "it": "Nero Carbonio metallizzato",
+      "zh": "碳黑金属漆"
+    }
+  },
+  {
+    "code": "475A",
+    "finish": "metallic",
+    "rgb": "#191B1F",
+    "names": {
+      "en": "Black Sapphire metallic",
+      "de": "Saphirschwarz metallic",
+      "es": "Negro Zafiro metalizado",
+      "fr": "Noir Saphir métallisé",
+      "it": "Nero Zaffiro metallizzato",
+      "zh": "蓝宝石黑金属漆"
+    }
+  },
+  {
+    "code": "A75",
+    "finish": "metallic",
+    "rgb": "#243036",
+    "names": {
+      "en": "Melbourne Red metallic",
+      "de": "Melbourne-Rot metallic",
+      "es": "Rojo Melbourne metalizado",
+      "fr": "Rouge Melbourne métallisé",
+      "it": "Rosso Melbourne metallizzato",
+      "zh": "墨尔本红金属漆"
+    }
+  },
+  {
+    "code": "A76",
+    "finish": "metallic",
+    "rgb": "#21343A",
+    "names": {
+      "en": "Liquid Blue metallic",
+      "de": "Liquidblau metallic",
+      "es": "Azul Líquido metalizado",
+      "fr": "Bleu Liquid métallisé",
+      "it": "Blu Liquid metallizzato",
+      "zh": "液态蓝金属漆"
+    }
+  },
+  {
+    "code": "A83",
+    "finish": "metallic",
+    "rgb": "#7E8389",
+    "names": {
+      "en": "Glacier Silver metallic",
+      "de": "Gletschersilber metallic",
+      "es": "Plata Glaciar metalizado",
+      "fr": "Argent Glacier métallisé",
+      "it": "Argento Ghiacciaio metallizzato",
+      "zh": "冰川银金属漆"
+    }
+  },
+  {
+    "code": "A91",
+    "finish": "metallic",
+    "rgb": "#2C2D34",
+    "names": {
+      "en": "Kalahari Beige metallic",
+      "de": "Kalaharibeige metallic",
+      "es": "Beige Kalahari metalizado",
+      "fr": "Beige Kalahari métallisé",
+      "it": "Beige Kalahari metallizzato",
+      "zh": "卡拉哈里米金属漆"
+    }
+  },
+  {
+    "code": "B38",
+    "finish": "metallic",
+    "rgb": "#212B33",
+    "names": {
+      "en": "Midnight Blue metallic",
+      "de": "Mitternachtsblau metallic",
+      "es": "Azul Medianoche metalizado",
+      "fr": "Bleu Minuit métallisé",
+      "it": "Blu Mezzanotte metallizzato",
+      "zh": "午夜蓝金属漆"
+    }
+  },
+  {
+    "code": "B66",
+    "finish": "metallic",
+    "rgb": "#0F0F11",
+    "names": {
+      "en": "Carbon Black II metallic",
+      "de": "Carbonschwarz II metallic",
+      "es": "Negro Carbón II metalizado",
+      "fr": "Noir Carbone II métallisé",
+      "it": "Nero Carbonio II metallizzato",
+      "zh": "碳黑 II 金属漆"
+    }
+  },
+  {
+    "code": "C06",
+    "finish": "metallic",
+    "rgb": "#222B33",
+    "names": {
+      "en": "Snapper Rocks Blue metallic",
+      "de": "Snapper-Rocks-Blau metallic",
+      "es": "Azul Snapper Rocks metalizado",
+      "fr": "Bleu Snapper Rocks métallisé",
+      "it": "Blu Snapper Rocks metallizzato",
+      "zh": "斯纳珀岩石蓝金属漆"
+    }
+  },
+  {
+    "code": "C0R",
+    "finish": "metallic",
+    "rgb": "#2B5468",
+    "names": {
+      "en": "Long Beach Blue metallic",
+      "de": "Long-Beach-Blau metallic",
+      "es": "Azul Long Beach metalizado",
+      "fr": "Bleu Long Beach métallisé",
+      "it": "Blu Long Beach metallizzato",
+      "zh": "长滩蓝金属漆"
+    }
+  },
+  {
+    "code": "C2X",
+    "finish": "metallic",
+    "rgb": "#3B3631",
+    "names": {
+      "en": "Manhattan Green metallic",
+      "de": "Manhattan-Grün metallic",
+      "es": "Verde Manhattan metalizado",
+      "fr": "Vert Manhattan métallisé",
+      "it": "Verde Manhattan metallizzato",
+      "zh": "曼哈顿绿金属漆"
+    }
+  },
+  {
+    "code": "C3E",
+    "finish": "metallic",
+    "rgb": "#9A8A78",
+    "names": {
+      "en": "Sunset Orange metallic",
+      "de": "Sunset Orange metallic",
+      "es": "Naranja Sunset metalizado",
+      "fr": "Orange Coucher de Soleil métallisé",
+      "it": "Arancione Sunset metallizzato",
+      "zh": "日落橙金属漆"
+    }
+  },
+  {
+    "code": "C4P",
+    "finish": "metallic",
+    "rgb": "#3F4A4F",
+    "names": {
+      "en": "Dravit Grey metallic",
+      "de": "Dravitgrau metallic",
+      "es": "Gris Dravit metalizado",
+      "fr": "Gris Dravit métallisé",
+      "it": "Grigio Dravit metallizzato",
+      "zh": "杜威灰金属漆"
+    }
+  },
+  {
+    "code": "C4W",
+    "finish": "metallic",
+    "rgb": "#445B73",
+    "names": {
+      "en": "Portimao Blue metallic",
+      "de": "Portimaoblau metallic",
+      "es": "Azul Portimao metalizado",
+      "fr": "Bleu Portimao métallisé",
+      "it": "Blu Portimao metallizzato",
+      "zh": "葡萄蓝金属漆"
+    }
+  },
+  {
+    "code": "C49",
+    "finish": "individual",
+    "rgb": "#7C151B",
+    "names": {
+      "en": "BMW Individual Aventurine Red III",
+      "de": "BMW Individual Aventurinrot III",
+      "es": "BMW Individual Rojo Aventurin III",
+      "fr": "BMW Individual Rouge Aventurine III",
+      "it": "BMW Individual Rosso Aventurine III",
+      "zh": "BMW Individual 砂金石红 III"
+    }
+  },
+  {
+    "code": "P7Z",
+    "finish": "individual",
+    "rgb": "#3F576B",
+    "names": {
+      "en": "BMW Individual Frozen Marina Bay Blue",
+      "de": "BMW Individual Frozen Marina Bay Blau",
+      "es": "BMW Individual Azul Marina Bay Frozen",
+      "fr": "BMW Individual Bleu Marina Bay Frozen",
+      "it": "BMW Individual Blu Marina Bay Frozen",
+      "zh": "BMW Individual 冰冻滨海湾蓝"
+    }
+  },
+  {
+    "code": "Z0G",
+    "finish": "individual",
+    "rgb": "#1F2E37",
+    "names": {
+      "en": "BMW Individual Tanzanite Blue metallic",
+      "de": "BMW Individual Tansanitblau metallic",
+      "es": "BMW Individual Azul Tanzanita metalizado",
+      "fr": "BMW Individual Bleu Tanzanite métallisé",
+      "it": "BMW Individual Blu Tanzanite metallizzato",
+      "zh": "BMW Individual 坦桑尼蓝金属漆"
+    }
+  },
+  {
+    "code": "X12",
+    "finish": "individual",
+    "rgb": "#1B202C",
+    "names": {
+      "en": "BMW Individual Azurite Black metallic",
+      "de": "BMW Individual Azuritschwarz metallic",
+      "es": "BMW Individual Negro Azurita metalizado",
+      "fr": "BMW Individual Noir Azurite métallisé",
+      "it": "BMW Individual Nero Azurite metallizzato",
+      "zh": "BMW Individual 蓝铜矿黑金属漆"
+    }
+  },
+  {
+    "code": "X14",
+    "finish": "individual",
+    "rgb": "#7C9085",
+    "names": {
+      "en": "BMW Individual Frozen Cashmere Silver",
+      "de": "BMW Individual Frozen Cashmere Silber",
+      "es": "BMW Individual Cashmere Silver Frozen",
+      "fr": "BMW Individual Argent Cashmere Frozen",
+      "it": "BMW Individual Argento Cashmere Frozen",
+      "zh": "BMW Individual 冰冻羊绒银"
+    }
+  },
+  {
+    "code": "C3G",
+    "finish": "metallic",
+    "rgb": "#A48E70",
+    "names": {
+      "en": "Bernina Grey Amber Effect",
+      "de": "Berninagrau Bernsteineffekt",
+      "es": "Gris Bernina Ámbar",
+      "fr": "Gris Bernina Ambre",
+      "it": "Grigio Bernina Ambra",
+      "zh": "贝尔尼纳灰琥珀漆"
+    }
+  },
+  {
+    "code": "C57A",
+    "finish": "metallic",
+    "rgb": "#3B6FA1",
+    "names": {
+      "en": "Estoril Blue II metallic (M Sport)",
+      "de": "Estorilblau II metallic (M Sport)",
+      "es": "Azul Estoril II metalizado (M Sport)",
+      "fr": "Bleu Estoril II métallisé (M Sport)",
+      "it": "Blu Estoril II metallizzato (M Sport)",
+      "zh": "埃斯特蓝 II 金属漆 (M Sport)"
+    }
+  },
+  {
+    "code": "C3Z",
+    "finish": "metallic",
+    "rgb": "#7E1818",
+    "names": {
+      "en": "Toronto Red metallic",
+      "de": "Toronto-Rot metallic",
+      "es": "Rojo Toronto metalizado",
+      "fr": "Rouge Toronto métallisé",
+      "it": "Rosso Toronto metallizzato",
+      "zh": "多伦多红金属漆"
+    }
+  },
+  {
+    "code": "C4D",
+    "finish": "metallic",
+    "rgb": "#0E1A28",
+    "names": {
+      "en": "Tanzanite Blue II metallic (BMW Individual)",
+      "de": "Tansanitblau II metallic (BMW Individual)",
+      "es": "Azul Tanzanita II BMW Individual",
+      "fr": "Bleu Tanzanite II BMW Individual",
+      "it": "Blu Tanzanite II BMW Individual",
+      "zh": "BMW Individual 坦桑尼蓝 II 金属漆"
+    }
+  },
+  {
+    "code": "C2C",
+    "finish": "metallic",
+    "rgb": "#13202C",
+    "names": {
+      "en": "BMW Individual Piemont Red",
+      "de": "BMW Individual Piemontrot",
+      "es": "BMW Individual Rojo Piemonte",
+      "fr": "BMW Individual Rouge Piémont",
+      "it": "BMW Individual Rosso Piemonte",
+      "zh": "BMW Individual 皮埃蒙特红"
+    }
+  },
+  {
+    "code": "C4S",
+    "finish": "metallic",
+    "rgb": "#5C6D7C",
+    "names": {
+      "en": "Skyscraper Grey metallic",
+      "de": "Skyscrapergrau metallic",
+      "es": "Gris Rascacielos metalizado",
+      "fr": "Gris Gratte-ciel métallisé",
+      "it": "Grigio Grattacielo metallizzato",
+      "zh": "摩天大楼灰金属漆"
+    }
+  },
+  {
+    "code": "C4Z",
+    "finish": "individual",
+    "rgb": "#9B7A4A",
+    "names": {
+      "en": "BMW Individual Voodoo Blue",
+      "de": "BMW Individual Voodoo Blau",
+      "es": "BMW Individual Azul Voodoo",
+      "fr": "BMW Individual Bleu Voodoo",
+      "it": "BMW Individual Blu Voodoo",
+      "zh": "BMW Individual 巫毒蓝"
+    }
+  },
+  {
+    "code": "P75",
+    "finish": "individual",
+    "rgb": "#3F4A4F",
+    "names": {
+      "en": "Frozen Dark Silver metallic",
+      "de": "Frozen Dark Silver metallic",
+      "es": "Plata Oscura Frozen metalizado",
+      "fr": "Argent Foncé Frozen métallisé",
+      "it": "Argento Scuro Frozen metallizzato",
+      "zh": "冰冻深银金属漆"
+    }
+  },
+  {
+    "code": "P74",
+    "finish": "individual",
+    "rgb": "#A8AAAD",
+    "names": {
+      "en": "Frozen Brilliant White metallic",
+      "de": "Frozen Brilliantweiß metallic",
+      "es": "Blanco Brillante Frozen",
+      "fr": "Blanc Brillant Frozen métallisé",
+      "it": "Bianco Brillante Frozen",
+      "zh": "冰冻亮白金属漆"
+    }
+  },
+  {
+    "code": "WC0F",
+    "finish": "metallic",
+    "rgb": "#FFFFFF",
+    "names": {
+      "en": "M Brooklyn Grey metallic",
+      "de": "M Brooklyngrau metallic",
+      "es": "M Gris Brooklyn metalizado",
+      "fr": "M Gris Brooklyn métallisé",
+      "it": "M Grigio Brooklyn metallizzato",
+      "zh": "M 布鲁克林灰金属漆"
+    }
+  },
+  {
+    "code": "WC44",
+    "finish": "metallic",
+    "rgb": "#3F576B",
+    "names": {
+      "en": "Marina Bay Blue metallic",
+      "de": "Marina-Bay-Blau metallic",
+      "es": "Azul Marina Bay metalizado",
+      "fr": "Bleu Marina Bay métallisé",
+      "it": "Blu Marina Bay metallizzato",
+      "zh": "滨海湾蓝金属漆"
+    }
+  },
+  {
+    "code": "WP58",
+    "finish": "metallic",
+    "rgb": "#73AB44",
+    "names": {
+      "en": "São Paulo Yellow",
+      "de": "São Paulo Gelb",
+      "es": "Amarillo São Paulo",
+      "fr": "Jaune São Paulo",
+      "it": "Giallo São Paulo",
+      "zh": "圣保罗黄"
+    }
+  },
+  {
+    "code": "WP59",
+    "finish": "individual",
+    "rgb": "#244C75",
+    "names": {
+      "en": "Riviera Blue",
+      "de": "Riviera Blau",
+      "es": "Azul Riviera",
+      "fr": "Bleu Riviera",
+      "it": "Blu Riviera",
+      "zh": "里维埃拉蓝"
+    }
+  },
+  {
+    "code": "WP4F",
+    "finish": "metallic",
+    "rgb": "#9B5C24",
+    "names": {
+      "en": "Java Green metallic",
+      "de": "Java Grün metallic",
+      "es": "Verde Java metalizado",
+      "fr": "Vert Java métallisé",
+      "it": "Verde Java metallizzato",
+      "zh": "爪哇绿金属漆"
+    }
+  }
+]

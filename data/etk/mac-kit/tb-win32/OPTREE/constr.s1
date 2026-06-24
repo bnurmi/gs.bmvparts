@@ -1,0 +1,18 @@
+RELDESC_BEGIN
+"@@sysconstraint" 
+81 1 -1 1
+7
+	integer "segno" 0 1 1
+	char(*) "constraintname" 1 2 1
+	char(*) "attributes" 2 0 0
+	char(*) "constrainttext" 3 0 1
+	integer "cpos" 4 0 0
+	integer "d1" 5 0 0
+	char(*) "ubtrees" 6 0 0
+0
+RELDESC_END
+
+(N0:sel
+	(N001:rel  { "@@sysconstraint" } 
+		(N002:ivmk  { eq } 
+		(N003:param  { integer[1] } ))))

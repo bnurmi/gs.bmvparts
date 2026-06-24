@@ -1,0 +1,19 @@
+Give the number of CD-ROM disks constituting the database to be 
+attached.  
+tbadmin will prompt for all CD-ROMs to be mounted onto the 
+default directories which are created by tbadmin.
+To override the default mount points, they can explicitly be specified 
+by the command line option "r=..".
+
+   -	Examples for the command line option:
+
+	$ tbadmin -C[f] romdb  r=/rom/cd0
+	  -->  One CD-ROM is expected,  mounted on directory /rom/cd0
+	$ tbadmin -C[f] romdb  r=E:\  r=F:\
+	  -->  Two CD-ROMs are expected on drives E: and F:, resp.
+	$ tbadmin -C[f] romdb  r=E:\  r=E:\
+	  -->  Two CD-ROMs constitute the database, tbadmin/tbkernel
+		will dynamically ask for insertion on drive E:
+
+If the CD-ROMs are not accessible in the specified directories/drives,
+tbadmin interactively prompts to mount/insert them.

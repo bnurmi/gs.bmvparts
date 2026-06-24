@@ -1,0 +1,65 @@
+# Jetstream Struktur 
+
+# Grundlage: 
+#	Anleitung fuer die Erstellung und Distribution von Datenpaketen fuer
+#	das JETstream Online Update-System
+#	Version: 1.1 Druckdatum: 02.04.06 Datum letzte �nderung: 06.04.06
+
+# 	Inhalt von meta-inf\Manifest.mf weggelassen, da bei Signierung erzeugt 
+
+#	Es wird die Verwendung von Paketversion 3 vorausgesetzt
+#	Reihenfolge nach Doku Seite 24ff
+ver_pkg_description=3.0
+
+name=ETK-Data
+
+ostype=WIN
+
+targetenv=ETK
+
+author=msg systems ag, ETK Projekt
+
+version=3.220.006
+
+description=ETK Data
+#description.de=ETK Data
+
+# Groe�e des msi 
+size=1100000
+
+# ETK ist sprachunabh�ngig
+lang-iso=--
+
+target(ETK)(WIN)=E:/TEMP-JSWU
+
+# hostver.<> optional wird weggelassen
+# dependencies: Etk Server muss installiert sein wg DB-update
+# Standard: System gleicher Stand wie Daten
+dependencies.a=ETK-Help_3.220.001_--
+#dependencies.a=ETK-System_3.220.001_-- ETK-Java_3.220.001_-- ETK-Help_3.220.001_--
+# Spezial: abh�ngig von System alter Stand -> version manuell eintragen
+# und obige Zeile kommentieren
+#dependencies.a=ETK-System_1.604.001_--
+
+# System Reboot erforderlich
+reboot=true
+
+# preinstall,prerecover,postrecover nicht noetig daher leer
+preinstall(ETK)(WIN)=preinstall.cmd
+postinstall(ETK)(WIN)=postinstall.cmd
+prerecover(ETK)(WIN)=prerecover.cmd
+postrecover(ETK)(WIN)=postrecover.cmd
+
+# filelist Inhalt:z.B. etkSta.msi P:/ETK
+filelist(ETK)(WIN)=filelist.txt
+
+#	Inhalt filelist_script ?
+filelist_script(ETK)(WIN)=filelist_script.txt
+
+# optional: standard false
+#urgent=false
+
+# Gesch�tzte Dauer der Installation (max)
+durationInstallation=30
+
+customAction(ETK)(WIN)=CustomActionData.txt

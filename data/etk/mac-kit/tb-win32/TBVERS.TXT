@@ -1,0 +1,7 @@
+#define VER_COPYRIGHT_STR  "Copyright (c) 1987 - 2004\0"
+#define TBREL_STR	"V6.1.2.19 (Build 404)"
+#define TBRELEASEDATE	"$Date: 2004/08/05 11:46:57 $"
+#define TBRELEASESTATE	"$State: Release $"
+#define TBPROJECTREL	"$ProjectRevision: 4.119.1.19 $"
+#define VER_COMPANYNAME_STR "Transaction Software, D 81737 Munich\0"
+#define VER_PRODUCTNAME_STR "Transbase/CD Database System\0"

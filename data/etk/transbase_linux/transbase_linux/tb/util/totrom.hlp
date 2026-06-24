@@ -1,0 +1,10 @@
+For an Editorial Database, the total CD-ROM space must be configured
+in terms of pages.
+
+It is not critical and (for the sake of virtual updates) also
+recommended to specify a bit larger than the physical size of CD-ROM.
+For example, specify 1 GB per CD-ROM, i.e. 500.000 pages with the 
+default page size of 2KB.
+
+   -	This DB parameter cannot be changed after DB creation.
+   -	Command Line Syntax :   rs=<size in pages>

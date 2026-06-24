@@ -1,0 +1,1578 @@
+{
+    "data": [
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "118.79",
+            "can_be_emailed": false,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": null,
+            "external_status": "draft",
+            "hosted_invoice_url": "https://invoices.withorb.com/view?token=ImhreWtUZlE2b0ZSZ1BkUWci.sRHq4oIrPaeAt7jn8JMWeD-XJNo",
+            "id": "VDSAZJVsmypniHrr",
+            "invoice_date": "2026-05-18T00:00:00+00:00",
+            "invoice_number": "JTUEPK-DRAFT",
+            "invoice_pdf": null,
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": null,
+            "receipt_pdf": null,
+            "scheduled_issue_at": "2026-05-18T12:05:00+00:00",
+            "status": "draft",
+            "subscription_name": "Replit Pro Usage",
+            "total_with_tax": null,
+            "webapp_status": "draft"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "276.79",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2026-05-05T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": "https://invoices.withorb.com/view?token=ImtCRG9BUHJjRXFzcW5qdnoi.RXZGKW-IGQiIWKo2lpy4svpZm2o",
+            "id": "h5yYvacPfBRxQdK7",
+            "invoice_date": "2026-05-05T16:42:29+00:00",
+            "invoice_number": "JTUEPK-00096",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/GnrXayNWHvyC3xFb?token=IkduclhheU5XSHZ5QzN4RmIi._ddjYwaO6diDOB3KEcyeiD4PtLw",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/bSEQc4Fsui4wjFgT?token=ImJTRVFjNEZzdWk0d2pGZ1Qi.Fqcw42j3XSUcPCTsowepU2lHAXU",
+            "scheduled_issue_at": "2026-05-05T16:42:35+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Pro Usage",
+            "total_with_tax": "276.79",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "59.16",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2026-05-03T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": "https://invoices.withorb.com/view?token=IkF2Z3dpREtxRU5ZWEhuUHMi.kaoj6-RqhZq0ysadgZ1Ge-PTvA0",
+            "id": "MxNQJ3H8MXFDxBed",
+            "invoice_date": "2026-05-03T12:14:33+00:00",
+            "invoice_number": "JTUEPK-00095",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/nXLSHmHVsPhr6JkD?token=Im5YTFNIbUhWc1BocjZKa0Qi.sri5mT0H_ws9d_saZNeLIXJtqYY",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/9rE8F6WNG6qBMLxp?token=IjlyRThGNldORzZxQk1MeHAi.v9VgscHM-uTzz_YMtt0JV0u_fVA",
+            "scheduled_issue_at": "2026-05-03T12:14:41+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Pro Usage",
+            "total_with_tax": "59.16",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "275.55",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2026-05-02T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": "https://invoices.withorb.com/view?token=IjRnc2VHanY4V25EanhVYWUi.thOgcV1yPn_zZYuXeLZ79o0v7Yo",
+            "id": "4PKVDwaL3sJUPVfA",
+            "invoice_date": "2026-05-02T21:17:22+00:00",
+            "invoice_number": "JTUEPK-00094",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/aps5LWnHxdgjaw2p?token=ImFwczVMV25IeGRnamF3MnAi.bp82WT-8jAX2A6rBzO6NtdvgJK0",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/DyJ2LvZKVpLbsXRz?token=IkR5SjJMdlpLVnBMYnNYUnoi.2riBeWq_hQZ8xKFI3tlcUuKA5y4",
+            "scheduled_issue_at": "2026-05-02T21:17:27+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Pro Usage",
+            "total_with_tax": "275.55",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "252.03",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2026-04-30T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": "https://invoices.withorb.com/view?token=IkpOM2ZxSHFURmpHWm1ZM3Ii.sopo2iESrLhwUJ-pbzKbjtDuvBA",
+            "id": "Y7zjrvcZwwTr9JLA",
+            "invoice_date": "2026-04-30T23:46:41+00:00",
+            "invoice_number": "JTUEPK-00093",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/GghqcT2F2goVKFZQ?token=IkdnaHFjVDJGMmdvVktGWlEi.P0mKiWIhVVBgZnphivHmoQiqgxo",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/BL7WyKaQmhfQhx2s?token=IkJMN1d5S2FRbWhmUWh4MnMi.tsKGKRe5FU5xnrauR9JPUNmCNUw",
+            "scheduled_issue_at": "2026-04-30T23:46:49+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Pro Usage",
+            "total_with_tax": "277.62",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "0.00",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2026-04-18T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": "https://invoices.withorb.com/view?token=IkxIUEN5Q0Y2dkM0TGVyM2Ui.GGvOjWEKliAkkxyoXp96Ut9Lq-s",
+            "id": "PCkaEjibH8fMQzU3",
+            "invoice_date": "2026-04-18T00:00:00+00:00",
+            "invoice_number": "JTUEPK-00092",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/iKmQx7RattzwzRoK?token=ImlLbVF4N1JhdHR6d3pSb0si.JcwC-kA3loJ5BliDOcoUK61ayGA",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": null,
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/Bhou2S6G3qwwt3eE?token=IkJob3UyUzZHM3F3d3QzZUUi.F6MgtMYO8VEEnMLdDTmW3q2j0eA",
+            "scheduled_issue_at": "2026-04-18T12:05:00+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Pro Usage",
+            "total_with_tax": "-25.59",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "275.48",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2026-04-16T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": "https://invoices.withorb.com/view?token=Ik1EdjdwdnBNNVhpRXc2Z0wi.OTMQgDnlamgDVgroZXXDXOqIAes",
+            "id": "L2qMdQstcSdtxyQJ",
+            "invoice_date": "2026-04-16T04:33:54+00:00",
+            "invoice_number": "JTUEPK-00090",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/k3CsvKvwejHgWhSu?token=ImszQ3N2S3Z3ZWpIZ1doU3Ui.0pC3x0Kth4JFoCJqV2ddZT2EJUg",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/dGHPSguyUKvH9Kkz?token=ImRHSFBTZ3V5VUt2SDlLa3oi.t1obpJv8A0OKMz8KpEcQ4QnqhbA",
+            "scheduled_issue_at": "2026-04-16T04:33:54+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Pro Usage",
+            "total_with_tax": "275.48",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "528.00",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2026-04-16T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": "https://invoices.withorb.com/view?token=Ijk1UTQ0b2daOENBdERKNFMi.G6dDsM2phQm6H83KBOJizVfLEjk",
+            "id": "hoVSRJCpkxSr4b4q",
+            "invoice_date": "2026-04-16T00:00:00+00:00",
+            "invoice_number": "JTUEPK-00091",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/5mxEhxcfwK5Zxbtx?token=IjVteEVoeGNmd0s1WnhidHgi.-K-eWdTTR69QSQfGJtM8afB_7Ds",
+            "invoice_type": "one_off",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/BF3vVmNSQT8GUq2W?token=IkJGM3ZWbU5TUVQ4R1VxMlci.4iwBDeyqk9dm0h5e9i59jDBqMkQ",
+            "scheduled_issue_at": "2026-04-16T04:53:40+00:00",
+            "status": "paid",
+            "subscription_name": null,
+            "total_with_tax": "528.00",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "275.01",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2026-04-14T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": "https://invoices.withorb.com/view?token=IlpDZFVBN2pxVTVqQU1GVXAi.7FPAY9KfcaVFWFmRjHdYnV9g6P4",
+            "id": "G2EoKYnELZdCqmxj",
+            "invoice_date": "2026-04-14T04:40:04+00:00",
+            "invoice_number": "JTUEPK-00089",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/Kkn2yhzrxYivpkMN?token=IktrbjJ5aHpyeFlpdnBrTU4i.YeZDdSV91QL9fmu9t25l1upYDvc",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/ioCB8yvBzhThCnPw?token=ImlvQ0I4eXZCemhUaENuUHci.oHzhJz7uJqfGDWfWt6GJiMOMu5w",
+            "scheduled_issue_at": "2026-04-14T04:40:04+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Pro Usage",
+            "total_with_tax": "275.01",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "277.60",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2026-04-11T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": "https://invoices.withorb.com/view?token=ImFEaU5VQUFYTkZ3Nm03Ulci.mgv4oTUQ09HtKEgBlmUgnUJKNoA",
+            "id": "65ps6tUbuVh3wohY",
+            "invoice_date": "2026-04-11T11:31:06+00:00",
+            "invoice_number": "JTUEPK-00088",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/D7bguAVyJetns9CX?token=IkQ3Ymd1QVZ5SmV0bnM5Q1gi.hRIvk3a6xSXJNq_R_Ym0cnOIk-4",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/dKhq3mv3rdaSygnL?token=ImRLaHEzbXYzcmRhU3lnbkwi.2NJ2aflxq_fNIXHqmYd1H7c2a6o",
+            "scheduled_issue_at": "2026-04-11T11:31:06+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Pro Usage",
+            "total_with_tax": "277.60",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "275.88",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2026-04-09T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": "https://invoices.withorb.com/view?token=IjJMZ1VlWm9CeW9Ba0EyR2gi.LZx-hMW-Gh_aJl_d1x3vzj09LOU",
+            "id": "EMuMT8mSujtqvRG3",
+            "invoice_date": "2026-04-09T07:09:47+00:00",
+            "invoice_number": "JTUEPK-00087",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/T5xjmyer5Y9WqzRQ?token=IlQ1eGpteWVyNVk5V3F6UlEi.CZjZcm93-2VJSTEeRElYDsJ_gwM",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/KkvGyKQgBmBzPtpq?token=Iktrdkd5S1FnQm1CelB0cHEi.sIyygvrckdz-ABI75Tgrop16C8A",
+            "scheduled_issue_at": "2026-04-09T07:09:47+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Pro Usage",
+            "total_with_tax": "275.88",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "276.18",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2026-04-07T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": "https://invoices.withorb.com/view?token=IjltRml2NVRjb0poMlVDZTMi.27i3pb50Q608NbeHZqHj0pgewxw",
+            "id": "8LFX7Gh4Xon6PRaP",
+            "invoice_date": "2026-04-07T03:46:01+00:00",
+            "invoice_number": "JTUEPK-00086",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/BhzT8u7mvupNQkua?token=IkJoelQ4dTdtdnVwTlFrdWEi.vrrum8BrYcFORlnGUFdy0hIWBl0",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/Gx4YQgxtxmvZQcwU?token=Ikd4NFlRZ3h0eG12WlFjd1Ui.QvDBAKzAmaRIL8exg4C9QFxd9FI",
+            "scheduled_issue_at": "2026-04-07T03:46:01+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Pro Usage",
+            "total_with_tax": "276.18",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "281.72",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2026-04-06T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": "https://invoices.withorb.com/view?token=ImJBSlBnZ05xQk5rSGtRZFci.unCTkwzbwSIdizJpC3xmUeh8f9Q",
+            "id": "KcJeSaWYijSJ9Zro",
+            "invoice_date": "2026-04-06T07:49:00+00:00",
+            "invoice_number": "JTUEPK-00085",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/8696wFwqiUAxwh5H?token=Ijg2OTZ3RndxaVVBeHdoNUgi.-2LxlqRb7NZgzau2vcxSSl3VTEs",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/cRTAeMbPYDaKx2nQ?token=ImNSVEFlTWJQWURhS3gyblEi.JIynrZt8MiSGczujop2dJONVSUc",
+            "scheduled_issue_at": "2026-04-06T07:49:00+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Pro Usage",
+            "total_with_tax": "281.72",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "275.80",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2026-04-05T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": "https://invoices.withorb.com/view?token=IkQyaEhNYjRkWXA1S3hIdE0i.b8SYX8kasG_oG7jMnL-dLARPbhM",
+            "id": "CQqmu2ksL7ukHVgD",
+            "invoice_date": "2026-04-05T13:31:26+00:00",
+            "invoice_number": "JTUEPK-00084",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/XnW2wDKENzzzcKWb?token=IlhuVzJ3REtFTnp6emNLV2Ii.BNivS0pkwKw2zZ_7F6i4M8PJFLA",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/WeiQYSWg7AeRyzQX?token=IldlaVFZU1dnN0FlUnl6UVgi.GUVqIER4B5434i07Xe7xZWaqd_I",
+            "scheduled_issue_at": "2026-04-05T13:31:26+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Pro Usage",
+            "total_with_tax": "275.80",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "275.04",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2026-04-03T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": "https://invoices.withorb.com/view?token=IkdSVWZqaFRSUGZ6NnV2Um0i.RWmrMj5-rJBu8smroeWt8LyJm5U",
+            "id": "f8WYQcE8hVhsSTgU",
+            "invoice_date": "2026-04-03T06:39:54+00:00",
+            "invoice_number": "JTUEPK-00083",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/GbZjVwf3QWTmWhAN?token=IkdiWmpWd2YzUVdUbVdoQU4i.GYhKNCNVotbA3VQTAr3CQr5qiRg",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/AgWVhXBgbZtQPvQp?token=IkFnV1ZoWEJnYlp0UVB2UXAi.va2TO89wYJ0PDSiqVhpFAQNOsxE",
+            "scheduled_issue_at": "2026-04-03T06:39:54+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Pro Usage",
+            "total_with_tax": "275.04",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "55.24",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2026-04-02T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": "https://invoices.withorb.com/view?token=IlpmaktlaEJyaVpveFp3TFAi.yqfZNhsRrIws1WiTdOg_7Sfgz18",
+            "id": "5MVzQGLfsqyDCxiH",
+            "invoice_date": "2026-04-02T00:10:04+00:00",
+            "invoice_number": "JTUEPK-00082",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/9DGT8BpGQzVbsEDw?token=IjlER1Q4QnBHUXpWYnNFRHci.Engzxyybo5EEgaWQoczu30MOeHg",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/5Z8ka3aYNXwsyavi?token=IjVaOGthM2FZTlh3c3lhdmki.iXxUss7HqujxAN9ZM7aboAMb-zQ",
+            "scheduled_issue_at": "2026-04-02T00:10:04+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Pro Usage",
+            "total_with_tax": "55.24",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "55.79",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2026-03-30T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": "https://invoices.withorb.com/view?token=ImFpQUU5NzJ2d1BoQWpQVzci.klbq5Qd7IG6MRO3tELnFK3squv4",
+            "id": "JNaiDmNyLMRzxFjW",
+            "invoice_date": "2026-03-30T08:39:54+00:00",
+            "invoice_number": "JTUEPK-00080",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/jK6dvPUrF9ehPxSx?token=ImpLNmR2UFVyRjllaFB4U3gi.OPi3XboJtHKQDqqvHPRJ0uNu7ko",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/d6uoFVTQmfHuDhyE?token=ImQ2dW9GVlRRbWZIdURoeUUi.tRPth5ZcT2duozQHTxDQo9SsAz8",
+            "scheduled_issue_at": "2026-03-30T08:39:54+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Pro Usage",
+            "total_with_tax": "55.79",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "319.00",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2026-03-30T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": "https://invoices.withorb.com/view?token=IjNNc2lhUHphNVlwVldxVmsi.K8c35kLZyumWBzp-Hj-kQCtvftE",
+            "id": "8UGfHVraHy3kPcxH",
+            "invoice_date": "2026-03-30T00:00:00+00:00",
+            "invoice_number": "JTUEPK-00081",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/8Erqzp3YoagH4ZkC?token=IjhFcnF6cDNZb2FnSDRaa0Mi.9UTwSvIq_lJZYhgWfmSOKDECBtI",
+            "invoice_type": "one_off",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/6b9JsvQFmk7iZgH4?token=IjZiOUpzdlFGbWs3aVpnSDQi.OfurEUUU2-TbiNSezro-3EijDLI",
+            "scheduled_issue_at": "2026-03-30T23:25:33+00:00",
+            "status": "paid",
+            "subscription_name": null,
+            "total_with_tax": "319.00",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "56.17",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2026-03-29T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": "https://invoices.withorb.com/view?token=IjM0TER4Q2tRS1BlVEZZQkEi.GQHO3VvdyO3wGEG4UzJMncCtqHk",
+            "id": "MNDjNPKsYMvpw7Vs",
+            "invoice_date": "2026-03-29T20:55:07+00:00",
+            "invoice_number": "JTUEPK-00079",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/6RxNAXSHvDEPoJRJ?token=IjZSeE5BWFNIdkRFUG9KUkoi.47k7zRaOPBMd0RP2Z0BUbFSKpqs",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/G94K9LjjQ6KQuYNf?token=Ikc5NEs5TGpqUTZLUXVZTmYi.6LH64_hAv5IhoNMXilJkSh65lGk",
+            "scheduled_issue_at": "2026-03-29T20:55:07+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Pro Usage",
+            "total_with_tax": "56.17",
+            "webapp_status": "paid"
+        },
+        {
+            "account_settings": {
+                "address": {
+                    "city": "Foster City",
+                    "country": "US",
+                    "line1": "1001 E Hillsdale Blvd",
+                    "line2": "4th floor",
+                    "postal_code": "94404",
+                    "state": "CA"
+                },
+                "allow_payment_for_unmapped_payment_provider": true,
+                "always_save_payment_methods": null,
+                "automatic_tax_enabled": true,
+                "company_name": "Replit Inc",
+                "default_state_for_save_payment_method_option": true,
+                "deferred_billing_enabled": false,
+                "display_plan_names_in_customer_portal": false,
+                "due_date_calculation_method": "issuance_date",
+                "dunning_enabled": true,
+                "footer": null,
+                "hide_void_invoices": null,
+                "hide_zero_quantity_line_items": true,
+                "invoice_delivery": {
+                    "email_delivery_enabled": false,
+                    "reply_to": null
+                },
+                "is_manual_invoice_issuance_enabled": false,
+                "memo": null,
+                "prorate_amount_discounts": false,
+                "saveable_stripe_payment_method_types": [
+                    "amazon_pay",
+                    "card",
+                    "crypto",
+                    "link",
+                    "us_bank_account"
+                ],
+                "show_usage_only_invoice_portal": false
+            },
+            "amount_due": "63.06",
+            "can_be_emailed": true,
+            "can_initiate_payment": true,
+            "credit_notes": [],
+            "customer": {
+                "email": "departmentspamfilter@gmail.com",
+                "external_customer_id": "replit_user__40321449",
+                "id": "Vig2rY67J2Y8eBUz",
+                "name": "departmentspamf",
+                "timezone": "Etc/UTC"
+            },
+            "due_date": "2026-03-28T00:00:00+00:00",
+            "external_status": "paid",
+            "hosted_invoice_url": "https://invoices.withorb.com/view?token=IjM0OWhmNkhteXVtVFNYeXci.AYxTCAers1jzvIhHl_1f7clRIrE",
+            "id": "At6u9g7FR9vmqtN2",
+            "invoice_date": "2026-03-28T20:53:43+00:00",
+            "invoice_number": "JTUEPK-00078",
+            "invoice_pdf": "https://assets.withorb.com/invoice/LTsrFFJ2yzVZmhw3/3ayUSXrku3ET6E7L?token=IjNheVVTWHJrdTNFVDZFN0wi.Z_wkgTZ-qC1ZRjnYC9NN8BGMES4",
+            "invoice_type": "subscription",
+            "invoicing_pricing_unit": {
+                "display_name": "US Dollar",
+                "id": "ikya6q7s6xtH3U7P",
+                "is_real_world_currency": true,
+                "name": "USD",
+                "short_name": "USD",
+                "symbol": "$"
+            },
+            "is_trial": false,
+            "most_recent_manual_transaction_record": null,
+            "most_recent_payment_transaction_record": {
+                "previous_invoice_status": null,
+                "record_type": "payment",
+                "status": "success"
+            },
+            "receipt_pdf": "https://assets.withorb.com/receipt/LTsrFFJ2yzVZmhw3/Q4NYzrSwAZaJuxXA?token=IlE0Tll6clN3QVphSnV4WEEi.RDsJIgEwV24ZQI-ivUWLVAcY_xo",
+            "scheduled_issue_at": "2026-03-28T20:53:43+00:00",
+            "status": "paid",
+            "subscription_name": "Replit Pro Usage",
+            "total_with_tax": "63.06",
+            "webapp_status": "paid"
+        }
+    ],
+    "next_page": 2,
+    "total": 97
+}

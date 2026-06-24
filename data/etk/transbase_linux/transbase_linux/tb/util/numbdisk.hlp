@@ -1,0 +1,18 @@
+"Diskfiles" is the names of the files where all table, index and 
+BLOB data are stored.
+
+By default, one file called tbdsk001 in the "disks" subdirectory of
+the database directory holds all data.
+At creation time, several diskfiles can be specified. 
+Additional diskfiles can be added at any time after database
+creation via "tbadmin -a .."
+
+   -	Command Line Syntax :   d=[<path>]..
+	Multiple diskfiles can be specified by multiple specification
+		of d=.. on the command line.
+	Examples:
+	$ tbadmin -cf dbname  d=  d=
+	  -->  create database with 2 diskfiles with default properties.
+	$ tbadmin -cf dbname  d=/tmp/d1
+	  -->  create database with 1 diskfile named d1 on /tmp
+

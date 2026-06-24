@@ -1,0 +1,25 @@
+RELDESC_BEGIN
+"systablepriv" 
+81 1 -1 1
+7
+	integer "grantee" 0 1 1
+	integer "tsegno" 1 2 1
+	integer "grantor" 2 3 1
+	char(*) "sel_priv" 3 0 1
+	char(*) "del_priv" 4 0 1
+	char(*) "ins_priv" 5 0 1
+	char(*) "upd_priv" 6 0 1
+0
+RELDESC_END
+
+(N000:ins  { "systablepriv"  on_the_fly } 
+	(N001:set 
+		(N002:build 
+			(N003:param  { integer[1] } )
+			(N004:param  { integer[2] } )
+			(N005:param  { integer[3] } )
+			(N006:param  { string[4] } )
+			(N007:param  { string[5] } )
+			(N008:param  { string[6] } )
+			(N009:param  { string[7] } ))))
+;

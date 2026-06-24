@@ -1,0 +1,59 @@
+;
+; 
+;                  T r a n s B a s e / C D
+;                  $ProjectRevision: 4.119.1.19 $
+; 
+;	@(#) mig33t41
+;            $RCSfile: mig33t41 $
+;            $Revision: 1.6 $
+;            $Date: 1999/03/24 14:27:32 $
+;
+;	Copyright (c) 1987 -
+;	Transaction Software GmbH
+;	D 81739 Munich
+; 
+;
+; Module begin
+
+;
+delete from systablepriv
+;
+delete from sysuser
+;
+create table "@@ARC1" without ikaccess   
+	(tname	char(*) not null,
+	 owner 	integer not null,
+	 ttype 	char(*) not null,
+	 segno 	integer not null,
+	 colno 	integer not null,
+	 "date" integer not null)
+key is  tname 
+;
+spool "@@ARC1" from systable
+;
+spool sysuser from sysuser
+;
+spool systablepriv from systablepriv
+;
+spool syscolumnpriv from syscolumnpriv
+;
+update systable t set owner =
+	(select owner from "@@ARC1"
+	 where t.tname=tname)
+	where exists (select 1 from "@@ARC1" n
+		where t.tname = n.tname)
+;
+update systablepriv t set tsegno =
+	(select n.segno from systable n, "@@ARC1" o where
+	 n.tname=o.tname and t.tsegno=o.segno)
+	where exists (select 1 from systable n, "@@ARC1" o
+		where t.tsegno = o.segno and n.tname = o.tname)
+;
+update syscolumnpriv t set tsegno =
+	(select n.segno from systable n, "@@ARC1" o where
+	 n.tname=o.tname and t.tsegno=o.segno)
+	where exists (select 1 from systable n, "@@ARC1" o
+		where t.tsegno = o.segno and n.tname = o.tname)
+;
+drop table "@@ARC1"
+;

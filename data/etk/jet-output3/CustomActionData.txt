@@ -1,0 +1,5 @@
+custom-action-1=delete-package ETK-Data_3.220.001_--
+custom-action-2=delete-package ETK-Data_3.220.002_--
+custom-action-3=delete-package ETK-Data_3.220.003_--
+custom-action-4=delete-package ETK-Data_3.220.004_--
+custom-action-5=delete-package ETK-Data_3.220.005_--

@@ -1,0 +1,10 @@
+Switch account logging on or off.
+TransBase logs events if there are events defined AND account logging
+is switched on.
+By this mechanism, it is easy to temporarily switch off account logging
+without changing the event list to NONE and later reinstalling it.
+
+   -	Command Line Syntax :   acl=on|off
+
+	Example:   
+	  -->	tbadmin  -af  dbname  acl=off

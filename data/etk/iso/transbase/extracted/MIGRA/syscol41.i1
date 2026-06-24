@@ -1,0 +1,25 @@
+RELDESC_BEGIN
+"syscolumn" 
+17 1 -1 1
+7
+	integer "tsegno" 0 1 1
+	char(*) "cname" 1 0 1
+	char(*) "ctype" 2 0 1
+	integer "multiple" 5 0 0
+	integer "cpos" 6 2 1
+	integer "ckey" 7 0 0
+	char(*) "notnull" 8 0 0
+0
+RELDESC_END
+
+(N000:ins  { "syscolumn" on_the_fly } 
+ 	(N001:set 
+		(N002:build 
+			(N003:param  { integer[1] } )
+			(N004:param  { string[2] } )
+			(N005:param  { string[3] } )
+			(N006:param  { integer[4] } )
+			(N007:param  { integer[5] } )
+			(N08:param  { integer[6] } )
+			(N09:param  { string[7] } ))))
+;

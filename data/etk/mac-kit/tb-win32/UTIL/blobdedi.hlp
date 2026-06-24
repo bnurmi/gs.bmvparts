@@ -1,0 +1,13 @@
+Specify BLOB dedication of the i-th diskfile.
+
+Each diskfile except the first one can be reserved to hold BLOB data
+only. This enables e.g. to place BLOB data on special media such as 
+magnetooptical disk.
+
+   -	Command Line Syntax :  d=[<path>],[<size>],[blob]
+
+   	Example:  
+	$ tbadmin -cf <sampledb>  d=,50000  d=/mo/tbdsk002,,blob
+		specifies 2 diskfiles where the first has default 
+		location and size 50000 pages and the second resides on 
+		/mo with default size and is reserved for BLOB data.

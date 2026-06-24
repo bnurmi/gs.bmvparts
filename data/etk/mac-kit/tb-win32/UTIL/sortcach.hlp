@@ -1,0 +1,8 @@
+Specify the size of the sorter cache. 
+
+This cache is for intermediate data results during query processing, 
+typically used by the sorter.
+This cache is in dynamic heap main memory.
+
+
+   -	Command Line Syntax :  lc=<size in KB>

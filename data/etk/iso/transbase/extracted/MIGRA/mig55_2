@@ -1,0 +1,15 @@
+create view syscolumn (
+tsegno, cname, ctype, domainname,
+	defaultvalue, suppressed, cpos, ckey,
+	notnull, surrid, surref)
+as select tsegno, cname, ctype, domainname,
+	defaultvalue, suppressed, cpos, ckey,
+	notnull, surrid, surref
+	from "@@syscolumn"
+;
+UPDATE "@@systable"
+SET ttype = 'v'
+where tname in ('syscolumn','SYSCOLUMN')
+;
+GRANT SELECT on syscolumn TO PUBLIC
+;

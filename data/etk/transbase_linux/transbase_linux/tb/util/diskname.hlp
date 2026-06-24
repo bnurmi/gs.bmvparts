@@ -1,0 +1,11 @@
+Specify name and location of the i-th diskfile.
+
+NOTE: If a diskfile is specified as file on a NFS-mounted file system, 
+	there is no guarantee for faultless database recovery after 
+	machine crash.
+
+
+   -	Command Line Syntax :   d=<path>..
+
+	Multiple diskfiles can be specified by multiple specification
+		of d=.. on the command line.

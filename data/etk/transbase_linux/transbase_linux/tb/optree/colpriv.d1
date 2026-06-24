@@ -1,0 +1,25 @@
+RELDESC_BEGIN
+"@@syscolumnpriv" 
+49 1 -1 1
+7
+	integer "grantee" 0 1 1
+	integer "tsegno" 1 2 1
+	integer "grantor" 2 3 1
+	integer "cpos" 3 4 1
+	char(*) "upd_priv" 4 0 1
+	integer "d1" 5 0 0
+	char(*) "d2" 6 0 0
+0
+RELDESC_END
+
+
+(N0:del  { "@@syscolumnpriv"    on_the_fly  }
+   (N1:rel  { "@@syscolumnpriv"  }
+      (N2:times  {  } 
+         (N3:times  {  } 
+            (N4:ivmk  {  eq   } 
+		(N5:param  { integer[1] } ))
+            (N6:ivmk  {  eq   } 
+		(N7:param  { integer[2] } )))
+         (N8:ivmk  {  eq   } 
+		(N9:param  { integer[3] } )))))

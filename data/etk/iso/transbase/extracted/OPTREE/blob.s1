@@ -1,0 +1,15 @@
+RELDESC_BEGIN
+"@@sysblob" 
+65 1 -1 1
+4
+	integer "rsno" 0 1 1
+	integer "bcont" 1 0 1
+	integer "d1" 2 0 0
+	char(*) "d2" 3 0 0
+0
+RELDESC_END
+
+(N0:sel
+	 (N001:rel  { "@@sysblob" }
+		  (N002:ivmk {eq}      
+			   (N006:param  { integer[1] } ))))

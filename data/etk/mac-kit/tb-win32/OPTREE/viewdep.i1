@@ -1,0 +1,18 @@
+RELDESC_BEGIN
+"@@sysviewdep" 
+57 1 -1 1
+4
+	integer "basesegno" 0 1 1
+	integer "vsegno" 1 2 1
+	integer "d1" 2 0 0
+	char(*) "d2" 3 0 0
+0
+RELDESC_END
+
+(N000:ins  { "@@sysviewdep" on_the_fly } 
+	(N001:set 
+		(N002:build 
+			(N003:param  { integer[1] } )
+			(N004:param  { integer[2] } )
+			(N005:const  { null } )
+			(N006:const  { null } ))))

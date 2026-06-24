@@ -1,0 +1,9 @@
+Switch the diskrecovery flag on or off.
+
+To run the database with the disk recovery option, this flag must 
+be switched on, then a database dump must be made with 'tbadmin'.
+NOTE: once the diskrecovery flag is switched off, the above sequence
+	must be followed to switch it on again.
+See the complete description in the TransBase Manuals.
+
+   -	Command Line Syntax :  drl=on|off

@@ -1,0 +1,12 @@
+Choose the path of the "Roms" Directory. 
+
+For an Editorial Database, this directory will be the target for 'tbmkrom'
+to produce the "romfiles" which are the files to be transferred to CD-ROM.
+
+For a CD-ROM database to be attached, this directory is the father
+directory for the mount points that are created for the CD-ROMs to be mounted. 
+tbadmin will prompt to mount the CD-ROMs into these mount points.
+(To override this mechanism, explicit mount points can be specified by
+the command line option r=<mount point")
+
+   -	Command Line Syntax :  r=<path>

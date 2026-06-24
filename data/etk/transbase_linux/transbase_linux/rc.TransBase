@@ -1,0 +1,52 @@
+
+
+#
+# TransBase daemons boot script 
+# 
+# Note that all "echo" commands are in parentheses. This is done 
+# because all commands that redirect the output to /dev/console 
+# must be done in a child of the main shell, so that the main shell 
+# does not open a terminal and get its process group set.  Since 
+# "echo" is a builtin command, redirection for it will be done 
+# in the main shell unless the command is run in a subshell. 
+# 
+
+TRANSBASE=/home/bmw/transbase
+export TRANSBASE 
+. $TRANSBASE/rc.tbenv
+. $TRANSBASE/rc.tbjre
+cd $TRANSBASE
+	FLAG=-bfnv
+(echo "running rc.TransBase on `date`" >>nohup.out)
+if [ -w /dev/console ]; then 
+	CONS=/dev/console
+else 
+	CONS=/dev/tty
+fi 
+SERV=$TRANSBASE/tbserver
+if [ -f $TRANSBASE/mykernel ]; then 
+	PROG=$TRANSBASE/mykernel
+elif [ -f $TRANSBASE/tbkernel ]; then 
+	PROG=$TRANSBASE/tbkernel
+elif [ -f $TRANSBASE/tbdiag ]; then 
+	PROG=$TRANSBASE/tbdiag
+else
+	PROG=$TRANSBASE/mydiag
+fi 
+if [ -f $TRANSBASE/myadmin ]; then 
+	ADM=$TRANSBASE/myadmin
+else
+	ADM=$TRANSBASE/tbadmin
+fi 
+(echo "booting TransBase databases ..." >$CONS)
+$ADM $FLAG >>nohup.out
+sleep 1 
+(echo "starting TransBase daemons ..." >$CONS)
+if [ -f $TRANSBASE/tbmux ]; then 
+	(nohup $TRANSBASE/tbmux -tbk $PROG -tbs $SERV )&
+else 
+	(nohup $SERV -v )&
+	(nohup $PROG -v )&
+fi 
+sleep 1 
+exit 0 

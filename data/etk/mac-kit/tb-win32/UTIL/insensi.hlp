@@ -1,0 +1,22 @@
+Case insensitivity refers to names of database users (not their 
+passwords), tables, fields, indexes, domains and constraints.
+If case insensitivity is specified, then names are stored in upper case
+in the catalogue. Names ocurring in SQL statements are converted to
+upper case before being searched in the catalogue.
+For example a table created with name abc can be accessed with all of
+the following names: abc , ABC, aBc etc.
+In case insensitive databases, users can work case sensitive by using
+delimiter identifiers ( e.g. "abc" ). A table created with "abc" can 
+only be accessed by using a delimiter name "abc" again.
+With the "tbadmin -a .." command, a database can dynamically be switched
+from case sensitive to case insensitive unless there would result 
+collisions of names of objects which have already been created ( e.g. 
+tables ABC and Abc).
+However, a database cannot dynamically be switched from case insensitive
+to case sensitive.
+
+
+   -	Command Line Syntax :   ci=on|off
+
+	Example:   
+	  -->	tbadmin  -af  dbname  ci=on

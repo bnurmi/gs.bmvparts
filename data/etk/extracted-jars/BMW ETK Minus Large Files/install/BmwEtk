@@ -1,0 +1,40 @@
+#!/bin/sh
+# Description: Transbase Database and Tomcat Webserver for BMW ETK
+
+case "$1" in
+
+  start)
+    echo "Starting BMW ETK ..."
+
+    . #TARGETDIR#/transbase/rc.tbenv
+    #TARGETDIR#/transbase/rc.TransBase
+
+    if [ #TOMCATSERVICE# ]
+    then
+      export JAVA_HOME=#JAVA_HOME#
+      #TARGETDIR#/tomcat/bin/startup.sh
+    fi
+
+   ;;
+
+  stop)
+    echo "Stopping BMW ETK ..."
+
+    if [ #TOMCATSERVICE# ]
+    then
+      export JAVA_HOME=#JAVA_HOME#    
+      #TARGETDIR#/tomcat/bin/shutdown.sh
+    fi
+
+    #TARGETDIR#/transbase/rc.tbstop
+
+    ;;
+
+  *)
+    echo "Usage: $0 {start | stop}"
+    exit 1
+    ;;
+
+esac
+
+

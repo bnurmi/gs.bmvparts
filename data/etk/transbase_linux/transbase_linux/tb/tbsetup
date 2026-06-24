@@ -1,0 +1,575 @@
+
+#
+# 
+#                  T r a n s B a s e / C D
+#                  $ProjectRevision: 4.119.1.19 $
+# 
+#	@(#) tbsetup
+#            $RCSfile: tbsetup $
+#            $Revision: 1.34 $
+#            $Date: 2004/07/16 12:54:25 $
+#
+#	Copyright (c) 1987 -
+#	Transaction Software GmbH
+#	D 81739 Munich
+# 
+#
+# Module begin
+
+AWKNONL='{printf "%s ", $0}'
+AGB=license.eng
+TBLICPATH=`pwd`
+export TBLICPATH
+NAME=Transbase
+PREF=tb
+DELFILES="abs.sh abt.sh abc.sh abp.sh"
+EXTRACT=
+if [ ! -f packlist ]; then
+	EXTRACT=`pwd`/tmp$$
+	trap "echo Cleaning up ...; /bin/rm -rf $EXTRACT; exit 1" 0
+	mkdir tmp$$ || exit 1
+	cd tmp$$ || exit 1
+	for f in ../*; do
+		case $f in
+		*.Z)
+			echo Extracting $f 
+			(uncompress <$f|tar xf -) || exit 1
+			;;
+		*.tgz)
+			echo Extracting $f 
+			tar xzf $f || exit 1
+			;;
+		esac
+	done
+fi
+
+
+for f in abs abt abc abp; do
+	if [ -d $f ]; then
+	    NAME=ArcBase
+	    PREF=ab
+	    DELFILES="tbs.sh tbt.sh tbc.sh tbp.sh"
+	fi
+done
+for f in abs abt abc abp; do
+	if [ -f $f.sh ]; then
+	    NAME=ArcBase
+	    PREF=ab
+	    DELFILES="tbs.sh tbt.sh tbc.sh tbp.sh"
+	fi
+done
+OK=0
+while [ $OK -eq 0 ]; do
+OK=1
+if [ "$TRANSBASE" != "" ]; then
+	RMDIR=0
+	if [ ! -d $TRANSBASE ]; then
+		RMDIR=1
+		mkdir $TRANSBASE 2>/dev/null || RMDIR=0
+	fi
+	if [ -d $TRANSBASE ]; then
+	    TRANSBASE=`(cd $TRANSBASE; pwd)`
+	fi
+	if [ $RMDIR -eq 1 ]; then
+		rmdir $TRANSBASE
+		RMDIR=0
+	fi
+fi
+echo ">>> Enter Installation Path: [$TRANSBASE]" | awk "$AWKNONL"
+read INSTPATH
+if [ "$INSTPATH" = "" ]; then
+    if [ "$TRANSBASE" = "" ]; then
+	OK=0
+    else
+	INSTPATH=$TRANSBASE
+    fi
+fi 
+
+if [ $OK -eq 1 ]; then
+    case "$INSTPATH" in
+    /*)
+	;;
+    *)
+        if [ "$INSTPATH" != "" ]; then
+	    RMDIR=0
+	    if [ ! -d $INSTPATH ]; then
+		RMDIR=1
+		mkdir $INSTPATH 2>/dev/null || RMDIR=0
+	    fi
+	    if [ -d $INSTPATH ]; then
+	        INSTPATH=`(cd $INSTPATH; pwd)`
+	    fi
+	    if [ $RMDIR -eq 1 ]; then
+		rmdir $INSTPATH
+		RMDIR=0
+	    fi
+        fi
+	;;
+    esac
+fi
+ACTPATH=`pwd`
+if [ "$ACTPATH" = "$INSTPATH" ]; then
+	echo "the installation directory must be different from the current directory"
+	OK=0
+else
+PACTPATH=`dirname $ACTPATH`
+PINSTPATH=`dirname $INSTPATH`
+if [ "$PACTPAT" != "$PINSTPATH" ]; then
+P1=`echo $PINSTPATH|sed "s,$ACTPATH,,g"`
+if [ "$P1" != "$PINSTPATH" ]; then
+	echo "the installation directory must not be a subdirectory of the current directory"
+	OK=0
+fi
+P1=`echo $PACTPATH|sed "s,$INSTPATH,,g"`
+if [ "$P1" != "$PACTPATH" ]; then
+	echo "the current directory must not be a subdirectory of the installation directory"
+	OK=0
+fi
+fi
+fi
+if [ $OK -eq 1 -a ! -d "$INSTPATH" ]; then
+	MKDIR=
+	echo ">>> '$INSTPATH' does not exist. Create it? [y] " | awk "$AWKNONL"
+	read DOIT
+	if [ "$DOIT" = "" -o "$DOIT" = "y" ]; then
+		mkdir $INSTPATH || OK=0
+		MKDIR=$INSTPATH
+		trap "echo Cleaning up ...; /bin/rm -rf $EXTRACT $MKDIR; exit 1" 0
+	else
+		OK=0
+	fi
+fi
+done
+
+TRANSBASE=$INSTPATH
+export TRANSBASE
+
+P=
+if [ $# = 0 ]; then
+	for f in mys ${PREF}s myt ${PREF}t ${PREF}c ${PREF}p; do
+	    if [ -r $f.sh ]; then
+		ALL="$ALL $f.sh"
+	    fi
+	    if [ -r $f/$f.sh ]; then
+		ALL="$ALL $f/$f.sh"
+	    fi
+	done
+else
+	ALL="$*"
+fi
+if [ "$ALL" = "" -a ! -d jre ]; then
+	echo "Nothing to install"
+	exit 0
+fi
+
+if [ -f $TRANSBASE/rc.tbstop ]; then
+	echo "Another Installation has been found in '$TRANSBASE'"
+	echo "shall setup try to stop running processes?"
+	echo "type 's' to try a soft shutdown or 'f' for forced shutdown [s]"|awk "$AWKNONL"
+	read x
+	if [ "$x" = "" -o "$x" = "s" ]; then
+		FLAG=-s
+	elif [ "$x" = "f" ]; then
+		FLAG=-sf
+	else
+		echo "Installation has been stopped"
+		exit 0
+	fi
+	$TRANSBASE/rc.tbstop $FLAG
+	if [ $? -ne 0 ]; then
+		echo "Transbase could not be stopped"
+		echo "Please shutdown databases manually and stop daemons."
+		echo "Then start installation again"
+		exit 1
+	fi
+fi
+
+TRANSBASE=`(cd $TRANSBASE;pwd)`
+if [ -f $TRANSBASE/rc.tbenv ]; then
+    ACTTBENV=$TRANSBASE
+    . $TRANSBASE/rc.tbenv
+    TRANSBASE=$ACTTBENV
+elif [ "$TRANSBASE_SERVICENAMES" = "" ]; then
+    if [ -f $TRANSBASE/rc.TransBase ]; then
+          TRANSBASE_SERVICENAMES=`grep TRANSBASE_SERVICENAMES= $TRANSBASE/rc.TransBase|sed 's/.*=//g'`
+    fi
+    if [ "$TRANSBASE_SERVICENAMES" = "" ]; then
+	TRANSBASE_SERVICENAMES=2024:2025
+    fi
+fi
+ACTPORTS=`echo $TRANSBASE_SERVICENAMES|sed 's/:/ /g'`
+set $ACTPORTS
+TBKERNEL=$1
+TBSERVER=$2
+CONT=2
+PORTNAME=TBKERNEL
+PORTNO=$TBKERNEL
+while [ $CONT -gt 0 ]; do
+	echo ">>> Portnumber for service '$PORTNAME'? [$PORTNO] " | awk "$AWKNONL"
+	read x
+	if [ "$x" != "" ]; then
+		expr $x + 0 2>/dev/null 1>/dev/null
+		if [ $? -ne 0 ]; then
+			continue
+		else
+			PORTNO=$x
+		fi
+	fi
+	if [ $CONT -eq 2 ]; then
+		TBKERNEL=$PORTNO
+		PORTNAME=TBSERVER
+		PORTNO=$TBSERVER
+	else
+		TBSERVER=$PORTNO
+	fi
+	CONT=`expr $CONT - 1`
+done
+
+TRANSBASE_SERVICENAMES=$TBKERNEL:$TBSERVER
+export TRANSBASE_SERVICENAMES
+
+if [ "$TRANSBASE" != "`pwd`" ]; then
+	for f in tbsetup tblicens; do
+	    if [ -f $f ]; then
+		cp $f $TRANSBASE
+	    fi
+	done
+fi
+if [ -f ../tblic.ini ]; then
+	LICPATH=`pwd`
+	LICPATH=`dirname $LICPATH`
+else
+if [ -f ./tblic.ini ]; then
+	LICPATH=`pwd`
+else
+if [ -f $TRANSBASE/tblic.ini ]; then
+	LICPATH=$TRANSBASE
+fi
+fi
+fi
+
+while [ 1 ]; do
+	echo ">>> Enter path to your license file [$LICPATH]" | awk "$AWKNONL"
+	read L
+	if [ "$L" = "" ]; then
+		L=$LICPATH
+	fi
+	if [ -f $L/tblic.ini ]; then
+		LICPATH=$L
+    		break
+	else
+		echo "No license file found in '$L'"
+	fi
+done
+if [ "$LICPATH" != "$TRANSBASE" ]; then
+	cp $LICPATH/tblic.ini $TRANSBASE
+fi
+chmod 644 $TRANSBASE/tblic.ini
+SEAuto=0
+TKAuto=0
+ALL2=$ALL
+ALL=
+EVAL=0
+for f in $ALL2; do
+    case $f in
+    	*${PREF}s.sh) 
+		STYLE=Server
+		prmp="$NAME Server"
+		;;
+    	*${PREF}p.sh) 
+		STYLE=Premaster
+		prmp="$NAME CD Developers Kit"
+		;;
+    	*${PREF}t.sh) 
+		Style=Toolkit
+		prmp="$NAME Developers Kit"
+		;;
+    	*${PREF}c.sh) 
+		STYLE=Client
+		prmp="$NAME ISQL"
+		;;
+    	*mys.sh) 
+		STYLE=MyServer
+		prmp="Myriad Server"
+		;;
+    	*myt.sh) 
+		STYLE=MyToolkit
+		prmp="Myriad Developers Kit"
+		;;
+	esac
+	$TRANSBASE/tblicens "$STYLE" 2>/dev/null
+	RES=$?
+	if [ $RES -ne 0 ]; then
+	    if [ $RES -eq 2 ]; then
+		EVAL=1
+	    fi
+	    ALL="$ALL $f"
+	else
+	    echo "Package '$prmp' has been found on the media but"
+	    echo "no license could be found"
+	    echo "Installation for '$prmpt' will be skipped."
+	fi
+done
+if [ $EVAL -eq 1 ]; then
+if [ ! -f $AGB ]; then
+	echo "No LICENSE AGREEMENT found"
+	exit 1;
+fi
+
+ASK2=1
+while [ -s $AGB -a $ASK2 -eq 1 ]; do
+cat <<FINE1
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!                                                                  !!
+!!  To install Transbase for UNIX you must accept all items of the  !!
+!!  following license agreement. Press any key to see the rest of   !!
+!!  the agreement.                                                  !!
+!!                                                                  !!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+FINE1
+echo "Hit return to continue" | awk "$AWKNONL"
+read x
+
+
+trap "echo Cleaning up ...; /bin/rm -rf splagb* $EXTRACT $MKDIR; exit 1" 0
+split -l 22 $AGB splagb
+for f in splagb*; do
+    cat $f
+    echo "Hit return to continue" | awk "$AWKNONL"
+    read x
+done
+
+/bin/rm -f splagb*
+
+ASK=1
+while [ $ASK -eq 1 ]; do
+cat <<FINE2
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!                                                                  !!
+!!  Type YES   to accept all the terms of the preceeding License    !!
+!!  Agreement                                                       !!
+!!                                                                  !!
+!!  Type NO    to abort the installation                            !!
+!!                                                                  !!
+!!  Type SHOW  to show the License Agreement                        !!
+!!                                                                  !!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+FINE2
+
+read AGREE
+if [ "$AGREE" = "NO" ]; then
+	echo "Installation aborted"
+	exit 1
+fi
+if [ "$AGREE" = "YES" ]; then
+	ASK=0
+	ASK2=0
+fi
+if [ "$AGREE" = "SHOW" ]; then
+	ASK=0
+	ASK2=1
+fi
+done
+done
+fi
+cat <<FINE3
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!                                                                  !!
+!!  U.S.-Patent Nr. 6,381,596                                       !!
+!!  U.S.-Patent Nr. 6,510,435                                       !!
+!!                                                                  !!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+FINE3
+
+NOPACK=0
+if [ -d jre ]; then
+	NOPACK=1
+fi
+for f in $ALL; do
+    if [ -r $f ]; then
+	case $f in
+    	*${PREF}s.sh) 
+		prmp="$NAME Server"
+		if [ "$SEAuto" = "0" ]; then
+	  	    echo ">>> Do you like to install '$prmp' license"'? [y]' | awk "$AWKNONL"
+	  	    read DOIT
+		else
+	  	    DOIT=y
+		fi
+		STYLE=Server
+		;;
+    	*${PREF}p.sh) 
+		prmp="$NAME CD Developers Kit"
+	  	echo ">>> Do you like to install '$prmp' license"'? [y]' | awk "$AWKNONL"
+	  	read DOIT
+		STYLE=Premaster
+		;;
+    	*${PREF}t.sh) 
+		prmp="$NAME Developers Kit"
+		if [ "$TKAuto" = "0" ]; then
+	  	    echo ">>> Do you like to install '$prmp' license"'? [y]' | awk "$AWKNONL"
+	  	    read DOIT
+		else
+	  	    DOIT=y
+		fi
+		Style=Toolkit
+		;;
+    	*${PREF}c.sh) 
+		prmp="$NAME ISQL"
+	  	echo ">>> Do you like to install '$prmp' license"'? [y]' | awk "$AWKNONL"
+	  	read DOIT
+		STYLE=Client
+		;;
+    	*mys.sh) 
+		prmp="Myriad Server"
+	  	echo ">>> Do you like to install '$prmp' license"'? [y]'
+	  	echo ">>> (includes '$NAME Server')"
+	  	read DOIT
+		if [ "$DOIT" = "y" -o "$DOIT" = "" ]; then
+			SEAuto=1
+		fi
+		STYLE=MyServer
+		;;
+    	*myt.sh) 
+		prmp="Myriad Developers Kit"
+	  	echo ">>> Do you like to install '$prmp' license"'? [y]'
+	  	echo ">>> (includes '$NAME Developers Kit')"
+	  	read DOIT
+		if [ "$DOIT" = "y" -o "$DOIT" = "" ]; then
+			TKAuto=1;
+		fi
+		STYLE=MyToolkit
+		;;
+	esac
+	if [ "$DOIT" = "" ]; then
+		DOIT=y
+	fi
+	if [ "$DOIT" = "y" ]; then
+	  NOPACK=`expr $NOPACK + 1`
+	  BASE=`basename $f`
+	  DIR=`dirname $f`
+	  P=`echo $BASE|sed 's/.sh//g'`
+	  if [ "$BASE" != "$f" ]; then
+	      echo "'$prmp' files are copied, please wait ..."
+	      LST=`basename $f.lst`
+	      if [ -f $TRANSBASE/$LST ]; then
+	      	( cd $TRANSBASE; /bin/rm -f `cat $LST`)
+	      fi
+	      (cd $DIR; find . -type f $NOLEAF -print | cpio -pdumv $TRANSBASE 1>$TRANSBASE/$LST 2>&1 )
+	  fi
+	  (
+	  cd $TRANSBASE
+	  sh `basename $f`
+	  )
+	else
+		echo "'$prmp' not installed"
+	fi
+fi
+done
+
+if [ $NOPACK -gt 0 ]; then
+    (cd $TRANSBASE; /bin/rm -f $DELFILES)
+    if [ -d jre -a $TRANSBASE/tbjre ]; then
+    if [ "$JAVA_HOME" != "" ]; then
+    	echo
+	echo A Java runtime has been found in \"$JAVA_HOME\".
+	echo This Transbase installation contains a java runtime environment too.
+    	echo "Shall setup install this java runtime environment ? [y]" | awk "$AWKNONL"
+	read x
+	if [ "$x" = "" ]; then 
+		x=y
+	fi
+    else
+    	x=y
+    fi
+	if [ "$x" = "y" ]; then
+
+    	echo Installing JVM runtime 
+	for dd in tbjre tbjre/lib; do
+	    if [ ! -d $TRANSBASE/$dd ]; then
+		mkdir $TRANSBASE/$dd
+	    fi
+	done
+
+    	for f in `ls jre`; do
+	F=`pwd`/jre/$f
+	case $f in
+	*.jar)
+		(cd $TRANSBASE/tbjre/lib; cp $F .)
+		;;
+	*.Z)
+		(cd $TRANSBASE/tbjre; uncompress <$F | tar xf -)
+		;;
+	*.tgz)
+		(cd $TRANSBASE/tbjre; tar xzf $F)
+		;;
+	esac
+    	done
+	fi
+    fi
+    if [ -d doku ]; then
+	if [ ! -d $TRANSBASE/doku ]; then
+	    mkdir $TRANSBASE/doku
+	else
+	    chmod 640 `find $TRANSBASE/doku $NOLEAF -type f -print`
+	    chmod +x $TRANSBASE/doku
+	fi
+	echo "Online documentation is copied, please wait ..."
+	if [ -f $TRANSBASE/doku.lst ]; then
+	    ( cd $TRANSBASE; /bin/rm -f `cat doku.lst`)
+	fi
+	find doku -type f $NOLEAF -print | cpio -pdumv $TRANSBASE 1>$TRANSBASE/doku.lst 2>&1
+	chmod 644 $TRANSBASE/doku/*
+    fi
+    if [ -f $TRANSBASE/rc.TransBase ]; then
+	$TRANSBASE/rc.TransBase
+    fi
+    if [ "$EXTRACT" != "" ]; then
+    	trap "echo Cleaning up temporary files ...; /bin/rm -rf $EXTRACT; exit 1" 0
+    else
+    	trap "exit 0" 0
+
+    fi
+
+    sleep 2
+    cat <<FIN
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++
++ Please make sure that all Transbase users include
++       '$TRANSBASE/.profile'
++ or
++       '$TRANSBASE/.cshrc'
++ into their runtime environment.
++
++ For cleaning up please remove
++       '$ACTPATH'
++ from your harddisk.
++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Transbase has been installed
+
+FIN
+if [ "$EXTRACT" != "" ]; then
+	cd ..
+	/bin/rm -rf $EXTRACT
+fi
+
+else
+    if [ "$MKDIR" != "" ]; then
+	/bin/rm -rf $MKDIR
+    fi
+    echo "No package has been selected for Installation"
+    echo "Transbase has not been installed, please try again"
+    echo 
+fi
+echo 
+

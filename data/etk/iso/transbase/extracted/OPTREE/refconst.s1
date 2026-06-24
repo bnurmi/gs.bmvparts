@@ -1,0 +1,22 @@
+RELDESC_BEGIN
+"@@sysrefconstraint" 
+89 1 -1 1
+11
+	char(*) "constraintname" 0 2 1
+	char(*) "attributes" 1 0 0
+	integer "srcsegno" 2 1 1
+	integer "srccpos" 3 3 1
+	integer "tarsegno" 4 0 1
+	integer "tarcpos" 5 0 1
+	char(*) "delact" 6 0 1
+	char(*) "updact" 7 0 1
+	char(*) "matchtype" 8 0 0
+	integer "d1" 9 0 0
+	char(*) "d2" 10 0 0
+0
+RELDESC_END
+
+(N0:sel
+	(N001:rel  { "@@sysrefconstraint" } 
+		(N002:ivmk  { eq } 
+		(N003:param  { integer[1] } ))))

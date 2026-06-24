@@ -1,0 +1,1 @@
+..\javaclient\jre1.8.0_92\bin\java -classpath "standalone.jar" webetk.install.standalone.UpdateTransbaseIni %1

@@ -1,0 +1,7 @@
+rfile000.000 E:/TEMP-JSWU/files/rfile000.000
+rfile000.001 E:/TEMP-JSWU/files/rfile000.001
+rfile001.000 E:/TEMP-JSWU/files/rfile001.000
+postinstallDataDB.cmd E:/TEMP-JSWU/files/postinstallDataDB.cmd
+updateNutzerDaten.sql E:/TEMP-JSWU/files/updateNutzerDaten.sql
+updatePublDaten.sql E:/TEMP-JSWU/files/updatePublDaten.sql
+version.txt E:/TEMP-JSWU/files/version.txt

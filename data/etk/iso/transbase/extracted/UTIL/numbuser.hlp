@@ -1,0 +1,8 @@
+Choose the number of users allowed for parallel access on the database.
+
+If user number is 1, then heap memory replaces all shared memory.
+
+Note that this database parameter does not affect the number of 
+users which can be registered with name and password in the database.
+
+   -	Command Line Syntax :   u=<number>

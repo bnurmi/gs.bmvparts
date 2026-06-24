@@ -1,0 +1,23 @@
+## ⚠️ PRE-DEPLOY CHECKLIST (READ BEFORE EVERY PUBLISH) ⚠️
+The Replit publish UI generates a SQL migration by diffing **models.py against the live prod schema**. If dev DB has drifted (missing defaults, indexes, constraints, or narrower varchars vs prod), the publish UI will propose **DROP INDEX / ALTER COLUMN DROP DEFAULT / DROP CONSTRAINT / shrink varchar** — destructive operations that damage real prod data. Past incidents have proposed 60+ DROP INDEX, ~70 ALTER…DROP DEFAULT, and constraint drops. **NEVER click Publish without running this checklist first.**
+
+**MANDATORY steps before clicking Publish (in order):**
+1. **Sync dev FROM prod** (additive only, never destructive on dev):
+   - `python scripts/sync_dev_from_prod.py` — pulls prod column defaults, varchar widths, indexes into dev
+   - `python scripts/sync_dev_constraints_from_prod.py` — promotes non-unique indexes to UNIQUE where prod has them, validates NOT-VALID FKs
+2. **Apply any new tables/columns directly to prod** via `PROD_DATABASE_URL` (resolved with `db_resolver.resolve_role('prod')`):
+   - For new tables: `pg_dump --schema-only -t public.<table>` from dev, pipe to `psql $PROD_DATABASE_URL`
+   - For new columns: `ALTER TABLE ... ADD COLUMN IF NOT EXISTS ...` directly against prod
+   - This makes the publish UI's `CREATE TABLE` / `ADD COLUMN` lines no-ops, leaving only the safe additions
+3. **Refresh the schema baseline canary**: `python scripts/restore_schema_baseline.py snapshot --force`
+   - Captures live prod indexes, unique constraints, defaults, varchar widths into `schema_baseline.json`
+   - The boot canary in `app.py::_run_startup_migrations()` (lines ~1627-1762) reads this file at every boot. If anything in the baseline is missing post-deploy, it auto-restores it AND fires CRITICAL alerts (telegram + email).
+4. **Restart the app and confirm the canary log line**:
+   - Look for: `INFO:root:schema-baseline canary: schema baseline already satisfied`
+   - If you see `restored=N` or `failed=N`, investigate before deploying.
+5. **Inspect the publish UI migration diff** before clicking Apply:
+   - Should contain ONLY: `CREATE TABLE`, `ADD COLUMN`, `CREATE INDEX`, `ADD CONSTRAINT`
+   - Must contain ZERO: `DROP INDEX`, `DROP CONSTRAINT`, `DROP COLUMN`, `DROP DEFAULT`, varchar shrinking
+   - If you see ANY destructive statement, STOP. Re-run steps 1-3 — drift has not been fully closed.
+
+**Why this is non-negotiable**: The schema-baseline canary is a safety net, not a primary defense. The primary defense is: dev DB == prod DB structure before publish. The scripts above are idempotent and safe to re-run. Reference doc: `DEPLOY.md` (full runbook with troubleshooting).

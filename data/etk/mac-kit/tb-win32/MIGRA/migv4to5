@@ -1,0 +1,97 @@
+update "@@syscolumn"
+set cname = 'indextype'
+where cname = 'd2' and tsegno = 
+	(select segno from "@@systable"
+		where tname = '@@systable')
+;
+update "@@systable" set ttype = 'V'
+where tname ='systable'
+;
+drop view systable
+;
+CREATE VIEW systable(
+	tname,owner,ttype,segno,colno,"date","cluster",indextype
+	) AS SELECT
+	tname,owner,ttype,segno,colno,"date","cluster",indextype
+	FROM "@@systable"
+	WHERE tname NOT IN (
+		'@@systable',
+		'@@syscolumn',
+		'@@sysindex',
+		'@@sysuser',
+		'@@sysview',
+		'@@sysblob',
+		'@@systablepriv',
+		'@@syscolumnpriv',
+		'@@sysviewdep',
+		'@@sysdomain',
+		'@@sysconstraint',
+		'@@sysrefconstraint',
+		'@@sysx1',
+		'@@sysx2',
+		'@@sysx3');
+
+
+GRANT SELECT ON systable TO PUBLIC;
+
+UPDATE "@@systable" 
+SET ttype='v' 
+WHERE   tname = 'systable'
+;
+UPDATE "@@systable" 
+SET indextype='btree' 
+WHERE   indextype = NULL AND ttype NOT IN ('V','v')
+;
+
+update "@@syscolumn"
+set cname = 'indextype'
+where cname = 'd2' and tsegno = 
+	(select segno from "@@systable"
+		where tname = '@@sysindex')
+;
+update "@@systable" set ttype = 'V'
+where tname ='sysindex'
+;
+drop view sysindex
+;
+
+CREATE VIEW sysindex(
+	tsegno,iname,weight,cpos,isuniq,isegno,indextype,wlistsegno,
+	stowosegno,charmapsegno,delimsegno,ftxttype,wlisttype
+	) AS SELECT
+	tsegno,iname,weight,cpos,isuniq,isegno,indextype,wlistsegno,
+	stowosegno,charmapsegno,delimsegno,ftxttype,wlisttype
+	FROM "@@sysindex";
+
+GRANT SELECT ON sysindex TO PUBLIC;
+
+UPDATE "@@systable" 
+SET ttype='v' 
+WHERE   tname = 'sysindex'
+;
+
+
+update "@@syscolumn"
+set cname = 'ubtrees'
+where cname = 'd2' and tsegno = 
+	(select segno from "@@systable"
+		where tname = '@@sysconstraint')
+;
+update "@@systable" set ttype = 'V'
+where tname ='sysconstraint'
+;
+drop view sysconstraint
+;
+
+CREATE VIEW sysconstraint(
+	segno,constraintname,attributes,constrainttext,cpos,ubtrees
+	) AS SELECT
+	segno,constraintname,attributes,constrainttext,cpos,ubtrees
+	FROM "@@sysconstraint";
+
+GRANT SELECT ON sysconstraint TO PUBLIC;
+
+UPDATE "@@systable" 
+SET ttype='v' 
+WHERE   tname = 'sysconstraint'
+;

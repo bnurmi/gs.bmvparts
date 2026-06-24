@@ -1,0 +1,19 @@
+[plugin:@tailwindcss/vite:generate:serve] EISDIR: illegal operation on a directory, read
+/home/runner/workspace/artifacts/sidebar-variant-nav/src/index.css
+    at async readFileHandle (node:internal/fs/promises:548:24)
+    at async xt (file:///home/runner/workspace/node_modules/@tailwindcss/node/dist/index.mjs:10:4199)
+    at async loadStylesheet (file:///home/runner/workspace/node_modules/@tailwindcss/node/dist/index.mjs:10:2950)
+    at async file:///home/runner/workspace/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/chunk-CT46QCH7.mjs:21:2585
+    at async Promise.all (index 0)
+    at async Zt (file:///home/runner/workspace/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/chunk-CT46QCH7.mjs:21:2743)
+    at async Wi (file:///home/runner/workspace/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/chunk-CT46QCH7.mjs:32:2597)
+    at async Za (file:///home/runner/workspace/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/chunk-CT46QCH7.mjs:38:631)
+    at async rf (file:///home/runner/workspace/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/chunk-CT46QCH7.mjs:38:1406)
+    at async lu (file:///home/runner/workspace/node_modules/@tailwindcss/node/dist/index.mjs:10:3458)
+    at async F.generate (file:///home/runner/workspace/node_modules/@tailwindcss/vite/dist/index.mjs:1:4349)
+    at async TransformPluginContext.handler (file:///home/runner/workspace/node_modules/@tailwindcss/vite/dist/index.mjs:1:2540)
+    at async EnvironmentPluginContainer.transform (file:///home/runner/workspace/node_modules/vite/dist/node/chunks/config.js:28796:14)
+    at async loadAndTransform (file:///home/runner/workspace/node_modules/vite/dist/node/chunks/config.js:22669:26)
+    at async viteTransformMiddleware (file:///home/runner/workspace/node_modules/vite/dist/node/chunks/config.js:24541:20)
+Click outside, press Esc key, or fix the code to dismiss.
+You can also disable this overlay by setting server.hmr.overlay to false in vite.config.ts.

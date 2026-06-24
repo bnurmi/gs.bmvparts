@@ -1,0 +1,9 @@
+Enable database encryption. This is a database creation parameter
+and cannot be changed later.
+
+   -	Command Line Syntax :   crypt=yes|no
+
+	Example:   
+	  -->	tbadmin  -cf  dbname  crypt=yes
+
+	Default: crypt=no
