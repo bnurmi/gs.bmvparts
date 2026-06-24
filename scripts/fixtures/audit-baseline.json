@@ -1,0 +1,230 @@
+{
+  "timestamp": "2026-04-22T06:12:30.877Z",
+  "baseUrl": "http://localhost:5000",
+  "totalTypeCodes": 1059,
+  "buckets": {
+    "correct": 722,
+    "mismatches": 0,
+    "synonymOnly": 83,
+    "missing": 254,
+    "error": 0,
+    "catalogOnly": 2
+  },
+  "catalogOnly": [
+    {
+      "chassis": "G70",
+      "carCount": 8
+    },
+    {
+      "chassis": "G09",
+      "carCount": 1
+    }
+  ],
+  "samples": {
+    "mismatches": [],
+    "synonymOnly": [
+      {
+        "vin": "WBANK7100KV123456",
+        "chassis": "E61N",
+        "stage": "chassis_lci_fallback"
+      },
+      {
+        "vin": "WBAKA0100KV123456",
+        "chassis": "F01",
+        "stage": "chassis_lci_fallback"
+      },
+      {
+        "vin": "WBAKA2100KV123456",
+        "chassis": "F01",
+        "stage": "chassis_lci_fallback"
+      },
+      {
+        "vin": "WBAKA4100KV123456",
+        "chassis": "F01",
+        "stage": "chassis_lci_fallback"
+      },
+      {
+        "vin": "WBAKA4200KV123456",
+        "chassis": "F01",
+        "stage": "chassis_lci_fallback"
+      },
+      {
+        "vin": "WBAKB0100KV123456",
+        "chassis": "F02",
+        "stage": "chassis_lci_fallback"
+      },
+      {
+        "vin": "WBAKB0200KV123456",
+        "chassis": "F02",
+        "stage": "chassis_lci_fallback"
+      },
+      {
+        "vin": "WBAKB0300KV123456",
+        "chassis": "F02",
+        "stage": "chassis_lci_fallback"
+      },
+      {
+        "vin": "WBAKB2100KV123456",
+        "chassis": "F02",
+        "stage": "chassis_lci_fallback"
+      },
+      {
+        "vin": "WBASN0100KV123456",
+        "chassis": "F07",
+        "stage": "chassis_lci_fallback"
+      },
+      {
+        "vin": "WBASN0200KV123456",
+        "chassis": "F07",
+        "stage": "chassis_lci_fallback"
+      },
+      {
+        "vin": "WBASN0300KV123456",
+        "chassis": "F07",
+        "stage": "chassis_lci_fallback"
+      },
+      {
+        "vin": "WBASN2100KV123456",
+        "chassis": "F07",
+        "stage": "chassis_lci_fallback"
+      },
+      {
+        "vin": "WBALW7100KV123456",
+        "chassis": "F12",
+        "stage": "chassis_lci_fallback"
+      },
+      {
+        "vin": "WBALW7200KV123456",
+        "chassis": "F12",
+        "stage": "chassis_lci_fallback"
+      },
+      {
+        "vin": "WBALW7300KV123456",
+        "chassis": "F12",
+        "stage": "chassis_lci_fallback"
+      },
+      {
+        "vin": "WBALW9100KV123456",
+        "chassis": "F12",
+        "stage": "chassis_lci_fallback"
+      },
+      {
+        "vin": "WBALW3100KV123456",
+        "chassis": "F13",
+        "stage": "chassis_lci_fallback"
+      },
+      {
+        "vin": "WBALW3200KV123456",
+        "chassis": "F13",
+        "stage": "chassis_lci_fallback"
+      },
+      {
+        "vin": "WBALW3300KV123456",
+        "chassis": "F13",
+        "stage": "chassis_lci_fallback"
+      }
+    ],
+    "missing": [
+      {
+        "vin": "WBA200100KV123456",
+        "chassis": "114",
+        "status": "invalid_vin"
+      },
+      {
+        "vin": "WBA200200KV123456",
+        "chassis": "114",
+        "status": "invalid_vin"
+      },
+      {
+        "vin": "WBA201100KV123456",
+        "chassis": "114",
+        "status": "invalid_vin"
+      },
+      {
+        "vin": "WBA201200KV123456",
+        "chassis": "114",
+        "status": "no_chassis_carried"
+      },
+      {
+        "vin": "WBA034600KV123456",
+        "chassis": "2471",
+        "status": "invalid_vin"
+      },
+      {
+        "vin": "WBA034700KV123456",
+        "chassis": "2471",
+        "status": "invalid_vin"
+      },
+      {
+        "vin": "WBA034800KV123456",
+        "chassis": "2471",
+        "status": "invalid_vin"
+      },
+      {
+        "vin": "WBA034900KV123456",
+        "chassis": "2471",
+        "status": "invalid_vin"
+      },
+      {
+        "vin": "WBA045100KV123456",
+        "chassis": "2472",
+        "status": "invalid_vin"
+      },
+      {
+        "vin": "WBA045200KV123456",
+        "chassis": "2472",
+        "status": "invalid_vin"
+      },
+      {
+        "vin": "WBA045300KV123456",
+        "chassis": "2472",
+        "status": "invalid_vin"
+      },
+      {
+        "vin": "WBA045600KV123456",
+        "chassis": "2472",
+        "status": "invalid_vin"
+      },
+      {
+        "vin": "WBA046700KV123456",
+        "chassis": "2473",
+        "status": "invalid_vin"
+      },
+      {
+        "vin": "WBA048600KV123456",
+        "chassis": "2473",
+        "status": "invalid_vin"
+      },
+      {
+        "vin": "WBA048700KV123456",
+        "chassis": "2473",
+        "status": "invalid_vin"
+      },
+      {
+        "vin": "WBA049100KV123456",
+        "chassis": "2473",
+        "status": "invalid_vin"
+      },
+      {
+        "vin": "WBA030400KV123456",
+        "chassis": "2474",
+        "status": "invalid_vin"
+      },
+      {
+        "vin": "WBA030500KV123456",
+        "chassis": "2474",
+        "status": "invalid_vin"
+      },
+      {
+        "vin": "WBA030600KV123456",
+        "chassis": "2474",
+        "status": "invalid_vin"
+      },
+      {
+        "vin": "WBA031400KV123456",
+        "chassis": "2474",
+        "status": "invalid_vin"
+      }
+    ]
+  }
+}

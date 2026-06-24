@@ -1,0 +1,164 @@
+{
+  "fetchedAt": "2026-04-22T06:05:17.869Z",
+  "source": "oxylabs",
+  "endpoint": "https://www.realoem.com/bmw/enUS/vinlookup?vin=...",
+  "totalAttempted": 26,
+  "results": [
+    {
+      "vin": "WBA3D52000FV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBA3D52000FV12345.html",
+      "bytes": 4507
+    },
+    {
+      "vin": "WBA4A92000FV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBA4A92000FV12345.html",
+      "bytes": 4399
+    },
+    {
+      "vin": "WBA4B12000FV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBA4B12000FV12345.html",
+      "bytes": 4507
+    },
+    {
+      "vin": "WBA8E5G000HV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBA8E5G000HV12345.html",
+      "bytes": 4399
+    },
+    {
+      "vin": "WBA8K5G000GV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBA8K5G000GV12345.html",
+      "bytes": 4507
+    },
+    {
+      "vin": "WBANV93000AV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBANV93000AV12345.html",
+      "bytes": 4507
+    },
+    {
+      "vin": "WBAPM91000AV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBAPM91000AV12345.html",
+      "bytes": 4507
+    },
+    {
+      "vin": "WBAPN91000AV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBAPN91000AV12345.html",
+      "bytes": 4507
+    },
+    {
+      "vin": "WBAUE71000AV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBAUE71000AV12345.html",
+      "bytes": 4507
+    },
+    {
+      "vin": "WBAUF71000AV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBAUF71000AV12345.html",
+      "bytes": 4507
+    },
+    {
+      "vin": "WBS12GA000RV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBS12GA000RV12345.html",
+      "bytes": 4507
+    },
+    {
+      "vin": "WBS73AK000PV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBS73AK000PV12345.html",
+      "bytes": 4507
+    },
+    {
+      "vin": "WBS73AL000PV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBS73AL000PV12345.html",
+      "bytes": 4507
+    },
+    {
+      "vin": "WBS83CM000PV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBS83CM000PV12345.html",
+      "bytes": 4399
+    },
+    {
+      "vin": "WBS83CM000PV99999",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBS83CM000PV99999.html",
+      "bytes": 4507
+    },
+    {
+      "vin": "WBS83CN000PV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBS83CN000PV12345.html",
+      "bytes": 4507
+    },
+    {
+      "vin": "WBSAH5V000RV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBSAH5V000RV12345.html",
+      "bytes": 4507
+    },
+    {
+      "vin": "WBSDN5E000FV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBSDN5E000FV12345.html",
+      "bytes": 4507
+    },
+    {
+      "vin": "WBSDN5E000FV99999",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBSDN5E000FV99999.html",
+      "bytes": 4399
+    },
+    {
+      "vin": "WBSDN9C000HV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBSDN9C000HV12345.html",
+      "bytes": 4399
+    },
+    {
+      "vin": "WBSDN9E000JV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBSDN9E000JV12345.html",
+      "bytes": 4507
+    },
+    {
+      "vin": "WBSEH5V000FV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBSEH5V000FV12345.html",
+      "bytes": 4507
+    },
+    {
+      "vin": "WBSEH9V000FV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBSEH9V000FV12345.html",
+      "bytes": 4507
+    },
+    {
+      "vin": "WBSFE5V000HV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBSFE5V000HV12345.html",
+      "bytes": 4507
+    },
+    {
+      "vin": "WBSKG91000CV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBSKG91000CV12345.html",
+      "bytes": 4507
+    },
+    {
+      "vin": "WBSZZ99000RV12345",
+      "status": "vin_not_recognized",
+      "responseFile": "realoem-responses/WBSZZ99000RV12345.html",
+      "bytes": 4507
+    }
+  ]
+}

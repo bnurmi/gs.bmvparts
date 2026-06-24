@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>Malformed parts table - RealOEM</title></head>
+<body>
+<h1>Front bumper trim (markup drift)</h1>
+<!--
+  Synthetic stub of a RealOEM page where the parts table renders but
+  the part-number cells were lost in the layout drift (e.g. moved into
+  <span data-part-no="..."> tags the regex extractor doesn't read, or
+  replaced with placeholders). No <td> cell collapses to 11 digits, so
+  extractRealoemParts returns 0 rows. The strict variant must classify
+  this as parser drift, not a legitimately empty diagram.
+-->
+<table id="parts">
+  <tr><th>Ref</th><th>Description</th><th>Part #</th><th>Qty</th></tr>
+  <tr><td colspan="4">Part listing temporarily unavailable. Please retry later.</td></tr>
+  <tr><td>1</td><td>Mounting bracket, front-left</td><td>see invoice</td><td>1</td></tr>
+  <tr><td>2</td><td>Hex bolt with collar</td><td>—</td><td>4</td></tr>
+  <tr><td>3</td><td>Trim clip</td><td>n/a</td><td>6</td></tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 96" width="480" height="96" role="img" aria-label="BMV.parts">
+  <title>BMV.parts</title>
+  <desc>BMV.parts wordmark — dark mode variant. White BM, BMV Blue V and dot, white .parts at 92% opacity.</desc>
+  <style>
+    .bmv-bm    { font-family: 'Inter Tight', system-ui, sans-serif; font-weight: 800; fill: #FFFFFF; }
+    .bmv-v     { font-family: 'Inter Tight', system-ui, sans-serif; font-weight: 800; fill: #4F94F0; }
+    .bmv-dot   { font-family: 'Inter Tight', system-ui, sans-serif; font-weight: 800; fill: #4F94F0; }
+    .bmv-parts { font-family: 'Inter Tight', system-ui, sans-serif; font-weight: 400; fill: #FFFFFF; opacity: 0.92; }
+  </style>
+  <text x="0" y="76" font-size="92" letter-spacing="-4">
+    <tspan class="bmv-bm">BM</tspan><tspan class="bmv-v">V</tspan><tspan class="bmv-dot">.</tspan><tspan class="bmv-parts">parts</tspan>
+  </text>
+</svg>

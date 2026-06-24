@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="BMV">
+  <title>BMV</title>
+  <rect width="32" height="32" fill="#08090B"/>
+  <text x="16" y="22.5" font-family="Inter Tight, system-ui, sans-serif" font-size="17" font-weight="900" letter-spacing="-0.8" text-anchor="middle">
+    <tspan fill="#FFFFFF">BM</tspan><tspan fill="#4F94F0">V</tspan>
+  </text>
+</svg>

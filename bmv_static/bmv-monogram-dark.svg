@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" role="img" aria-label="BMV">
+  <title>BMV</title>
+  <desc>BMV monogram - dark mode variant for favicon and small-context use.</desc>
+  <style>
+    .bmv-bm { font-family: 'Inter Tight', system-ui, sans-serif; font-weight: 900; fill: #FFFFFF; }
+    .bmv-v  { font-family: 'Inter Tight', system-ui, sans-serif; font-weight: 900; fill: #4F94F0; }
+  </style>
+  <text x="48" y="68" font-size="56" letter-spacing="-2.5" text-anchor="middle">
+    <tspan class="bmv-bm">BM</tspan><tspan class="bmv-v">V</tspan>
+  </text>
+</svg>

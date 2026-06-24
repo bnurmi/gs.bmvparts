@@ -1,0 +1,162 @@
+modules = ["nodejs-20", "web"]
+run = "npm run dev"
+hidden = [".config", ".git", "generated-icon.png", "node_modules", "dist"]
+
+[nix]
+channel = "stable-24_05"
+
+[[ports]]
+localPort = 1027
+externalPort = 3002
+
+[[ports]]
+localPort = 2024
+externalPort = 3001
+
+[[ports]]
+localPort = 2025
+externalPort = 3000
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[[ports]]
+localPort = 5099
+externalPort = 5000
+
+[[ports]]
+localPort = 6379
+externalPort = 5173
+exposeLocalhost = true
+
+[[ports]]
+localPort = 12025
+externalPort = 3003
+
+[[ports]]
+localPort = 19134
+externalPort = 4200
+
+[env]
+PORT = "5000"
+
+[deployment]
+deploymentTarget = "vm"
+run = ["sh", "-c", "redis-server --daemonize yes --loglevel warning --save '60 1' --bind 127.0.0.1 2>/dev/null || true; NODE_ENV=production node dist/index.cjs"]
+build = ["npm", "run", "build"]
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Catalog Importer"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Image Backfill"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "vin-enrichment-backfill"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "chain-next-chassis"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start Redis"
+
+[[workflows.workflow]]
+name = "Start application"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
+waitForPort = 5000
+
+[[workflows.workflow]]
+name = "Catalog Importer"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "bash scripts/import-external-catalog-supervisor.sh"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow]]
+name = "Image Backfill"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npx tsx scripts/backfill-missing-images.ts"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow]]
+name = "vin-enrichment-backfill"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "BMV_BACKFILL_THROTTLE=800 npx tsx scripts/backfill-vin-enrichment.ts"
+
+[[workflows.workflow]]
+name = "chain-next-chassis"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "CHASSIS_LIST=\"E90N,E60N,F30N,E91N,F60,F36,E92N,F48N,F54,F20N,F10N,G12N,F31N,G31,G12,G21,F56,F34,F21N,E61N,F11N,F07,F31,F33,F55,F45N,F57,E93N,F23,F32N,F36N,F21,F54N,E61,F02N,F34N,G11N,F44,F01N,F07N,E87N,E81,E65,F12,F33N,F22N,F46N,F23N,G28,F35N,E83N,F46,F06N,G11,F06,F12N,F13N,F02,E66,E89,E70N,G38,G29,G16,E87,F52,F35,F49,G14,G15,E169,F49N,F87N,F04,F82N,F92,F93,F56E,E72,F80N,F83N,F90,F91,R60,R61,R56N,R55N,R57N,R56,R131,R55,R58,R59,R13,R57,R28,R22,R134,R21,R21A,RR31,RR11,RR12,RR1,RR4,RR1N,RR6,RR5,RR3N,RR2,RR2N,RR3,K50,K72,K51,K73,K46,K48,K47,K70,K67,K71,K26,K03,K15,K49,K75,K02,K83,K22,K43,K52,K53,K54,K80,K81,K82,K84,K21,K25,K255,K17,K19,K14,K09,K08,K33,K29,K23,K27,K25H,K18,K61,K44,K41,K40,K69,K30,K32,K42,K28,K16,I01N,I01,I12,I12N,I15,M13,MOSP,C1N,89V3,89V2,59C1,59C3,59C2,259T,259S,259E,259R,A67,A61\" POLL_SECONDS=60 PER_CHASSIS_CAP_MINUTES=720 LAUNCH_RESERVE=8000 npx tsx scripts/chain-multi-chassis-backfill.ts"
+
+[[workflows.workflow]]
+name = "Start Redis"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "mkdir -p /home/runner/workspace/data/redis && redis-server /home/runner/workspace/config/redis.conf"
+
+[agent]
+integrations = ["javascript_openai_ai_integrations:2.0.0"]
+
+[userenv]
+
+[userenv.shared]
+
+[userenv.development]
+BMV_DISABLE_BACKUP_SCHEDULER = "1"
+
+[userenv.production]
+PG_DUMP_TIMEOUT_MS = "3600000"
+BMV_DISABLE_AI_FAQ = "1"
+BMV_DISABLE_SEO_ENGINES = "1"
+
+[postMerge]
+path = "scripts/post-merge.sh"
+timeoutMs = 180000
+
+[objectStorage]
+defaultBucketID = "replit-objstore-1a5831e3-4e2b-4117-a45b-0be5d373df6a"

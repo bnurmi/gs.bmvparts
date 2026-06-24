@@ -1,0 +1,187 @@
+# =============================================================================
+# Prometheus alert rules for bmv.parts
+# =============================================================================
+# Load this file into Prometheus/Alertmanager on monitor.hiddenservers.net.
+# Adjust thresholds and receiver names to match your Alertmanager config.
+# =============================================================================
+
+groups:
+  - name: bmv-parts-availability
+    rules:
+
+      - alert: BmvPartsSiteDown
+        expr: up{job="bmv-parts"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          service: bmv.parts
+        annotations:
+          summary: "bmv.parts is unreachable"
+          description: "Prometheus cannot scrape bmv.parts metrics. The Node process may have crashed or the VM is down."
+
+      - alert: BmvPartsHealthDegraded
+        expr: bmv_parts_database_up == 0 or bmv_parts_cache_up == 0
+        for: 3m
+        labels:
+          severity: warning
+          service: bmv.parts
+        annotations:
+          summary: "bmv.parts dependency health degraded"
+          description: "Database or Redis is unreachable. Check /health for details."
+
+      - alert: BmvPartsProcessRestarting
+        expr: increase(bmv_parts_process_start_time_seconds[10m]) > 2
+        for: 0m
+        labels:
+          severity: warning
+          service: bmv.parts
+        annotations:
+          summary: "bmv.parts process restart loop detected"
+          description: "The Node process has restarted more than twice in the last 10 minutes."
+
+  - name: bmv-parts-errors
+    rules:
+
+      - alert: BmvPartsHigh5xxRate
+        expr: |
+          sum(rate(bmv_parts_http_errors_total{status_class="5xx"}[5m])) by (service)
+          /
+          sum(rate(bmv_parts_http_requests_total[5m])) by (service)
+          > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: bmv.parts
+        annotations:
+          summary: "High 5xx error rate on bmv.parts (>5%)"
+          description: "More than 5% of requests are returning 5xx errors. Investigate application logs."
+
+      - alert: BmvPartsHigh4xxRate
+        expr: |
+          sum(rate(bmv_parts_http_errors_total{status_class="4xx"}[5m])) by (service)
+          /
+          sum(rate(bmv_parts_http_requests_total[5m])) by (service)
+          > 0.20
+        for: 10m
+        labels:
+          severity: warning
+          service: bmv.parts
+        annotations:
+          summary: "Elevated 4xx error rate on bmv.parts (>20%)"
+          description: "More than 20% of requests are returning 4xx errors. May indicate a crawl or client issue."
+
+  - name: bmv-parts-latency
+    rules:
+
+      - alert: BmvPartsHighLatencyP95
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(bmv_parts_http_request_duration_seconds_bucket[5m])) by (le, service)
+          ) > 3
+        for: 5m
+        labels:
+          severity: warning
+          service: bmv.parts
+        annotations:
+          summary: "bmv.parts p95 latency above 3s"
+          description: "The 95th-percentile response time has been above 3 seconds for 5 minutes."
+
+      - alert: BmvPartsHighLatencyP99
+        expr: |
+          histogram_quantile(0.99,
+            sum(rate(bmv_parts_http_request_duration_seconds_bucket[5m])) by (le, service)
+          ) > 10
+        for: 5m
+        labels:
+          severity: critical
+          service: bmv.parts
+        annotations:
+          summary: "bmv.parts p99 latency above 10s"
+          description: "The 99th-percentile response time has been above 10 seconds for 5 minutes."
+
+  - name: bmv-parts-host
+    rules:
+
+      - alert: BmvPartsHostHighMemory
+        expr: |
+          (
+            node_memory_MemTotal_bytes{job="bmv-parts-node"}
+            - node_memory_MemAvailable_bytes{job="bmv-parts-node"}
+          ) / node_memory_MemTotal_bytes{job="bmv-parts-node"} > 0.90
+        for: 10m
+        labels:
+          severity: warning
+          service: bmv.parts-host
+        annotations:
+          summary: "bmv.parts VM memory usage above 90%"
+          description: "Available memory is critically low on the bmv.parts VM."
+
+      - alert: BmvPartsHostHighCpu
+        expr: |
+          100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle", job="bmv-parts-node"}[5m])) * 100) > 85
+        for: 10m
+        labels:
+          severity: warning
+          service: bmv.parts-host
+        annotations:
+          summary: "bmv.parts VM CPU usage above 85%"
+          description: "The bmv.parts VM has been above 85% CPU utilization for 10 minutes."
+
+      - alert: BmvPartsHostDiskFull
+        expr: |
+          (node_filesystem_size_bytes{job="bmv-parts-node", fstype!="tmpfs"}
+           - node_filesystem_free_bytes{job="bmv-parts-node", fstype!="tmpfs"})
+          / node_filesystem_size_bytes{job="bmv-parts-node", fstype!="tmpfs"} > 0.85
+        for: 5m
+        labels:
+          severity: warning
+          service: bmv.parts-host
+        annotations:
+          summary: "bmv.parts VM disk usage above 85%"
+          description: "Disk is filling up on the bmv.parts VM. Check logs and backups."
+
+      - alert: BmvPartsNodeExporterDown
+        expr: up{job="bmv-parts-node"} == 0
+        for: 5m
+        labels:
+          severity: warning
+          service: bmv.parts-host
+        annotations:
+          summary: "bmv.parts node exporter is down"
+          description: "prometheus-node-exporter is not responding on port 9100."
+
+  - name: bmv-parts-tls
+    rules:
+
+      - alert: BmvPartsTlsCertExpiringSoon
+        expr: probe_ssl_earliest_cert_expiry{job="bmv-parts"} - time() < 86400 * 14
+        for: 1h
+        labels:
+          severity: warning
+          service: bmv.parts
+        annotations:
+          summary: "bmv.parts TLS certificate expires in less than 14 days"
+          description: "Renew the TLS certificate before it expires. Run: certbot renew"
+
+      - alert: BmvPartsTlsCertCritical
+        expr: probe_ssl_earliest_cert_expiry{job="bmv-parts"} - time() < 86400 * 3
+        for: 1h
+        labels:
+          severity: critical
+          service: bmv.parts
+        annotations:
+          summary: "bmv.parts TLS certificate expires in less than 3 days"
+          description: "URGENT: TLS certificate is about to expire. The site will become unreachable."
+
+  - name: bmv-parts-scrape
+    rules:
+
+      - alert: BmvPartsNoSuccessfulScrape
+        expr: time() - prometheus_target_metadata_cache_last_update_timestamp{job="bmv-parts"} > 300
+        for: 5m
+        labels:
+          severity: warning
+          service: bmv.parts
+        annotations:
+          summary: "No successful scrape from bmv.parts in 5 minutes"
+          description: "Prometheus has not successfully scraped bmv.parts metrics in the last 5 minutes."

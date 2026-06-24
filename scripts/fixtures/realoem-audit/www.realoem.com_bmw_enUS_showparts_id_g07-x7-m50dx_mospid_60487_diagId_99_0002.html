@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>Paginated parts list - RealOEM</title></head>
+<body>
+<h1>Engine wiring loom (paginated)</h1>
+<table id="parts">
+  <thead>
+    <tr><th>Ref</th><th>Description</th><th>Part number</th><th>Qty</th></tr>
+  </thead>
+  <tbody>
+    <!--
+      Synthetic stub of the paginated RealOEM listing layout. The real
+      site renders only the column headers on the server response and
+      lazy-loads each page's part rows via XHR. Our HTML parser sees
+      the table but no part-number cells, and therefore should treat
+      this as parser drift instead of "this diagram has 0 parts".
+    -->
+  </tbody>
+</table>
+<nav class="pagination" aria-label="Parts listing pages">
+  <span>Page 1 of 3</span>
+  <a class="page-link" href="?page=1">1</a>
+  <a class="page-link" href="?page=2">2</a>
+  <a class="page-link" href="?page=3">3</a>
+  <a class="next" rel="next" href="?page=2">Next</a>
+</nav>
+</body>
+</html>

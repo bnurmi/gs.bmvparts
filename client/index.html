@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BMV.parts — BMW OEM Parts Catalog</title>
+    <!--
+      Description / Open Graph tags are injected per-page (and per-locale)
+      by client/src/components/SEO.tsx via react-helmet-async. They are
+      intentionally NOT declared statically here: react-helmet-async only
+      dedupes tags it manages itself, so a static <meta name="description">
+      would coexist with the Helmet-managed one and shadow it for crawlers
+      that read the first matching tag (Task #45).
+    -->
+    <!--
+      BMV theme toggle (light / dark / auto). Inlined here BEFORE any CSS
+      so it sets the data-theme attribute pre-paint, eliminating the
+      flash-of-unstyled-content on page load. Sourced from
+      attached_assets/theme-toggle_1777102762061.js (Task #69).
+    -->
+    <script>
+      (function () {
+        var STORAGE_KEY = 'bmv-theme';
+        var VALID_THEMES = ['light', 'dark', 'auto'];
+        function getStoredTheme() {
+          try {
+            var stored = localStorage.getItem(STORAGE_KEY);
+            return VALID_THEMES.indexOf(stored) >= 0 ? stored : 'auto';
+          } catch (_) { return 'auto'; }
+        }
+        function resolved(theme) {
+          if (theme !== 'auto') return theme;
+          return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        function applyTheme(theme) {
+          var doc = document.documentElement;
+          doc.setAttribute('data-theme', theme);
+          // Keep legacy `.dark` class in lockstep so any utility classes
+          // still using `dark:` resolve correctly.
+          if (resolved(theme) === 'dark') doc.classList.add('dark');
+          else doc.classList.remove('dark');
+        }
+        applyTheme(getStoredTheme());
+        window.BMVTheme = {
+          get current() { return getStoredTheme(); },
+          get resolved() { return resolved(getStoredTheme()); },
+          set: function (theme) {
+            if (VALID_THEMES.indexOf(theme) < 0) return;
+            try { localStorage.setItem(STORAGE_KEY, theme); } catch (_) {}
+            applyTheme(theme);
+            window.dispatchEvent(new CustomEvent('bmv-theme-change', { detail: { theme: theme } }));
+          },
+          cycle: function () {
+            var order = ['light', 'dark', 'auto'];
+            var next = order[(order.indexOf(this.current) + 1) % order.length];
+            this.set(next);
+            return next;
+          },
+        };
+        if (window.matchMedia) {
+          window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+            if (getStoredTheme() === 'auto') {
+              applyTheme('auto');
+              window.dispatchEvent(new CustomEvent('bmv-theme-change', { detail: { theme: 'auto' } }));
+            }
+          });
+        }
+      })();
+    </script>
+    <meta name="theme-color" content="#1563D6" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- Fonts: Inter Tight + JetBrains Mono loaded asynchronously (non-blocking) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" /></noscript>
+    <script>
+      (function () {
+        var host = (location.hostname || '').toLowerCase();
+        var gaId = (host === 'bmv.vin' || host === 'www.bmv.vin')
+          ? 'G-XFTEW5RER2'
+          : 'G-NERW8BCJC5';
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+        document.head.appendChild(s);
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        window.gtag = gtag;
+        gtag('js', new Date());
+        gtag('config', gaId);
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

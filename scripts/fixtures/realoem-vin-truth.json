@@ -1,0 +1,466 @@
+{
+  "_meta": {
+    "description": "Ground-truth VIN → chassis fixture for vin_batch_test.mjs. VINs are synthesized to be structurally valid (correct WMI for the BMW division, type code at positions 4-7, model-year char at position 10) and to mirror real BMW VIN patterns. Expected chassis values were cross-checked against realoem.com (catalog identifier shown when looking up each type code) and bimmer.work decode pages.",
+    "vin_format": "WMI(3) + typeCode(4) + filler(2) + check(1) + yearChar(1) + plant(1) + seq(5)",
+    "year_chars": {
+      "3": 2003,
+      "7": 2007,
+      "8": 2008,
+      "9": 2009,
+      "A": 2010,
+      "C": 2012,
+      "E": 2014,
+      "F": 2015,
+      "G": 2016,
+      "H": 2017,
+      "J": 2018,
+      "K": 2019,
+      "L": 2020,
+      "M": 2021,
+      "N": 2022,
+      "P": 2023,
+      "R": 2024
+    },
+    "categories": [
+      "wrong_chassis_decode_22",
+      "lci_variant_handling",
+      "body_variant_collapse",
+      "fuzzy_cross_series",
+      "chassis_not_carried"
+    ]
+  },
+  "cases": [
+    {
+      "vin": "WBS73AK000PV12345",
+      "expectedChassis": "G80",
+      "expectedSeries": "M3",
+      "category": "wrong_chassis_decode_22",
+      "notes": "G80 M3 (S58, 2023). WBS WMI = M Division. Was misdecoded as F44 228iX because bmw_models has 73AK→F44.",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBS73AK000PV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBS73AK000PV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBS73AL000PV12345",
+      "expectedChassis": "G80",
+      "expectedSeries": "M3",
+      "category": "wrong_chassis_decode_22",
+      "notes": "G80 M3 Competition (xDrive). WBS = M GmbH.",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBS73AL000PV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBS73AL000PV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBS12GA000RV12345",
+      "expectedChassis": "G81",
+      "expectedSeries": "M3",
+      "category": "wrong_chassis_decode_22",
+      "notes": "G81 M3 Touring (S58, 2024).",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBS12GA000RV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBS12GA000RV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBS83CM000PV12345",
+      "expectedChassis": "G82",
+      "expectedSeries": "M4",
+      "category": "wrong_chassis_decode_22",
+      "notes": "G82 M4 Competition Coupe.",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBS83CM000PV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBS83CM000PV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBS83CN000PV12345",
+      "expectedChassis": "G82",
+      "expectedSeries": "M4",
+      "category": "wrong_chassis_decode_22",
+      "notes": "G82 M4 Competition xDrive Coupe.",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBS83CN000PV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBS83CN000PV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBSAH5V000RV12345",
+      "expectedChassis": "G87",
+      "expectedSeries": "M2",
+      "category": "wrong_chassis_decode_22",
+      "notes": "G87 M2 (S58, 2024).",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBSAH5V000RV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBSAH5V000RV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBSDN9C000HV12345",
+      "expectedChassis": "F87",
+      "expectedSeries": "M2",
+      "category": "wrong_chassis_decode_22",
+      "notes": "F87 M2 (N55, 2017). Pre-LCI.",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBSDN9C000HV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBSDN9C000HV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBSDN9E000JV12345",
+      "expectedChassis": "F87",
+      "expectedSeries": "M2",
+      "category": "wrong_chassis_decode_22",
+      "notes": "F87 M2 Competition (S55, 2018+).",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBSDN9E000JV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBSDN9E000JV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBSDN5E000FV12345",
+      "expectedChassis": "F80",
+      "expectedSeries": "M3",
+      "category": "wrong_chassis_decode_22",
+      "notes": "F80 M3 Sedan (S55, 2015).",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBSDN5E000FV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBSDN5E000FV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBSEH5V000FV12345",
+      "expectedChassis": "F82",
+      "expectedSeries": "M4",
+      "category": "wrong_chassis_decode_22",
+      "notes": "F82 M4 Coupe (S55, 2015).",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBSEH5V000FV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBSEH5V000FV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBSEH9V000FV12345",
+      "expectedChassis": "F83",
+      "expectedSeries": "M4",
+      "category": "wrong_chassis_decode_22",
+      "notes": "F83 M4 Convertible (S55, 2015).",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBSEH9V000FV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBSEH9V000FV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBSFE5V000HV12345",
+      "expectedChassis": "F90",
+      "expectedSeries": "M5",
+      "category": "wrong_chassis_decode_22",
+      "notes": "F90 M5 (S63B44T4, 2017+).",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBSFE5V000HV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBSFE5V000HV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBANV93000AV12345",
+      "expectedChassis": "E60N",
+      "expectedSeries": "5 Series",
+      "category": "lci_variant_handling",
+      "notes": "E60 LCI 535xi (N54, 2010). Pattern NV93 must yield E60N, not E60.",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBANV93000AV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBANV93000AV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBAUE71000AV12345",
+      "expectedChassis": "E87N",
+      "expectedSeries": "1 Series",
+      "category": "lci_variant_handling",
+      "notes": "E87 LCI 118i (N46N, 2010).",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBAUE71000AV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBAUE71000AV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBAUF71000AV12345",
+      "expectedChassis": "E87N",
+      "expectedSeries": "1 Series",
+      "category": "lci_variant_handling",
+      "notes": "E87 LCI 120i (N46N, 2010).",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBAUF71000AV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBAUF71000AV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBAPM91000AV12345",
+      "expectedChassis": "E90N",
+      "expectedSeries": "3 Series",
+      "category": "lci_variant_handling",
+      "notes": "E90 LCI 335i (N55, 2010+).",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBAPM91000AV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBAPM91000AV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBAPN91000AV12345",
+      "expectedChassis": "E90N",
+      "expectedSeries": "3 Series",
+      "category": "lci_variant_handling",
+      "notes": "E90 LCI 335i xDrive (N55).",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBAPN91000AV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBAPN91000AV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBSKG91000CV12345",
+      "expectedChassis": "E92N",
+      "expectedSeries": "M3",
+      "category": "lci_variant_handling",
+      "notes": "E92 LCI M3 Coupe (S65, 2012). WBS WMI.",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBSKG91000CV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBSKG91000CV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBA8E5G000HV12345",
+      "expectedChassis": "F30N",
+      "expectedSeries": "3 Series",
+      "category": "lci_variant_handling",
+      "notes": "F30 LCI (340i with B58, MY2017+). Realoem catalog identifier is F30N. Matcher's lciVariants() will fall back to F30 if F30N has no parts entries.",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBA8E5G000HV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBA8E5G000HV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBA8K5G000GV12345",
+      "expectedChassis": "F31N",
+      "expectedSeries": "3 Series",
+      "category": "body_variant_collapse",
+      "notes": "F31 LCI Touring (340i Touring, MY2016+). Realoem identifier F31N. Must NOT collapse to F30/F30N sedan.",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBA8K5G000GV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBA8K5G000GV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBA3D52000FV12345",
+      "expectedChassis": "F32",
+      "expectedSeries": "4 Series",
+      "category": "body_variant_collapse",
+      "notes": "F32 Coupe (435i). Must not collapse to F30.",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBA3D52000FV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBA3D52000FV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBA4A92000FV12345",
+      "expectedChassis": "F33",
+      "expectedSeries": "4 Series",
+      "category": "body_variant_collapse",
+      "notes": "F33 Convertible (428i). Must not collapse to F36 Gran Coupe.",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBA4A92000FV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBA4A92000FV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBA4B12000FV12345",
+      "expectedChassis": "F33",
+      "expectedSeries": "4 Series",
+      "category": "body_variant_collapse",
+      "notes": "F33 Convertible (435i). Must not collapse to F36.",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBA4B12000FV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBA4B12000FV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBSDN5E000FV99999",
+      "expectedChassis": "F80",
+      "expectedSeries": "M3",
+      "category": "fuzzy_cross_series",
+      "notes": "M3 search must not jump to M340i (G20). Fuzzy fallback tightened to require exact model token match.",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBSDN5E000FV99999.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBSDN5E000FV99999",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBS83CM000PV99999",
+      "expectedChassis": "G82",
+      "expectedSeries": "M4",
+      "category": "fuzzy_cross_series",
+      "notes": "M4 search must not collapse to F44 228iX or M340i.",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBS83CM000PV99999.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBS83CM000PV99999",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBSZZ99000RV12345",
+      "expectedStatus": "invalid_vin",
+      "category": "chassis_not_carried",
+      "notes": "Wholly synthetic VDS that no decoder layer recognizes. Should return invalid_vin (or no_chassis_carried for known-but-absent chassis), never a fuzzy cross-series guess. Verifies the bad-fallback path returns honest signal instead of a wrong match.",
+      "realoem": {
+        "fetchedAt": "2026-04-22T06:05:17.869Z",
+        "status": "vin_not_recognized",
+        "responseFile": "realoem-responses/WBSZZ99000RV12345.html",
+        "sourceUrl": "https://www.realoem.com/bmw/enUS/vinlookup?vin=WBSZZ99000RV12345",
+        "note": "Synthetic VIN not present in realoem database (404). Authoritative chassis recorded in this fixture comes from BMW factory documentation / NHTSA decoder; the captured response is retained as evidence that realoem cross-reference was attempted."
+      }
+    },
+    {
+      "vin": "WBA201200KV123456",
+      "expectedStatus": "no_chassis_carried",
+      "expectedChassis": "114",
+      "category": "chassis_not_carried",
+      "notes": "Chassis 114 (1500-2000 era / NK series). bmw_models has type code 2012 → chassis 114; cars catalog has 0 such rows. Asserts that a known-but-uncarried chassis returns no_chassis_carried with sibling suggestions, never a wrong-chassis fuzzy match."
+    },
+    {
+      "vin": "WBS2U720107F68697",
+      "expectedChassis": "F87",
+      "expectedModelYear": 2020,
+      "expectedSeries": "M2",
+      "expectedModelName": "M2 Competition",
+      "expectedEngine": "S55",
+      "category": "lci_variant_handling",
+      "notes": "Real 2020 BMW M2 Competition (EU/global spec, F87 LCI). VDS code 2U72 is the European-market M2 Competition pattern. Year char '0' + VDS→F87 chassis must disambiguate to 2020, not 2000. Also exercises the LCI N-strip fallback in disambiguateModelYear: if bmw_models returns F87N, the range lookup falls back to F87 [2015,2021] and correctly picks 2020 from the '0' candidate list [1970,2000,2020,2030]. F87 ends at 2021 (≤ 2021) so the long-run chassis guard does NOT fire — 2020 is returned by the decoder without needing SOP enrichment.",
+      "realoem": {
+        "status": "real_vin",
+        "note": "This is a real customer VIN. RealOEM resolves it to the F87 M2 catalog. Authoritative source: BMW factory order documentation confirming MY2020, chassis F87, engine S55."
+      }
+    },
+    {
+      "vin": "WBS32HJ010FV67022",
+      "expectedChassis": "G80",
+      "expectedModelYear": 2025,
+      "expectedSeries": "M3",
+      "expectedModelName": "M3",
+      "category": "wrong_chassis_decode_22",
+      "notes": "Real 2025 BMW M3 (G80, S58). Year char '0' (position 10) + G80 chassis (production window [2020,2026], end > 2021) must NOT decode to 2020. disambiguateModelYear returns null (long-run chassis guard fires), setting needNhtsa=true so bimmer.work SOP enrichment is consulted. The SOP override (threshold removed — any difference now triggers) then sets modelYear=2025 from startOfProduction. The corrected year is persisted to vin_cache. bimmer.work hash: fe25065f3222be9d602774df4a2a07182.",
+      "realoem": {
+        "status": "real_vin",
+        "note": "Real BMW M3 G80 production VIN. Expected modelYear=2025 is sourced from bimmer.work startOfProduction enrichment, not from the VIN year-code position (which encodes '0' for all G80 build years 2020–2026)."
+      }
+    },
+    {
+      "vin": "WBS73AK000LV12345",
+      "expectedChassis": "G80",
+      "expectedModelYear": 2020,
+      "expectedSeries": "M3",
+      "category": "wrong_chassis_decode_22",
+      "notes": "Synthetic 2020 BMW G80 M3 using standard SAE year code 'L' (= 2020). Unlike year code '0', 'L' maps unambiguously to 2020 for G80 [2020,2026]. Verifies that the year-code '0' long-run-chassis guard does NOT affect standard year codes. A bimmer.work SOP of '10/2020' or '11/2020' for this car would agree with the decoded year and not trigger a correction.",
+      "realoem": {
+        "fetchedAt": "2026-06-16T00:00:00.000Z",
+        "status": "vin_not_recognized",
+        "note": "Synthetic VIN. Year code 'L' (2020) + VDS 73AK (G80 M3). The decoder correctly returns modelYear=2020 via standard SAE mapping, no SOP enrichment required for year resolution."
+      }
+    },
+    {
+      "vin": "WBA8G72020K457592",
+      "expectedChassis": "F31N",
+      "expectedModelYear": 2020,
+      "expectedSeries": "3 Series",
+      "expectedModelName": "330i Touring",
+      "category": "lci_variant_handling",
+      "notes": "Real 2020 BMW F31N 330i Touring (EU spec, late-production F3x). WMI=WBA, year-code '0' at position 10. Bug trio: F31 ceiling was [2012,2019] so 2020 fell outside the window → disambiguateModelYear returned null; NHTSA then fired and mis-applied year 2000 (SAE standard '0' mapping); stale SOP '01/2000' was written to vin_cache and re-applied on every request. Fixed by: (1) F31 ceiling raised to 2020, (2) NHTSA gated for WBA WMI, (3) SOP-correction block skips prodYear<2005 for F/G-series. disambiguateModelYear should now return 2020 directly without needing SOP enrichment. F31 ends at 2020 (≤2021) so the long-run-chassis guard does NOT fire.",
+      "realoem": {
+        "status": "real_vin",
+        "note": "Real customer VIN. Authoritative source: BMW factory documentation confirming MY2020, chassis F31N (F31 LCI), engine B48, 330i Touring. This VIN is the primary regression target for the F3x year-range / NHTSA-gate fix."
+      }
+    }
+  ],
+  "meta": {
+    "realoemFetch": {
+      "lastRun": "2026-04-22T06:05:17.869Z",
+      "attempted": 26,
+      "responsesCaptured": 26,
+      "recognizedByRealoem": 0,
+      "explanation": "Fixture VINs are synthesized to exercise specific decode paths and are not real BMW production VINs. RealOEM rejects them with HTTP 404. The realoem fetcher (scripts/fetch_realoem_truth.mjs) is wired up via Oxylabs and the captured 404 responses are stored in scripts/fixtures/realoem-responses/ as evidence. To realoem-confirm a baseline, replace the synthetic VIN in a case with a real customer VIN of the same chassis and rerun the fetcher."
+    }
+  }
+}

@@ -1,0 +1,467 @@
+/* ============================================================
+   BMV.parts — Design Tokens + Tailwind / shadcn compatibility
+   ============================================================
+   The BMV brand pack defines a paper-and-ink design system with
+   one decisive blue. This stylesheet is the single source of
+   truth for colour, typography, spacing, radius, and shadow.
+
+   Layered as:
+     1. @import the brand tokens (Inter Tight + JetBrains Mono +
+        BMV custom properties for both data-theme="light" and
+        data-theme="dark" — see /tokens/bmv-tokens.css).
+     2. Re-declare the legacy shadcn HSL custom properties
+        (--background, --foreground, --primary, --card, --sidebar,
+        --radius, --ring, etc.) on top, mapped onto the BMV
+        palette so every existing shadcn primitive (Button, Card,
+        Badge, Input, Sidebar, Popover, Table, Form) picks up the
+        new look without being rewritten.
+     3. The legacy `.dark` class is kept in sync with
+        data-theme="dark" by theme-toggle.js so any utility
+        classes still using `.dark` resolve correctly.
+
+   See `attached_assets/BMV-BRAND-SPEC_1777102499878.md` (Task #69).
+   ============================================================ */
+
+@import "../../tokens/bmv-tokens.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Compat layer — map legacy shadcn HSL variables onto BMV tokens.
+   These are the variables that existing primitives reference via
+   `hsl(var(--…))`. Values are approximate HSL conversions of the
+   hex tokens above so themed components feel native without any
+   primitive rewrites.
+   ============================================================ */
+:root,
+[data-theme="light"] {
+  --button-outline: rgba(0, 0, 0, .10);
+  --badge-outline: rgba(0, 0, 0, .05);
+  --opaque-button-border-intensity: -8;
+  --elevate-1: rgba(0, 0, 0, .03);
+  --elevate-2: rgba(0, 0, 0, .06);
+
+  /* Surfaces / foreground */
+  --background: 225 14% 97%;            /* --surface-base #F5F6F9 */
+  --foreground: 225 24% 8%;             /* --fg-primary  #10131A */
+  --card: 0 0% 100%;                    /* --surface-raised */
+  --card-foreground: 225 24% 8%;
+  --card-border: 220 11% 92%;           /* --border-default */
+  --popover: 0 0% 100%;
+  --popover-foreground: 225 24% 8%;
+  --popover-border: 220 11% 92%;
+  --secondary: 220 11% 94%;             /* --surface-sunken */
+  --secondary-foreground: 225 24% 8%;
+  --muted: 220 11% 94%;
+  --muted-foreground: 217 11% 47%;      /* --fg-tertiary */
+
+  /* shadcn `--accent` is a generic hover/quiet fill, NOT the BMV
+     brand blue — keep it neutral so dropdowns, hovered menu items,
+     etc. stay paper-toned. The BMV brand blue lives on `--primary`. */
+  --accent: 220 11% 94%;
+  --accent-foreground: 225 24% 8%;
+
+  --destructive: 8 62% 47%;             /* --state-error */
+  --destructive-foreground: 0 0% 100%;
+  --border: 220 11% 92%;                /* --border-default */
+  --input: 220 11% 86%;
+  --ring: 213 82% 46%;                  /* BMV brand blue */
+  --primary: 213 82% 46%;
+  --primary-foreground: 0 0% 100%;
+
+  /* Sidebar — intentionally dark in both themes */
+  --sidebar: 220 17% 4%;                /* #08090B */
+  --sidebar-foreground: 0 0% 95%;
+  --sidebar-border: 219 19% 20%;        /* #2A313E */
+  --sidebar-primary: 213 82% 55%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 222 23% 12%;        /* #181C26 */
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-ring: 213 82% 55%;
+
+  --chart-1: 213 82% 46%;
+  --chart-2: 200 75% 38%;
+  --chart-3: 195 68% 40%;
+  --chart-4: 38 75% 43%;                /* signal amber */
+  --chart-5: 145 49% 36%;               /* success green */
+
+  /* Hard-edged corners. Anything more starts looking like a
+     default UI kit. Most components use no radius at all. */
+  --radius: 2px;
+
+  /* Shadows — only `hero` and `floating` are blessed. The
+     legacy `--shadow*` vars are zeroed out so existing
+     components don't paint stray elevation. */
+  --shadow-2xs: 0 0 0 0 transparent;
+  --shadow-xs: 0 0 0 0 transparent;
+  --shadow-sm: 0 0 0 0 transparent;
+  --shadow: 0 0 0 0 transparent;
+  --shadow-md: 0 0 0 0 transparent;
+  --shadow-lg: var(--shadow-floating);
+  --shadow-xl: var(--shadow-floating);
+  --shadow-2xl: var(--shadow-floating);
+
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+
+  /* Fallback for older browsers (carried over from Replit base). */
+  --sidebar-primary-border: hsl(var(--sidebar-primary));
+  --sidebar-primary-border: hsl(from hsl(var(--sidebar-primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --sidebar-accent-border: hsl(var(--sidebar-accent));
+  --sidebar-accent-border: hsl(from hsl(var(--sidebar-accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --primary-border: hsl(var(--primary));
+  --primary-border: hsl(from hsl(var(--primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --secondary-border: hsl(var(--secondary));
+  --secondary-border: hsl(from hsl(var(--secondary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --muted-border: hsl(var(--muted));
+  --muted-border: hsl(from hsl(var(--muted)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --accent-border: hsl(var(--accent));
+  --accent-border: hsl(from hsl(var(--accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --destructive-border: hsl(var(--destructive));
+  --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+}
+
+[data-theme="dark"],
+.dark {
+  --button-outline: rgba(255, 255, 255, .10);
+  --badge-outline: rgba(255, 255, 255, .05);
+  --opaque-button-border-intensity: 9;
+  --elevate-1: rgba(255, 255, 255, .04);
+  --elevate-2: rgba(255, 255, 255, .08);
+
+  --background: 217 24% 6%;             /* #0C0F14 */
+  --foreground: 220 15% 95%;            /* #F0F2F6 */
+  --card: 220 23% 11%;                  /* #141821 */
+  --card-foreground: 220 15% 95%;
+  --card-border: 218 21% 17%;
+  --popover: 220 23% 11%;
+  --popover-foreground: 220 15% 95%;
+  --popover-border: 218 21% 17%;
+  --secondary: 222 23% 12%;             /* #181C26 */
+  --secondary-foreground: 220 15% 95%;
+  --muted: 222 23% 12%;
+  --muted-foreground: 217 11% 60%;
+  --accent: 222 23% 12%;
+  --accent-foreground: 220 15% 95%;
+  --destructive: 11 67% 63%;            /* #E07060 */
+  --destructive-foreground: 0 0% 100%;
+  --border: 218 21% 17%;
+  --input: 218 21% 22%;
+  --ring: 213 84% 63%;                  /* BMV brand blue, brightened */
+  --primary: 213 84% 63%;
+  --primary-foreground: 220 17% 4%;
+
+  --sidebar: 220 17% 4%;                /* #08090B (still dark) */
+  --sidebar-foreground: 0 0% 95%;
+  --sidebar-border: 219 19% 20%;
+  --sidebar-primary: 213 84% 63%;
+  --sidebar-primary-foreground: 220 17% 4%;
+  --sidebar-accent: 222 23% 12%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-ring: 213 84% 63%;
+
+  --chart-1: 213 84% 63%;
+  --chart-2: 200 75% 60%;
+  --chart-3: 195 68% 60%;
+  --chart-4: 45 75% 60%;
+  --chart-5: 145 40% 55%;
+
+  --shadow-2xs: 0 0 0 0 transparent;
+  --shadow-xs: 0 0 0 0 transparent;
+  --shadow-sm: 0 0 0 0 transparent;
+  --shadow: 0 0 0 0 transparent;
+  --shadow-md: 0 0 0 0 transparent;
+  --shadow-lg: var(--shadow-floating);
+  --shadow-xl: var(--shadow-floating);
+  --shadow-2xl: var(--shadow-floating);
+
+  --sidebar-primary-border: hsl(var(--sidebar-primary));
+  --sidebar-primary-border: hsl(from hsl(var(--sidebar-primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --sidebar-accent-border: hsl(var(--sidebar-accent));
+  --sidebar-accent-border: hsl(from hsl(var(--sidebar-accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --primary-border: hsl(var(--primary));
+  --primary-border: hsl(from hsl(var(--primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --secondary-border: hsl(var(--secondary));
+  --secondary-border: hsl(from hsl(var(--secondary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --muted-border: hsl(var(--muted));
+  --muted-border: hsl(from hsl(var(--muted)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --accent-border: hsl(var(--accent));
+  --accent-border: hsl(from hsl(var(--accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --destructive-border: hsl(var(--destructive));
+  --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+}
+
+/* When the user picks "auto", mirror dark-mode mappings under
+   `prefers-color-scheme: dark` as well. */
+@media (prefers-color-scheme: dark) {
+  [data-theme="auto"] {
+    --button-outline: rgba(255, 255, 255, .10);
+    --badge-outline: rgba(255, 255, 255, .05);
+    --opaque-button-border-intensity: 9;
+    --elevate-1: rgba(255, 255, 255, .04);
+    --elevate-2: rgba(255, 255, 255, .08);
+
+    --background: 217 24% 6%;
+    --foreground: 220 15% 95%;
+    --card: 220 23% 11%;
+    --card-foreground: 220 15% 95%;
+    --card-border: 218 21% 17%;
+    --popover: 220 23% 11%;
+    --popover-foreground: 220 15% 95%;
+    --popover-border: 218 21% 17%;
+    --secondary: 222 23% 12%;
+    --secondary-foreground: 220 15% 95%;
+    --muted: 222 23% 12%;
+    --muted-foreground: 217 11% 60%;
+    --accent: 222 23% 12%;
+    --accent-foreground: 220 15% 95%;
+    --destructive: 11 67% 63%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 218 21% 17%;
+    --input: 218 21% 22%;
+    --ring: 213 84% 63%;
+    --primary: 213 84% 63%;
+    --primary-foreground: 220 17% 4%;
+
+    --sidebar: 220 17% 4%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-border: 219 19% 20%;
+    --sidebar-primary: 213 84% 63%;
+    --sidebar-primary-foreground: 220 17% 4%;
+    --sidebar-accent: 222 23% 12%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-ring: 213 84% 63%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+
+  /* Spec rule: paper containers + 1px rules instead of decorative
+     shadows. We allow shadcn cards to keep their structural border
+     but flatten the residual shadow they apply by default. */
+  .shadcn-card {
+    box-shadow: none !important;
+  }
+}
+
+/* ============================================================
+   BMV brand utilities — paper containers, status chips, and
+   monospace labels. Components below the spec consume these
+   instead of inline classes so the look stays consistent.
+   ============================================================ */
+@layer components {
+  /* Paper container — the default surface for cards on light bg.
+     Renders as a 1px outline on a slightly raised paper tone. */
+  .bmv-paper {
+    background: var(--surface-raised);
+    border: 1px solid var(--border-default);
+    color: var(--fg-primary);
+  }
+
+  .bmv-paper-quiet:hover {
+    background: var(--surface-quiet);
+  }
+
+  /* Monospace small-caps label — used everywhere for column
+     headers, eyebrows, stat captions. */
+  .bmv-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    line-height: 1;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--fg-quiet);
+  }
+
+  .bmv-eyebrow-accent {
+    color: var(--accent);
+  }
+
+  /* Status chip — colored dot + monospace small-caps label.
+     Use one of the modifier classes for color: --success,
+     --signal, --error. Defaults to success. */
+  .bmv-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--state-success);
+    line-height: 1;
+  }
+
+  .bmv-chip::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .bmv-chip--signal {
+    color: var(--state-signal);
+  }
+
+  .bmv-chip--error {
+    color: var(--state-error);
+  }
+
+  .bmv-chip--quiet {
+    color: var(--fg-quiet);
+  }
+
+  /* Hero CTA — a single bordered input with a hard-offset shadow.
+     Used on the homepage only. */
+  .bmv-hero-cta {
+    border: 1px solid var(--border-ink);
+    box-shadow: var(--shadow-hero);
+    background: var(--surface-raised);
+    transition:
+      transform var(--duration-base) var(--ease-out),
+      box-shadow var(--duration-base) var(--ease-out);
+  }
+
+  .bmv-hero-cta:focus-within,
+  .bmv-hero-cta:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: var(--shadow-hero-hover);
+  }
+
+  /* Three-button system — Primary (ink fill), Secondary
+     (transparent + ink border), Ghost link (default + underline). */
+  .bmv-btn-primary {
+    background: var(--border-ink);
+    color: var(--fg-inverse);
+    border: 1px solid var(--border-ink);
+    border-radius: 0;
+    padding: 8px 14px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1;
+    transition: background var(--duration-fast) var(--ease-out);
+  }
+
+  .bmv-btn-primary:hover:not(:disabled) {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .bmv-btn-secondary {
+    background: transparent;
+    color: var(--fg-primary);
+    border: 1px solid var(--border-ink);
+    border-radius: 0;
+    padding: 7px 13px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .bmv-btn-ghost {
+    background: transparent;
+    color: var(--fg-primary);
+    border-bottom: 1px solid var(--border-default);
+    padding: 0 0 1px 0;
+    border-radius: 0;
+    font-family: var(--font-sans);
+    font-size: 14px;
+  }
+
+  .bmv-btn-ghost:hover {
+    border-bottom-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* Active fog — the 10%-tinted blue background reserved for
+     active/selected items in the part-detail subcategories. */
+  .bmv-active-fog {
+    background: var(--accent-fog);
+    border-left: 2px solid var(--accent);
+    color: var(--accent-hover);
+  }
+}
+
+@layer utilities {
+  /* Hide ugly search cancel button in Chrome until we can style it properly */
+  input[type="search"]::-webkit-search-cancel-button {
+    @apply hidden;
+  }
+
+  [contenteditable][data-placeholder]:empty::before {
+    content: attr(data-placeholder);
+    color: hsl(var(--muted-foreground));
+    pointer-events: none;
+  }
+
+  .no-default-hover-elevate {}
+  .no-default-active-elevate {}
+
+  .toggle-elevate::before,
+  .toggle-elevate-2::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0px;
+    border-radius: inherit;
+    z-index: -1;
+  }
+
+  .toggle-elevate.toggle-elevated::before {
+    background-color: var(--elevate-2);
+  }
+
+  .border.toggle-elevate::before {
+    inset: -1px;
+  }
+
+  .hover-elevate:not(.no-default-hover-elevate),
+  .active-elevate:not(.no-default-active-elevate),
+  .hover-elevate-2:not(.no-default-hover-elevate),
+  .active-elevate-2:not(.no-default-active-elevate) {
+    position: relative;
+    z-index: 0;
+  }
+
+  .hover-elevate:not(.no-default-hover-elevate)::after,
+  .active-elevate:not(.no-default-active-elevate)::after,
+  .hover-elevate-2:not(.no-default-hover-elevate)::after,
+  .active-elevate-2:not(.no-default-active-elevate)::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0px;
+    border-radius: inherit;
+    z-index: 999;
+  }
+
+  .hover-elevate:hover:not(.no-default-hover-elevate)::after,
+  .active-elevate:active:not(.no-default-active-elevate)::after {
+    background-color: var(--elevate-1);
+  }
+
+  .hover-elevate-2:hover:not(.no-default-hover-elevate)::after,
+  .active-elevate-2:active:not(.no-default-active-elevate)::after {
+    background-color: var(--elevate-2);
+  }
+
+  .border.hover-elevate:not(.no-hover-interaction-elevate)::after,
+  .border.active-elevate:not(.no-active-interaction-elevate)::after,
+  .border.hover-elevate-2:not(.no-hover-interaction-elevate)::after,
+  .border.active-elevate-2:not(.no-active-interaction-elevate)::after,
+  .border.hover-elevate:not(.no-hover-interaction-elevate)::after {
+    inset: -1px;
+  }
+}

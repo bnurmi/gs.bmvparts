@@ -1,0 +1,64 @@
+# Files excluded from the Replit deployment upload.
+# The deploy artifact only needs `dist/` plus package.json/package-lock.json to
+# install runtime deps. Everything else is dev-only or stored in Object Storage.
+
+# Version control + Replit-managed state (huge: .git was 85 GB of historical
+# binary blobs; .local has multi-GB workflow logs + log-query.db).
+.git
+.local
+.cache
+.upm
+.config
+
+# Source archives, scratch tarballs, anything tar/zip in the workspace root.
+*.tar.gz
+*.zip
+*.7z
+*.jetarch
+*.jetarch.part*
+*.iso
+
+# Anything still under data/etk that isn't actually used at runtime.
+# Runtime keeper: data/etk/exports (vin_fa.psv used by vin enrichment service).
+# data/etk/pricing and data/etk/db are import-time artifacts; all data lives in PG.
+data/etk/iso
+data/etk/extracted-jars
+data/etk/jet-extractor
+data/etk/jet-output
+data/etk/jet-output3
+data/etk/jetarch-dir
+data/etk/mac-kit
+data/etk/transbase_linux
+data/etk/wineprefix
+data/etk/logs
+data/etk/tbdata
+data/etk/pricing
+data/etk/db
+data/etk/*.part*
+data/etk/*.md5*
+
+# Legacy / OS-only data (already in Object Storage; redundant locally).
+data/export-data.json
+data/export-chunks/
+data/export-manifest.json
+data/psdzdata/
+public/images/
+
+# Dev-only scripts and one-off tooling not needed in production.
+# Note: `script/` (singular) contains build.ts — required by `npm run build`
+# during the deploy build phase. `scripts/` (plural) is one-off seed tooling.
+scripts/
+attached_assets/
+
+# `node_modules` MUST be shipped — native deps like bcrypt are marked as
+# external in the bundle and require()'d at runtime from node_modules.
+# (Replit autoscale does not run `npm install` between build and start.)
+dist/public/.vite
+
+# Dev runtime logs — not needed in production.
+logs/
+
+# Editor / OS junk.
+.DS_Store
+*.log
+.tmp_*

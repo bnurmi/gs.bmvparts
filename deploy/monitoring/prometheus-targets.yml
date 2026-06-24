@@ -1,0 +1,50 @@
+# =============================================================================
+# Prometheus scrape targets for bmv.parts
+# =============================================================================
+# Add these jobs to the Prometheus configuration on monitor.hiddenservers.net.
+# Replace BMV_PARTS_VM_IP with the private/LAN IP of the bmv.parts VM.
+#
+# IMPORTANT:
+#   - /metrics is protected by IP allow-list (loopback + RFC-1918 ranges)
+#     and optionally by a Bearer token (METRICS_TOKEN env var).
+#   - If scraping from a remote host, ensure the VM's firewall allows
+#     inbound TCP on port 5000 from monitor.hiddenservers.net only, OR
+#     tunnel via VPN/WireGuard so the scrape arrives as a private-IP source.
+#   - Never expose port 5000 publicly without the METRICS_TOKEN set.
+# =============================================================================
+
+scrape_configs:
+
+  # ---------------------------------------------------------------------------
+  # bmv.parts application metrics
+  # ---------------------------------------------------------------------------
+  - job_name: "bmv-parts"
+    metrics_path: /metrics
+    scheme: http
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    static_configs:
+      - targets:
+          - "BMV_PARTS_VM_IP:5000"
+        labels:
+          environment: "production"
+          service: "bmv.parts"
+
+    # If METRICS_TOKEN is set on the bmv.parts server, add authorization:
+    # authorization:
+    #   type: Bearer
+    #   credentials: "YOUR_METRICS_TOKEN_HERE"
+
+  # ---------------------------------------------------------------------------
+  # bmv.parts host-level metrics (prometheus-node-exporter on port 9100)
+  # ---------------------------------------------------------------------------
+  - job_name: "bmv-parts-node"
+    metrics_path: /metrics
+    scheme: http
+    scrape_interval: 60s
+    static_configs:
+      - targets:
+          - "BMV_PARTS_VM_IP:9100"
+        labels:
+          environment: "production"
+          service: "bmv.parts-host"
