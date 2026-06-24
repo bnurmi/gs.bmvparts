@@ -1,18 +1,67 @@
 import { build as esbuild } from "esbuild";
 import { build as viteBuild } from "vite";
-import { readFile, mkdir } from "fs/promises";
-import { existsSync, rmSync } from "fs";
-import { spawnSync } from "child_process";
+import { rm, readFile, writeFile, mkdir } from "fs/promises";
+async function exportDataForDeploy() {
+  if (!process.env.DATABASE_URL) {
+    console.log("No DATABASE_URL, skipping data export");
+    return;
+  }
+  console.log("exporting scraped data for deployment...");
+  const pgModule = await import("pg");
+  const Pool = pgModule.default?.Pool || pgModule.Pool;
+  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  try {
+    const { rows: allCarsRows } = await pool.query("SELECT * FROM cars");
+    const scrapedCars = allCarsRows.filter((c: any) => (c.total_parts ?? 0) > 0);
+    if (scrapedCars.length === 0) {
+      console.log("No scraped data to export");
+      await pool.end();
+      return;
+    }
+    const { rows: cats } = await pool.query("SELECT * FROM categories");
+    const { rows: subs } = await pool.query("SELECT * FROM subcategories");
+    const { rows: parts } = await pool.query("SELECT * FROM parts");
+    const catsByCar = new Map<number, any[]>();
+    for (const cat of cats) { const a = catsByCar.get(cat.car_id) || []; a.push(cat); catsByCar.set(cat.car_id, a); }
+    const subsByCat = new Map<number, any[]>();
+    for (const sub of subs) { const a = subsByCat.get(sub.category_id) || []; a.push(sub); subsByCat.set(sub.category_id, a); }
+    const partsBySub = new Map<number, any[]>();
+    for (const part of parts) { const a = partsBySub.get(part.subcategory_id) || []; a.push(part); partsBySub.set(part.subcategory_id, a); }
+    const exportData = scrapedCars.map((car: any) => ({
+      chassis: car.chassis, generation: car.generation, series: car.series,
+      bodyType: car.body_type, modelName: car.model_name, displayName: car.display_name,
+      engine: car.engine, yearStart: car.year_start, yearEnd: car.year_end,
+      catalogUrl: car.catalog_url, catalogId: car.catalog_id, imageUrl: car.image_url,
+      scrapeStatus: car.scrape_status, scrapeProgress: car.scrape_progress,
+      totalCategories: car.total_categories, totalSubcategories: car.total_subcategories,
+      totalParts: car.total_parts, lastScrapedAt: car.last_scraped_at,
+      categories: (catsByCar.get(car.id) || []).map((cat: any) => ({
+        categoryId: cat.category_id, name: cat.name, imageUrl: cat.image_url, url: cat.url,
+        subcategories: (subsByCat.get(cat.id) || []).map((sub: any) => ({
+          subcategoryId: sub.subcategory_id, name: sub.name,
+          imageUrl: sub.image_url, url: sub.url, diagramImageUrl: sub.diagram_image_url,
+          parts: (partsBySub.get(sub.id) || []).map((p: any) => ({
+            itemNo: p.item_no, partNumber: p.part_number, partNumberClean: p.part_number_clean,
+            description: p.description, additionalInfo: p.additional_info,
+            partDate: p.part_date, quantity: p.quantity, weight: p.weight ? parseFloat(p.weight) : null, notes: p.notes,
+          })),
+        })),
+      })),
+    }));
+    await mkdir("dist", { recursive: true });
+    await writeFile("dist/export-data.json", JSON.stringify({ version: 1, exportedAt: new Date().toISOString(), cars: exportData }));
+    let totalParts = 0;
+    exportData.forEach((c: any) => c.categories.forEach((cat: any) => cat.subcategories.forEach((s: any) => totalParts += s.parts.length)));
+    console.log(`Exported ${scrapedCars.length} cars, ${totalParts} parts to dist/export-data.json`);
+    await pool.end();
+  } catch (err) {
+    console.error("Data export failed (non-fatal):", err);
+    await pool.end();
+  }
+}
 
-// NOTE: Production no longer ships export-chunks or public/images inside the
-// deploy artifact (they pushed the bundle past Replit's deploy size limit).
-// At runtime:
-//   - export-chunks/manifest are streamed from Object Storage by the
-//     /api/sync-from-dev handler in server/routes.ts (see getExportFromOS).
-//   - /images/* is proxied from Object Storage by the middleware in
-//     server/static.ts.
-// In dev, the local copies under data/ and public/images/ are still used.
-
+// server deps to bundle to reduce openat(2) syscalls
+// which helps cold start times
 const allowlist = [
   "@google/generative-ai",
   "axios",
@@ -41,81 +90,17 @@ const allowlist = [
   "zod-validation-error",
 ];
 
-function runPreDeployBackup() {
-  const isDeploy =
-    process.env.REPLIT_DEPLOYMENT === "1" ||
-    process.env.PRE_DEPLOY_BACKUP === "1";
-  if (!isDeploy) {
-    console.log(
-      "[Pre-Deploy] Skipping backup (set REPLIT_DEPLOYMENT=1 or PRE_DEPLOY_BACKUP=1 to run).",
-    );
-    return;
-  }
-  console.log("[Pre-Deploy] Running pre-deploy database backup...");
-  const start = Date.now();
-  const result = spawnSync("tsx", ["scripts/pre-deploy-backup.ts"], {
-    stdio: "inherit",
-    env: process.env,
-  });
-  const elapsed = Date.now() - start;
-  if (result.status !== 0 || result.error) {
-    // Per spec: a failed backup never blocks a deploy.
-    console.error(
-      `[Pre-Deploy] Backup wrapper exited non-zero after ${elapsed}ms (status=${result.status}, error=${result.error?.message ?? "none"}). Continuing with deploy.`,
-    );
-  } else {
-    console.log(`[Pre-Deploy] Backup step finished in ${elapsed}ms.`);
-  }
-}
-
-function runPreDeployHubSeo() {
-  const isDeploy =
-    process.env.REPLIT_DEPLOYMENT === "1" ||
-    process.env.PRE_DEPLOY_HUB_SEO === "1";
-  if (!isDeploy) {
-    console.log(
-      "[Pre-Deploy] Skipping hub SEO check (set REPLIT_DEPLOYMENT=1 or PRE_DEPLOY_HUB_SEO=1 to run).",
-    );
-    return;
-  }
-  if (process.env.SKIP_PRE_DEPLOY_HUB_SEO === "1") {
-    console.warn("[Pre-Deploy] SKIP_PRE_DEPLOY_HUB_SEO=1 — skipping hub SEO gate.");
-    return;
-  }
-  console.log("[Pre-Deploy] Running hub SEO smoke check...");
-  const start = Date.now();
-  const result = spawnSync("tsx", ["scripts/pre-deploy-hub-seo.ts"], {
-    stdio: "inherit",
-    env: process.env,
-  });
-  const elapsed = Date.now() - start;
-  if (result.error) {
-    console.error(
-      `[Pre-Deploy] Hub SEO wrapper failed to launch after ${elapsed}ms (${result.error.message}). Blocking deploy.`,
-    );
-    process.exit(1);
-  }
-  if (result.status !== 0) {
-    console.error(
-      `[Pre-Deploy] Hub SEO check FAILED after ${elapsed}ms (status=${result.status}). Blocking deploy. See log lines above for which checks failed.`,
-    );
-    process.exit(result.status ?? 1);
-  }
-  console.log(`[Pre-Deploy] Hub SEO check passed in ${elapsed}ms.`);
-}
-
 async function buildAll() {
-  runPreDeployBackup();
-  runPreDeployHubSeo();
+  await exportDataForDeploy();
 
-  if (existsSync("dist")) {
-    rmSync("dist", { recursive: true, force: true, maxRetries: 3 });
+  const exportDataExists = await readFile("dist/export-data.json", "utf-8").then(d => d).catch(() => null);
+
+  await rm("dist", { recursive: true, force: true });
+
+  if (exportDataExists) {
+    await mkdir("dist", { recursive: true });
+    await writeFile("dist/export-data.json", exportDataExists);
   }
-  await mkdir("dist", { recursive: true });
-
-  // No export-chunks or images are copied into dist — they live in Object
-  // Storage and are streamed at runtime. See server/routes.ts (sync handler)
-  // and server/static.ts (image proxy).
 
   console.log("building client...");
   await viteBuild();

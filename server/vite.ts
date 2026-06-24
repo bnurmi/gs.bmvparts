@@ -29,14 +29,6 @@ export async function setupVite(server: Server, app: Express) {
     appType: "custom",
   });
 
-  // Stash the vite dev server on `app.locals` so other middleware (notably
-  // the per-VIN SSR layer in server/seo/vin-ssr-middleware.ts) can call
-  // vite.transformIndexHtml on its rendered template — without that, the
-  // React Refresh preamble that @vitejs/plugin-react requires never gets
-  // injected and the SPA fails to mount over the SSR markup in dev. The
-  // `app.locals` extension is typed via the global Express namespace
-  // augmentation in shared/express-locals.d.ts.
-  app.locals.vite = vite;
   app.use(vite.middlewares);
 
   app.use("/{*path}", async (req, res, next) => {

@@ -1,23 +1,17 @@
 import type { Config } from "tailwindcss";
 
 export default {
-  // Dark mode driven by data-theme="dark" on <html> (BMV theme toggle).
-  // Keep the legacy `.dark` class match too so any utility classes still
-  // referencing `dark:` continue to resolve in lockstep.
-  darkMode: ["class", '[data-theme="dark"]'],
+  darkMode: ["class"],
   content: ["./client/index.html", "./client/src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
-      // Hard-edged radius — capped at 2px per BMV spec. Keep the
-      // legacy aliases (lg/md/sm) so existing components don't crash,
-      // but they all resolve to the same crisp 2px or smaller.
       borderRadius: {
-        lg: "2px",
-        md: "2px",
-        sm: "1px",
+        lg: ".5625rem", /* 9px */
+        md: ".375rem", /* 6px */
+        sm: ".1875rem", /* 3px */
       },
       colors: {
-        // ---------- Legacy shadcn aliases (HSL-driven) ----------
+        // Flat / base colors (regular buttons)
         background: "hsl(var(--background) / <alpha-value>)",
         foreground: "hsl(var(--foreground) / <alpha-value>)",
         border: "hsl(var(--border) / <alpha-value>)",
@@ -47,10 +41,6 @@ export default {
           foreground: "hsl(var(--muted-foreground) / <alpha-value>)",
           border: "var(--muted-border)",
         },
-        // shadcn `accent` is the generic neutral hover / dropdown
-        // active fill — NOT the BMV brand blue. The brand blue lives
-        // on `bmv` below so it never accidentally bleeds through
-        // shadcn primitives that opted into `accent` for hover state.
         accent: {
           DEFAULT: "hsl(var(--accent) / <alpha-value>)",
           foreground: "hsl(var(--accent-foreground) / <alpha-value>)",
@@ -83,101 +73,19 @@ export default {
         "sidebar-accent": {
           DEFAULT: "hsl(var(--sidebar-accent) / <alpha-value>)",
           foreground: "hsl(var(--sidebar-accent-foreground) / <alpha-value>)",
-          border: "var(--sidebar-accent-border)",
+          border: "var(--sidebar-accent-border)"
         },
         status: {
-          online: "var(--state-success)",
-          away: "var(--state-signal)",
-          busy: "var(--state-error)",
-          offline: "var(--fg-quiet)",
+          online: "rgb(34 197 94)",
+          away: "rgb(245 158 11)",
+          busy: "rgb(239 68 68)",
+          offline: "rgb(156 163 175)",
         },
-
-        // ---------- BMV brand scales (token-driven, not HSL) ----------
-        surface: {
-          DEFAULT: "var(--surface-base)",
-          base: "var(--surface-base)",
-          raised: "var(--surface-raised)",
-          sunken: "var(--surface-sunken)",
-          quiet: "var(--surface-quiet)",
-          sidebar: "var(--surface-sidebar)",
-        },
-        ink: {
-          DEFAULT: "var(--fg-primary)",
-          primary: "var(--fg-primary)",
-          secondary: "var(--fg-secondary)",
-          tertiary: "var(--fg-tertiary)",
-          quiet: "var(--fg-quiet)",
-          inverse: "var(--fg-inverse)",
-        },
-        bmv: {
-          DEFAULT: "var(--accent)",
-          accent: "var(--accent)",
-          hover: "var(--accent-hover)",
-          fog: "var(--accent-fog)",
-          on: "var(--accent-on-accent)",
-        },
-        success: {
-          DEFAULT: "var(--state-success)",
-          fog: "var(--state-success-fog)",
-        },
-        signal: {
-          DEFAULT: "var(--state-signal)",
-          fog: "var(--state-signal-fog)",
-        },
-        error: {
-          DEFAULT: "var(--state-error)",
-          fog: "var(--state-error-fog)",
-        },
-        "border-default": "var(--border-default)",
-        "border-strong": "var(--border-strong)",
-        "border-ink": "var(--border-ink)",
       },
       fontFamily: {
-        sans: ["Inter Tight", "system-ui", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
-        mono: ["JetBrains Mono", "ui-monospace", "SF Mono", "Menlo", "monospace"],
-        // `serif` retained as a Tailwind alias only — the BMV system
-        // does not actually use serifs anywhere. Aliases default to
-        // Inter Tight so any stray `font-serif` class still renders.
-        serif: ["Inter Tight", "system-ui", "sans-serif"],
-      },
-      fontSize: {
-        // BMV type scale (mirrors tokens). Standard Tailwind aliases
-        // (xs/sm/base/lg/xl/2xl/3xl/4xl/5xl) are kept so existing
-        // components don't break, just with adjusted line heights and
-        // tighter tracking on the larger sizes.
-        xs: ["11px", { lineHeight: "1.4", letterSpacing: "0.04em" }],
-        sm: ["12.5px", { lineHeight: "1.5" }],
-        base: ["14px", { lineHeight: "1.55" }],
-        md: ["15px", { lineHeight: "1.55" }],
-        lg: ["17px", { lineHeight: "1.4" }],
-        xl: ["20px", { lineHeight: "1.35" }],
-        "2xl": ["24px", { lineHeight: "1.2", letterSpacing: "-0.01em" }],
-        "3xl": ["32px", { lineHeight: "1.1", letterSpacing: "-0.025em" }],
-        "4xl": ["44px", { lineHeight: "1.05", letterSpacing: "-0.03em" }],
-        "5xl": ["64px", { lineHeight: "1", letterSpacing: "-0.04em" }],
-        display: ["96px", { lineHeight: "0.95", letterSpacing: "-0.045em" }],
-      },
-      letterSpacing: {
-        mono: "0.04em",
-        label: "0.14em",
-        tight: "-0.01em",
-        tighter: "-0.025em",
-        display: "-0.04em",
-      },
-      boxShadow: {
-        // Two blessed shadows in the BMV system. Everything else
-        // collapses to none.
-        hero: "4px 4px 0 var(--border-ink)",
-        "hero-hover": "5px 5px 0 var(--border-ink)",
-        floating: "var(--shadow-floating)",
-      },
-      transitionTimingFunction: {
-        "ease-out-quart": "cubic-bezier(0.16, 1, 0.3, 1)",
-      },
-      transitionDuration: {
-        fast: "120ms",
-        base: "180ms",
-        slow: "280ms",
+        sans: ["var(--font-sans)"],
+        serif: ["var(--font-serif)"],
+        mono: ["var(--font-mono)"],
       },
       keyframes: {
         "accordion-down": {

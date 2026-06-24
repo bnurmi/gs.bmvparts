@@ -29,8 +29,7 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    const url = queryKey.join("/") as string;
-    const res = await fetch(url, {
+    const res = await fetch(queryKey.join("/") as string, {
       credentials: "include",
     });
 
@@ -39,25 +38,6 @@ export const getQueryFn: <T>(options: {
     }
 
     await throwIfResNotOk(res);
-
-    // Guard against the bmv.vin SSR catch-all (or any future misrouting)
-    // returning the SPA's HTML shell with a 200 in place of real JSON.
-    // Without this check the call chain looked perfectly healthy: status
-    // 200, no thrown error from throwIfResNotOk, but `res.json()` would
-    // throw a SyntaxError that React Query swallowed into the query's
-    // error state — and the component, having `data: x = []` as a
-    // destructuring default, rendered an empty list instead of failing.
-    // That's exactly what made every car detail page show "No parts
-    // groups" on bmv.vin (Task #97). Surfacing the mismatch as a real
-    // error keeps that whole class of bug loud rather than silent.
-    const contentType = res.headers.get("content-type") || "";
-    if (url.startsWith("/api/") && !contentType.includes("application/json")) {
-      const preview = (await res.text()).slice(0, 120);
-      throw new Error(
-        `Expected JSON from ${url} but got ${contentType || "unknown"}: ${preview}`,
-      );
-    }
-
     return await res.json();
   };
 
