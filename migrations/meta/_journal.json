@@ -15,6 +15,13 @@
       "when": 1782098032005,
       "tag": "0001_lucky_mephisto",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1782293387359,
+      "tag": "0002_check_drift",
+      "breakpoints": true
     }
   ]
 }
