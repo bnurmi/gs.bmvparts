@@ -3,7 +3,14 @@ import fs from "fs";
 import path from "path";
 import { Client as ObjectStorageClient } from "@replit/object-storage";
 
-const osClient = new ObjectStorageClient();
+let osClient: ObjectStorageClient | null = null;
+
+function getObjectStorageClient(): ObjectStorageClient {
+  if (!osClient) {
+    osClient = new ObjectStorageClient();
+  }
+  return osClient;
+}
 
 // In production, /images/* is no longer shipped inside dist (would have
 // pushed the deploy bundle past Replit's size limit). Stream from Object
@@ -21,7 +28,7 @@ async function serveImageFromObjectStorage(req: Request, res: Response) {
     return res.status(404).end();
   }
   const key = `images/${rel}`;
-  const dl = await osClient.downloadAsBytes(key);
+  const dl = await getObjectStorageClient().downloadAsBytes(key);
   if (!dl.ok) {
     return res.status(404).end();
   }
