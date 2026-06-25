@@ -94,6 +94,7 @@ export async function lookupRegoWithToken(
 
   const bbApiKey    = (process.env.BROWSERBASE_API_KEY    || "").trim();
   const bbProjectId = (process.env.BROWSERBASE_PROJECT_ID || "").trim();
+  const bbContextId = (process.env.BROWSERBASE_CONTEXT_ID || "").trim();
 
   if (!bbApiKey || !bbProjectId) {
     console.error("[rego-lookup] Browserbase not configured");
@@ -102,7 +103,7 @@ export async function lookupRegoWithToken(
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     console.log(`[rego-lookup] ${upper}/${state} -- attempt ${attempt}/${MAX_ATTEMPTS}`);
-    const outcome = await attemptLookup(upper, state, bbApiKey, bbProjectId);
+    const outcome = await attemptLookup(upper, state, bbApiKey, bbProjectId, bbContextId);
     if (outcome.found) return outcome;
     if (outcome.reason?.includes("reCAPTCHA") && attempt < MAX_ATTEMPTS) {
       console.log(`[rego-lookup] reCAPTCHA failed -- retrying with fresh AU IP`);
@@ -118,18 +119,24 @@ async function attemptLookup(
   state: AusState,
   bbApiKey: string,
   bbProjectId: string,
+  bbContextId: string,
 ): Promise<RegoLookupOutcome> {
   let sessionId: string | null = null;
 
   try {
     // 1. Create Browserbase session -- AU residential proxy + CAPTCHA solving
+    const browserSettings: any = { solveCaptchas: true };
+    if (bbContextId) {
+      browserSettings.context = { id: bbContextId, persist: true };
+    }
+
     const sessionRes = await fetch("https://www.browserbase.com/v1/sessions", {
       method: "POST",
       headers: { "Content-Type": "application/json", "X-BB-API-Key": bbApiKey },
       body: JSON.stringify({
         projectId: bbProjectId,
         proxies: [{ type: "browserbase", geolocation: { country: "AU" } }],
-        browserSettings: { solveCaptchas: true },
+        browserSettings,
       }),
     });
 
@@ -141,7 +148,7 @@ async function attemptLookup(
 
     const session: any = await sessionRes.json();
     sessionId = session.id as string;
-    console.log(`[rego-lookup] Session ${sessionId} (AU residential)`);
+    console.log(`[rego-lookup] Session ${sessionId} (AU residential${bbContextId ? ", warm context" : ""})`);
 
     // 2. Connect Playwright via CDP
     const { chromium } = await import("playwright");
