@@ -226,10 +226,10 @@ async function attemptLookup(
     await page.waitForTimeout(400 + Math.random() * 200);
 
     // 11. Brief idle movement then let reCAPTCHA score.
-    // Warmed Browserbase context lets us cut this from 6s to 4s; IP reputation
-    // still dominates, so retries remain the reliability mechanism.
+    // 6s is the current reliability floor. Warmed Browserbase context helps,
+    // but AU residential IP reputation still dominates, so retries remain required.
     await page.mouse.move(500, 400, { steps: 6 });
-    await page.waitForTimeout(4000);
+    await page.waitForTimeout(6000);
 
     // 12. Click Next
     const nextHandle = await page.evaluateHandle((): HTMLElement | null => {
