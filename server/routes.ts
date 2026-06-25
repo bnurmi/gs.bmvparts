@@ -5396,7 +5396,9 @@ Be specific with BMW terminology. For example use "kidney grille" not just "gril
           // from bimmerwork/mdecoder/vindecoderz; if the VIN is now
           // ETK-covered we must not serve that legacy third-party
           // payload. Drop the cache and re-enrich first-party-only.
-          const sanitizeAndReEnrich = shouldSanitizeStaleCache(coverage, cachedSource);
+          // bmv.vin is a user-facing decoder: if cached third-party data exists,
+          // serve it. The strict first-party-only path is /api/vin/enrich/:vin.
+          const sanitizeAndReEnrich = false;
           if (!sanitizeAndReEnrich) {
             const validatedData = await ensureLocalImagesExist(cleaned, cached.enrichedData);
             console.log(`[VIN Cache] Bimmerwork hit for ${cleaned}`);
@@ -5431,7 +5433,7 @@ Be specific with BMW terminology. For example use "kidney grille" not just "gril
         // cache-miss / stale-refresh paths (Task #166).
         providedHash: hash || storedHash || undefined,
         allowThirdParty: true,
-        _forceBypassEtkGate: forceThirdParty,
+        _forceBypassEtkGate: true, // bmv.vin should use scraper fallback when ETK has no per-VIN FA data
       });
       if (enriched) {
         const rewrittenData: BimmerWorkData = { ...enriched.data };
