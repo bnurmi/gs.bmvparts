@@ -465,6 +465,109 @@ function Tab({ label, active, onClick }: { label: string; active: boolean; onCli
 
 type TabId = "vehicle" | "options" | "images" | "manuals";
 
+// =============================================================================
+// Helpers: colour normalisation + country flag
+// =============================================================================
+
+/** Country name → flag emoji. Covers all BMW plant countries. */
+const COUNTRY_FLAGS: Record<string, string> = {
+  "Germany":      "🇩🇪",
+  "South Africa": "🇿🇦",
+  "USA":          "🇺🇸",
+  "Austria":      "🇦🇹",
+  "Netherlands":  "🇳🇱",
+  "China":        "🇨🇳",
+  "UK":           "🇬🇧",
+  "Mexico":       "🇲🇽",
+  "Brazil":       "🇧🇷",
+  "India":        "🇮🇳",
+  "Thailand":     "🇹🇭",
+  "Egypt":        "🇪🇬",
+  "Malaysia":     "🇲🇾",
+};
+
+function countryFlag(country: string | null | undefined): string {
+  if (!country) return "";
+  return COUNTRY_FLAGS[country] ?? "";
+}
+
+/**
+ * Normalise a BMW colour string to English display name + raw sub-label.
+ * Input examples:
+ *   "black-sapphire metallic"        → { display: "Black Sapphire Metallic", raw: null }
+ *   "Alpinweiß Iii"                  → { display: "Alpinweiß III", raw: "Alpinweiß Iii" }
+ *   "donington-grau metallic"        → { display: "Donington Grau Metallic", raw: "donington-grau metallic" }
+ *   "Black Sapphire Metallic (475)"  → { display: "Black Sapphire Metallic", raw: null }
+ *
+ * We show raw underneath only when it's meaningfully different (German name,
+ * unusual casing, or contains extra detail the normalised form drops).
+ */
+
+// Known German → English colour word translations
+const DE_EN: Record<string, string> = {
+  "schwarz":    "Black",
+  "weiss":      "White",
+  "weiß":       "White",
+  "silber":     "Silver",
+  "silbern":    "Silver",
+  "grau":       "Grey",
+  "blau":       "Blue",
+  "rot":        "Red",
+  "grün":       "Green",
+  "gelb":       "Yellow",
+  "orange":     "Orange",
+  "braun":      "Brown",
+  "beige":      "Beige",
+  "violett":    "Violet",
+  "turmalin":   "Tourmaline",
+  "saphir":     "Sapphire",
+  "titan":      "Titanium",
+  "oxid":       "Oxide",
+  "karbon":     "Carbon",
+  "mineral":    "Mineral",
+  "bernstein":  "Amber",
+  "brillant":   "Brilliant",
+  "frozen":     "Frozen",
+  "individual": "Individual",
+};
+
+function normaliseColour(raw: string | null | undefined): { display: string; sub: string | null } {
+  if (!raw) return { display: "", sub: null };
+
+  // Strip trailing parenthetical code like "(475)" or "(C36)"
+  const stripped = raw.replace(/\s*\([A-Z0-9]{2,4}\)\s*$/, "").trim();
+
+  // Title-case: capitalise each word, handle hyphenated words
+  const titleCase = (s: string) =>
+    s.replace(/[-\s]+/g, " ")
+     .split(" ")
+     .map(w => {
+       // Roman numerals stay uppercase
+       if (/^[IVX]+$/i.test(w) && w.length <= 4) return w.toUpperCase();
+       // Known German words get translated
+       const lw = w.toLowerCase();
+       if (DE_EN[lw]) return DE_EN[lw];
+       // Otherwise title-case
+       return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+     })
+     .join(" ");
+
+  const display = titleCase(stripped);
+
+  // Show raw sub-label only if the original was meaningfully different
+  // (German word present, or all-caps, or had a stripped code)
+  const hasGerman = Object.keys(DE_EN).some(k => raw.toLowerCase().includes(k));
+  const wasAllCaps = raw === raw.toUpperCase() && raw.length > 3;
+  const hadCode = /\([A-Z0-9]{2,4}\)/.test(raw);
+  const rawDiffersFromDisplay = raw.trim() !== display;
+
+  const sub = (hasGerman || wasAllCaps || hadCode) && rawDiffersFromDisplay
+    ? raw.replace(/\s*\([A-Z0-9]{2,4}\)\s*$/, "").trim()
+    : null;
+
+  return { display, sub };
+}
+
 function BmvVinDecoder({ vin }: { vin: string }) {
   const [result, setResult] = useState<DecodeResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -580,12 +683,18 @@ function BmvVinDecoder({ vin }: { vin: string }) {
                   <DataCard primary label="Manufacturer" value={bwv?.manufacturer || decoded.manufacturer || ""} sub={decoded.wmi} />
                   <DataCard label="Chassis" value={bwv?.chassis || decoded.chassis || ""} sub={decoded.series || undefined} />
                   <DataCard label="Model year" value={modelYear ? String(modelYear) : ""} />
-                  <DataCard label="Assembly plant" value={decoded.plant ? decoded.plant.city : ""} sub={decoded.plant?.country} />
+                  <DataCard label="Assembly plant"
+                    value={decoded.plant ? `${countryFlag(decoded.plant.country)} ${decoded.plant.city}` : ""}
+                    sub={decoded.plant?.country}
+                  />
                   {(bwv?.engine) && <DataCard label="Engine" value={bwv.engine} />}
                   {bwv?.market && <DataCard label="Market" value={bwv.market} />}
                   {bwv?.drivetrain && <DataCard label="Drivetrain" value={bwv.drivetrain} />}
                   {bwv?.transmission && <DataCard label="Transmission" value={bwv.transmission} />}
-                  {bwv?.color && <DataCard label="Colour" value={bwv.color} sub={bwv.colorCode || undefined} />}
+                  {bwv?.color && (() => {
+                    const { display, sub } = normaliseColour(bwv.color);
+                    return <DataCard label="Colour" value={display} sub={sub ?? (bwv.colorCode ? `Code ${bwv.colorCode}` : undefined)} />;
+                  })()}
                   {bwv?.upholstery && <DataCard label="Upholstery" value={bwv.upholstery} sub={bwv.upholsteryCode || undefined} />}
                   {bwv?.startOfProduction && <DataCard label="Production date" value={bwv.startOfProduction} />}
                   {decoded.productionSequence && <DataCard label="Production seq." value={decoded.productionSequence} />}
