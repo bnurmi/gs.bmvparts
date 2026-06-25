@@ -55,7 +55,7 @@ function SiteHeader() {
     <header style={{
       position: "sticky", top: 0, zIndex: 50, height: 58,
       display: "flex", alignItems: "center", justifyContent: "space-between",
-      padding: "0 48px",
+      padding: "0 clamp(16px, 4vw, 48px)",
       background: "rgba(255,255,255,0.92)",
       backdropFilter: "blur(12px)",
       WebkitBackdropFilter: "blur(12px)",
@@ -82,7 +82,7 @@ function SiteHeader() {
 function SiteFooter() {
   return (
     <footer style={{
-      background: C.ink, padding: "32px 48px",
+      background: C.ink, padding: "32px clamp(16px, 4vw, 48px)",
       display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12,
     }}>
       <span style={{ fontFamily: F.sans, fontWeight: 700, fontSize: 15, color: C.white }}>
@@ -132,11 +132,112 @@ function CellInstrument({ value, onChange, onDecode, isDecoding }: CellInstrumen
   const isReady = count === 17;
   const [focused, setFocused] = useState(false);
 
+  // Detect mobile: screen width < 640px
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined" && window.innerWidth < 640
+  );
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    setIsMobile(mq.matches);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (isReady && !isDecoding) onDecode();
   }
 
+  function handleChange(raw: string) {
+    onChange(raw.toUpperCase().replace(/[^A-HJ-NPR-Z0-9]/g, "").slice(0, 17));
+  }
+
+  // ── Mobile layout: single large text input + compact segment display ─────
+  if (isMobile) {
+    return (
+      <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+        {/* Big tap-friendly input */}
+        <div style={{
+          background: C.white,
+          border: `1.5px solid ${focused ? C.blue : C.ruleMid}`,
+          borderRadius: 14,
+          padding: "14px 16px",
+          boxShadow: focused ? `0 0 0 3px rgba(28,105,212,0.12)` : "0 1px 6px rgba(0,0,0,0.06)",
+          transition: "border-color 0.15s, box-shadow 0.15s",
+        }}>
+          <input
+            ref={inputRef}
+            type="text"
+            inputMode="text"
+            autoCapitalize="characters"
+            autoCorrect="off"
+            autoComplete="off"
+            spellCheck={false}
+            placeholder="Paste or type your VIN"
+            value={value}
+            onChange={e => handleChange(e.target.value)}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            style={{
+              width: "100%", border: "none", outline: "none",
+              fontFamily: F.mono, fontSize: 20, fontWeight: 700,
+              letterSpacing: "0.12em", color: C.ink,
+              background: "transparent",
+              textTransform: "uppercase",
+            }}
+          />
+          {/* Compact segment bar */}
+          {count > 0 && (
+            <div style={{ display: "flex", gap: 2, marginTop: 10, alignItems: "center" }}>
+              {SEG_CONFIG.map(seg => (
+                <div key={seg.key} style={{ flex: SEG_FLEX[seg.key], display: "flex", gap: 2 }}>
+                  {seg.positions.map((pos, ci) => {
+                    const ch = chars[pos] ?? "";
+                    return (
+                      <div key={ci} style={{
+                        flex: 1, height: 4, borderRadius: 2,
+                        background: ch ? seg.color : C.rule,
+                        transition: "background 0.1s",
+                      }} />
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          )}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 8 }}>
+            <span style={{ fontFamily: F.sans, fontSize: 11, color: C.ink5 }}>
+              {count > 0 ? `${SEG_CONFIG.map(s => s.label).join("·")} segments` : "WMI · VDS · CHK · VIS"}
+            </span>
+            <span style={{ fontFamily: F.mono, fontSize: 12, color: isReady ? C.green : C.ink5 }}>
+              {count} / 17
+            </span>
+          </div>
+        </div>
+
+        {/* Decode button */}
+        <button
+          type="submit"
+          disabled={!isReady || isDecoding}
+          style={{
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            width: "100%", marginTop: 10, height: 52,
+            background: isReady && !isDecoding ? C.blue : C.ruleMid,
+            color: isReady && !isDecoding ? C.white : C.ink5,
+            fontFamily: F.sans, fontWeight: 700, fontSize: 15,
+            border: "none", borderRadius: 10, cursor: isReady && !isDecoding ? "pointer" : "not-allowed",
+          }}
+        >
+          {isDecoding ? "Decoding…" : (
+            <><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg> Decode VIN</>
+          )}
+        </button>
+      </form>
+    );
+  }
+
+  // ── Desktop layout: original cell instrument ──────────────────────────────
   return (
     <form onSubmit={handleSubmit} style={{ width: "100%", maxWidth: 820, margin: "0 auto" }}>
       {/* Panel */}
@@ -155,7 +256,7 @@ function CellInstrument({ value, onChange, onDecode, isDecoding }: CellInstrumen
         <input
           ref={inputRef}
           value={value}
-          onChange={e => onChange(e.target.value.toUpperCase().replace(/[^A-HJ-NPR-Z0-9]/g, "").slice(0, 17))}
+          onChange={e => handleChange(e.target.value)}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           style={{
@@ -167,6 +268,7 @@ function CellInstrument({ value, onChange, onDecode, isDecoding }: CellInstrumen
           spellCheck={false}
           data-testid="input-vin-hidden"
         />
+
 
         {/* Segment columns — flex-end so cells always sit on same baseline */}
         <div
@@ -959,7 +1061,7 @@ function BmvVinDecoder({ vin }: { vin: string }) {
       <SiteHeader />
 
       {/* Hero: cell instrument + clear button */}
-      <section style={{ background: C.white, padding: "48px 48px 40px", borderBottom: `1px solid ${C.rule}`, display: "flex", justifyContent: "center" }}>
+      <section style={{ background: C.white, padding: "48px clamp(16px, 4vw, 48px) 40px", borderBottom: `1px solid ${C.rule}`, display: "flex", justifyContent: "center" }}>
         <div style={{ width: "100%", maxWidth: 820 }}>
           <CellInstrument value={inputVin} onChange={setInputVin} onDecode={handleDecode} isDecoding={decodeMutation.isPending} />
           {inputVin.length > 0 && (
@@ -987,7 +1089,7 @@ function BmvVinDecoder({ vin }: { vin: string }) {
 
         {/* Loading */}
         {decodeMutation.isPending && (
-          <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "48px", color: C.ink4 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "clamp(16px, 4vw, 48px)", color: C.ink4 }}>
             <svg width="36" height="36" viewBox="0 0 36 36" fill="none" style={{ animation: "spin 0.8s linear infinite", flexShrink: 0 }}>
               <circle cx="18" cy="18" r="15" stroke={C.rule} strokeWidth="2.5" />
               <path d="M18 3a15 15 0 0 1 15 15" stroke={C.blue} strokeWidth="2.5" strokeLinecap="round" />
@@ -999,7 +1101,7 @@ function BmvVinDecoder({ vin }: { vin: string }) {
 
         {/* Error */}
         {error && !decodeMutation.isPending && (
-          <div style={{ maxWidth: 900, margin: "32px auto", padding: "0 48px" }}>
+          <div style={{ maxWidth: 900, margin: "32px auto", padding: "0 clamp(16px, 4vw, 48px)" }}>
             <div style={{ background: C.redTint, border: `1px solid #F5C5C7`, borderRadius: 10, padding: "16px 20px" }}>
               <div style={{ fontFamily: F.sans, fontWeight: 700, fontSize: 14, color: C.red, marginBottom: 4 }}>Decode failed</div>
               <div style={{ fontFamily: F.sans, fontWeight: 300, fontSize: 13.5, color: C.ink3 }}>{error}</div>
@@ -1010,7 +1112,7 @@ function BmvVinDecoder({ vin }: { vin: string }) {
         {decoded && !decodeMutation.isPending && (
           <>
             {/* Vehicle hero band — white */}
-            <section style={{ background: C.white, padding: "40px 48px 0", borderBottom: `1px solid ${C.rule}` }}>
+            <section style={{ background: C.white, padding: "40px clamp(16px, 4vw, 48px) 0", borderBottom: `1px solid ${C.rule}` }}>
               <div style={{ maxWidth: 900, margin: "0 auto" }}>
 
                 {/* Title + validity */}
@@ -1035,7 +1137,7 @@ function BmvVinDecoder({ vin }: { vin: string }) {
                 )}
 
                 {/* Data cards grid */}
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 32 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: 12, marginBottom: 32 }}>
                   {/* Manufacturer: decoded is always more specific (BMW M GmbH vs BMW) */}
                   <DataCard primary label="Manufacturer" value={decoded.manufacturer || bwv?.manufacturer || ""} sub={decoded.wmi} />
                   {/* Chassis: skip sub when it equals primary (e.g. bwv.chassis=F97 = decoded.chassis) */}
@@ -1051,10 +1153,10 @@ function BmvVinDecoder({ vin }: { vin: string }) {
                     const engineDesc = decoded.engineFamily || describeEngine(decoded.engine) || null;
                     // Badge: bwv.engine is the most specific variant code (S58T > S58) -- use it when it looks like a code (short, no spaces)
                     const bwvIsCode = bwv?.engine && !/\s/.test(bwv.engine) && bwv.engine.length <= 8;
-                    const engineCode = bwvIsCode ? bwv!.engine : (decoded.engine || undefined);
+                    const engineCode = bwvIsCode ? (bwv!.engine ?? undefined) : (decoded.engine || undefined);
                     // If we have no description at all, fall back to raw bwv string as primary
                     const engineValue = engineDesc || bwv?.engine || engineCode || "";
-                    return <DataCard label="Engine" value={engineValue} code={engineDesc || bwvIsCode ? engineCode : undefined} />;
+                    return <DataCard label="Engine" value={engineValue} code={(engineDesc || bwvIsCode) ? (engineCode ?? undefined) : undefined} />;
                   })()}
                   {bwv?.market && <DataCard label="Market" value={bwv.market} />}
                   {decoded.division && decoded.division !== "Standard" && <DataCard label="Division" value={decoded.division} />}
@@ -1093,7 +1195,7 @@ function BmvVinDecoder({ vin }: { vin: string }) {
             </section>
 
             {/* Tab content — surface bg */}
-            <section style={{ background: C.surface, padding: "32px 48px 48px", borderBottom: `1px solid ${C.rule}` }}>
+            <section style={{ background: C.surface, padding: "32px clamp(16px, 4vw, 48px) clamp(16px, 4vw, 48px)", borderBottom: `1px solid ${C.rule}` }}>
               <div style={{ maxWidth: 900, margin: "0 auto" }}>
 
                 {/* Vehicle tab */}
@@ -1220,14 +1322,14 @@ function BmvVinDecoder({ vin }: { vin: string }) {
             </section>
 
             {/* FAQ + How it works block — white */}
-            <section id="how-it-works" style={{ background: C.white, padding: "56px 48px 72px" }}>
+            <section id="how-it-works" style={{ background: C.white, padding: "56px clamp(16px, 4vw, 48px) 72px" }}>
               <div style={{ maxWidth: 900, margin: "0 auto" }}>
 
                 {/* How it works */}
                 <h2 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: "clamp(20px, 2.5vw, 28px)", letterSpacing: "-0.02em", color: C.ink, margin: "0 0 32px" }}>
                   How it works.
                 </h2>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 56 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 20, marginBottom: 56 }}>
                   {[
                     { n: "01", title: "Structural decode.", body: "WMI, VDS, and VIS segments extracted. Check digit validated against the ISO 3779 formula." },
                     { n: "02", title: "Factory enrichment.", body: "VDS cross-referenced against BMW's internal production data to resolve chassis, engine, market, and build options." },
@@ -1365,7 +1467,6 @@ export function DecoderHome() {
     setRegoError(null);
 
     try {
-      // First attempt -- check cache (no token needed)
       const res = await fetch("/api/rego-lookup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -1378,39 +1479,24 @@ export function DecoderHome() {
         return;
       }
 
-      if (data.status === "needs_token") {
-        // Cache miss -- solve reCAPTCHA v3 in the browser then resubmit
-        const token = await solveRecaptchaInBrowser();
-        if (!token) {
-          setRegoStatus("failed");
-          setRegoError("Could not verify you are human. Please try again.");
-          return;
-        }
-
-        const res2 = await fetch("/api/rego-lookup", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ rego: upper, state: regoState, recaptchaToken: token }),
-        });
-        const data2 = await res2.json();
-
-        if (data2.status === "found") {
-          navigate(`/${data2.vin}`);
-          return;
-        }
-
-        if (data2.status === "pending" && data2.jobId) {
-          startPolling(data2.jobId);
-          return;
-        }
-
-        setRegoStatus("failed");
-        setRegoError(data2.error ?? "Unexpected response.");
+      if (data.status === "pending" && data.jobId) {
+        startPolling(data.jobId);
         return;
       }
 
-      if (data.status === "pending" && data.jobId) {
-        startPolling(data.jobId);
+      // needs_token is no longer used (Playwright handles reCAPTCHA server-side)
+      // but handle it gracefully for backward compat
+      if (data.status === "needs_token") {
+        const res2 = await fetch("/api/rego-lookup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ rego: upper, state: regoState, recaptchaToken: "browser-handled" }),
+        });
+        const data2 = await res2.json();
+        if (data2.status === "found") { navigate(`/${data2.vin}`); return; }
+        if (data2.status === "pending" && data2.jobId) { startPolling(data2.jobId); return; }
+        setRegoStatus("failed");
+        setRegoError(data2.error ?? "Unexpected response.");
         return;
       }
 
@@ -1459,7 +1545,7 @@ export function DecoderHome() {
 
         {/* Hero — white */}
         <section style={{
-          background: C.white, padding: "88px 48px 72px",
+          background: C.white, padding: "88px clamp(16px, 4vw, 48px) 72px",
           borderBottom: `1px solid ${C.rule}`,
           display: "flex", flexDirection: "column", alignItems: "center",
           textAlign: "center",
@@ -1529,7 +1615,7 @@ export function DecoderHome() {
           {/* Rego search panel */}
           {tab === "rego" && (
             <div style={{ marginTop: 24, width: "100%", maxWidth: 480, textAlign: "left" }}>
-              <div style={{ display: "flex", gap: 10 }}>
+              <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                 <input
                   type="text"
                   value={regoInput}
@@ -1573,8 +1659,9 @@ export function DecoderHome() {
                     background: regoStatus === "pending" ? C.ink4 : C.blue,
                     color: C.white, border: "none", cursor: regoStatus === "pending" ? "default" : "pointer",
                     fontFamily: F.sans, fontWeight: 600, fontSize: 14,
-                    display: "flex", alignItems: "center", gap: 8,
+                    display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                     transition: "background 0.15s",
+                    flex: "1 0 100%",  // full width when wrapped on mobile
                   }}
                 >
                   {regoStatus === "pending"
@@ -1602,7 +1689,7 @@ export function DecoderHome() {
         {/* Browse block — surface */}
         <section style={{
           background: C.surface, borderTop: `1px solid ${C.rule}`,
-          padding: "56px 48px 72px",
+          padding: "56px clamp(16px, 4vw, 48px) 72px",
         }}>
           <div style={{ maxWidth: 900, margin: "0 auto" }}>
 
@@ -1610,7 +1697,7 @@ export function DecoderHome() {
             <h2 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: 18, letterSpacing: "-0.01em", color: C.ink, margin: "0 0 16px" }}>
               By brand
             </h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginBottom: 40 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))", gap: 10, marginBottom: 40 }}>
               {BMV_VIN_BRANDS.map(b => (
                 <BrowseTile key={b} href={`/decoder/${b}`} label={BRAND_LABEL[b]} testId={`link-brand-${b}`} onSurface />
               ))}
@@ -1620,7 +1707,7 @@ export function DecoderHome() {
             <h2 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: 18, letterSpacing: "-0.01em", color: C.ink, margin: "0 0 16px" }}>
               By facet
             </h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginBottom: 28 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))", gap: 10, marginBottom: 28 }}>
               {BMV_VIN_FACET_KINDS.map(k => (
                 <BrowseTile key={k} href={`/${k}`} label={FACET_KIND_LABEL[k]} testId={`link-facet-${k}`} onSurface />
               ))}
@@ -1683,7 +1770,7 @@ export function BrandDecoderHub() {
   return (
     <PageShell>
       <Helmet><title>{label} VIN Decoder — bmv.vin</title></Helmet>
-      <section style={{ padding: "72px 48px 64px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <section style={{ padding: "72px clamp(16px, 4vw, 48px) 64px", display: "flex", flexDirection: "column", alignItems: "center" }}>
         <div style={{ width: "100%", maxWidth: 820 }}>
           <Crumb items={[{ label: "Decoder", href: "/" }, { label }]} />
           <h1 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: "clamp(32px, 5vw, 56px)", letterSpacing: "-0.025em", lineHeight: 1.0, color: C.ink, margin: "0 0 16px" }}>
@@ -1712,7 +1799,7 @@ export function FacetHub() {
   return (
     <PageShell>
       <Helmet><title>{label} {value} — bmv.vin</title></Helmet>
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "48px" }}>
+      <div style={{ maxWidth: 900, margin: "0 auto", padding: "clamp(16px, 4vw, 48px)" }}>
         <Crumb items={[{ label: "Decoder", href: "/" }, { label, href: `/${kind}` }, { label: value }]} />
         <h1 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: "clamp(28px, 4vw, 48px)", letterSpacing: "-0.025em", lineHeight: 1.0, color: C.ink, margin: "0 0 32px" }}>
           {label}: {value}.
@@ -1740,7 +1827,7 @@ export function GuideIndex() {
   return (
     <PageShell>
       <Helmet><title>Guide library — bmv.vin</title></Helmet>
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "48px" }}>
+      <div style={{ maxWidth: 900, margin: "0 auto", padding: "clamp(16px, 4vw, 48px)" }}>
         <Crumb items={[{ label: "Decoder", href: "/" }, { label: "Guides" }]} />
         <h1 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: "clamp(28px, 4vw, 40px)", letterSpacing: "-0.025em", lineHeight: 1.0, color: C.ink, margin: "0 0 32px" }}>Guide library.</h1>
         {isLoading && <Loader2 style={{ width: 20, height: 20, color: C.blue }} className="animate-spin" />}
@@ -1769,7 +1856,7 @@ export function GuideDetail() {
   return (
     <PageShell>
       <Helmet><title>{pickEn(data?.guide?.title) || "Guide"} — bmv.vin</title></Helmet>
-      <div style={{ maxWidth: 720, margin: "0 auto", padding: "48px" }}>
+      <div style={{ maxWidth: 720, margin: "0 auto", padding: "clamp(16px, 4vw, 48px)" }}>
         <Crumb items={[{ label: "Decoder", href: "/" }, { label: "Guides", href: "/guide" }, { label: pickEn(data?.guide?.title) || slug }]} />
         <h1 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: "clamp(24px, 3.5vw, 36px)", letterSpacing: "-0.02em", lineHeight: 1.1, color: C.ink, margin: "0 0 24px" }}>{pickEn(data?.guide?.title) || slug}.</h1>
         <p style={{ fontFamily: F.sans, fontWeight: 300, fontSize: 15, lineHeight: 1.7, color: C.ink4 }}>See the full guide content below.</p>
@@ -1784,7 +1871,7 @@ export function GlossaryIndex() {
   return (
     <PageShell>
       <Helmet><title>Glossary — bmv.vin</title></Helmet>
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "48px" }}>
+      <div style={{ maxWidth: 900, margin: "0 auto", padding: "clamp(16px, 4vw, 48px)" }}>
         <Crumb items={[{ label: "Decoder", href: "/" }, { label: "Glossary" }]} />
         <h1 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: "clamp(28px, 4vw, 40px)", letterSpacing: "-0.025em", lineHeight: 1.0, color: C.ink, margin: "0 0 32px" }}>Glossary.</h1>
         {isLoading && <Loader2 style={{ width: 20, height: 20, color: C.blue }} className="animate-spin" />}
@@ -1815,7 +1902,7 @@ export function GlossaryTerm() {
   return (
     <PageShell>
       <Helmet><title>{pickEn(data?.term?.display) || term} — bmv.vin glossary</title></Helmet>
-      <div style={{ maxWidth: 720, margin: "0 auto", padding: "48px" }}>
+      <div style={{ maxWidth: 720, margin: "0 auto", padding: "clamp(16px, 4vw, 48px)" }}>
         <Crumb items={[{ label: "Decoder", href: "/" }, { label: "Glossary", href: "/glossary" }, { label: pickEn(data?.term?.display) || term }]} />
         <h1 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: "clamp(24px, 3.5vw, 36px)", letterSpacing: "-0.02em", lineHeight: 1.1, color: C.ink, margin: "0 0 24px" }}>{pickEn(data?.term?.display) || term}.</h1>
         <p style={{ fontFamily: F.sans, fontWeight: 300, fontSize: 15, lineHeight: 1.7, color: C.ink4 }}>See the definition below.</p>
@@ -1832,7 +1919,7 @@ function SeoShell({ title, subtitle, testId }: { title: string; subtitle?: strin
   const [, navigate] = useLocation();
   return (
     <PageShell>
-      <div style={{ maxWidth: 820, margin: "0 auto", padding: "72px 48px 64px" }}>
+      <div style={{ maxWidth: 820, margin: "0 auto", padding: "72px clamp(16px, 4vw, 48px) 64px" }}>
         <h1 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: "clamp(24px, 3.5vw, 40px)", letterSpacing: "-0.025em", lineHeight: 1.0, color: C.ink, margin: "0 0 12px" }} data-testid={testId}>{title}.</h1>
         {subtitle && <p style={{ fontFamily: F.sans, fontWeight: 300, fontSize: 15, lineHeight: 1.7, color: C.ink4, margin: "0 0 40px" }}>{subtitle}</p>}
         <CellInstrument value={vinInput} onChange={setVinInput} onDecode={() => { const c = vinInput.replace(/[^A-HJ-NPR-Z0-9]/gi,"").toUpperCase(); if (c.length===17) navigate(`/${c}`); }} isDecoding={false} />

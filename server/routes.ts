@@ -9452,17 +9452,12 @@ ${editorialLink ? `Set editorialLink to "${editorialLink}" for recommendations t
         return res.json({ status: "found", source: "cache", ...cached });
       }
 
-      // No token -- tell frontend to solve reCAPTCHA first
-      if (!recaptchaToken || typeof recaptchaToken !== "string") {
-        return res.json({ status: "needs_token" });
-      }
-
-      // Kick off async BMW call
+      // Kick off async Playwright scrape (handles reCAPTCHA natively via residential proxy)
       cleanOldRegoJobs();
       const jobId = `${upperRego}-${st}-${Date.now()}`;
       regoJobs.set(jobId, { status: "pending", startedAt: Date.now() });
 
-      lookupRegoWithToken(upperRego, st, recaptchaToken).then((outcome) => {
+      lookupRegoWithToken(upperRego, st, recaptchaToken ?? "").then((outcome) => {
         const job = regoJobs.get(jobId);
         if (!job) return;
         if (outcome.found) {
