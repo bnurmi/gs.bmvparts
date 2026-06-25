@@ -3,17 +3,20 @@
  *
  * Resolves an Australian rego plate → VIN via BMW Australia's recall site.
  *
- * reCAPTCHA strategy: Browserbase cloud browser with solveCaptchas:true.
- * Browserbase handles reCAPTCHA v3 natively on a real residential IP -- no
- * solving service, no token forwarding, no datacenter IP issues.
+ * reCAPTCHA strategy: Browserbase cloud browser with proxies:true.
+ * Browserbase routes through a residential IP -- reCAPTCHA v3 scores high
+ * enough for BMW's threshold. solveCaptchas:true handles any additional
+ * CAPTCHA challenges automatically.
  *
  * Flow:
- *   1. Cache check (rego_vin_cache table) -- instant return if known
- *   2. Create Browserbase session (residential AU, captcha solving on)
+ *   1. Cache check (rego_vin_cache) -- instant return if known
+ *   2. Create Browserbase session (residential proxy + CAPTCHA solving)
  *   3. Connect Playwright via CDP
  *   4. Navigate BMW recall page, fill rego + state, click Next
  *   5. Intercept /BmwRecall/Rego network response
  *   6. Parse VIN, cache result, return
+ *
+ * Cost: ~$0.01-0.05/session (Browserbase paid plan). Cached results are free.
  */
 
 import { db } from "./storage.js";
@@ -89,7 +92,7 @@ const BMW_RECALL_URL = "https://www.recall.bmw.com.au/";
 export async function lookupRegoWithToken(
   rego: string,
   state: AusState,
-  _recaptchaToken?: string, // API compat -- Browserbase handles reCAPTCHA natively
+  _recaptchaToken?: string, // API compat -- not used; Browserbase handles reCAPTCHA
 ): Promise<RegoLookupOutcome> {
   const upper = rego.toUpperCase().trim();
 
@@ -97,7 +100,7 @@ export async function lookupRegoWithToken(
   const bbProjectId = (process.env.BROWSERBASE_PROJECT_ID || "").trim();
 
   if (!bbApiKey || !bbProjectId) {
-    console.error("[rego-lookup] Browserbase not configured (BROWSERBASE_API_KEY / BROWSERBASE_PROJECT_ID)");
+    console.error("[rego-lookup] Browserbase not configured");
     return { found: false, reason: "Rego lookup service not configured", rego: upper, state };
   }
 
@@ -106,19 +109,14 @@ export async function lookupRegoWithToken(
   let sessionId: string | null = null;
 
   try {
-    // 1. Create Browserbase session with CAPTCHA solving enabled
+    // 1. Create session with residential proxy + CAPTCHA solving
     const sessionRes = await fetch("https://www.browserbase.com/v1/sessions", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-BB-API-Key": bbApiKey,
-      },
+      headers: { "Content-Type": "application/json", "X-BB-API-Key": bbApiKey },
       body: JSON.stringify({
         projectId: bbProjectId,
-        browserSettings: {
-          solveCaptchas: true,           // Browserbase handles reCAPTCHA natively
-          geolocation: { country: "AU" }, // AU exit node -- helps reCAPTCHA score
-        },
+        proxies: true,
+        browserSettings: { solveCaptchas: true },
       }),
     });
 
@@ -130,16 +128,13 @@ export async function lookupRegoWithToken(
 
     const session: any = await sessionRes.json();
     sessionId = session.id as string;
-    const wsUrl: string = session.connectUrl
-      ?? `wss://connect.browserbase.com?apiKey=${bbApiKey}&sessionId=${sessionId}`;
-
     console.log(`[rego-lookup] Session ${sessionId} ready`);
 
     // 2. Connect Playwright via CDP
     const { chromium } = await import("playwright");
-    const browser = await chromium.connectOverCDP(wsUrl);
+    const browser = await chromium.connectOverCDP(session.connectUrl);
     const ctx     = browser.contexts()[0];
-    const page    = ctx?.pages()[0] ?? await ctx?.newPage();
+    const page    = ctx.pages()[0] ?? await ctx.newPage();
 
     if (!page) throw new Error("No page in Browserbase session");
 
@@ -152,38 +147,39 @@ export async function lookupRegoWithToken(
         try {
           const body = await res.text();
           capture.value = { status: res.status(), body };
-        } catch { /* response already consumed */ }
+        } catch { /* already consumed */ }
       }
     });
 
     // 4. Navigate BMW recall page
-    await page.goto(BMW_RECALL_URL, { waitUntil: "domcontentloaded", timeout: 30_000 });
+    await page.goto(BMW_RECALL_URL, { waitUntil: "domcontentloaded", timeout: 40_000 });
     await page.waitForSelector("#rego", { timeout: 15_000 });
 
-    // Dismiss cookie modal if present
+    // Dismiss cookie modal
     await page.click("button.close", { timeout: 2000 }).catch(() => {});
 
     // 5. Fill form -- Angular reactive forms need native value setters
-    await page.evaluate(({ regoVal, stateVal }: { regoVal: string; stateVal: string }) => {
-      const inp = document.querySelector<HTMLInputElement>("#rego");
-      if (inp) {
-        const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")!.set!;
-        setter.call(inp, regoVal);
-        inp.dispatchEvent(new Event("input",  { bubbles: true }));
-        inp.dispatchEvent(new Event("change", { bubbles: true }));
-      }
-      const sel = document.querySelector<HTMLSelectElement>("select[formcontrolname='regoState']");
-      if (sel) {
-        const setter = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, "value")!.set!;
-        setter.call(sel, stateVal);
-        sel.dispatchEvent(new Event("change", { bubbles: true }));
-      }
-    }, { regoVal: upper, stateVal: state });
+    await page.evaluate(
+      ({ regoVal, stateVal }: { regoVal: string; stateVal: string }) => {
+        const inp = document.querySelector<HTMLInputElement>("#rego");
+        if (inp) {
+          Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")!.set!.call(inp, regoVal);
+          inp.dispatchEvent(new Event("input",  { bubbles: true }));
+          inp.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+        const sel = document.querySelector<HTMLSelectElement>("select[formcontrolname='regoState']");
+        if (sel) {
+          Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, "value")!.set!.call(sel, stateVal);
+          sel.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+      },
+      { regoVal: upper, stateVal: state },
+    );
 
-    // 6. Wait for reCAPTCHA to run (Browserbase solves it automatically)
-    await page.waitForTimeout(3000);
+    // 6. Wait -- reCAPTCHA v3 observes the residential session
+    await page.waitForTimeout(5000);
 
-    // 7. Click Next (<a class="btn btn-primary left">)
+    // 7. Click Next
     const clicked = await page.evaluate((): boolean => {
       const a = Array.from(document.querySelectorAll("a"))
         .find((el) => el.textContent?.includes("Next")) as HTMLElement | undefined;
@@ -196,7 +192,7 @@ export async function lookupRegoWithToken(
       return { found: false, reason: "Could not submit rego form", rego: upper, state };
     }
 
-    // 8. Wait for BMW API response (up to 15s)
+    // 8. Wait up to 15s for BMW API response
     for (let i = 0; i < 30 && !capture.value; i++) {
       await page.waitForTimeout(500);
     }
@@ -214,14 +210,14 @@ export async function lookupRegoWithToken(
 
     if (status !== 200) {
       return {
-        found: false,
+        found:  false,
         reason: body.includes("ReCaptcha") ? "reCAPTCHA check failed" : `BMW API error ${status}`,
-        rego: upper, state,
+        rego:   upper,
+        state,
       };
     }
 
     const regoData = JSON.parse(body) as { success: boolean; found: boolean; vin?: string };
-    console.log(`[rego-lookup] BMW 200: success=${regoData.success} found=${regoData.found} vin=${regoData.vin ?? "none"}`);
 
     if (!regoData.success || !regoData.found || !regoData.vin) {
       return { found: false, reason: "Registration not found in BMW system", rego: upper, state };
@@ -245,7 +241,7 @@ export async function lookupRegoWithToken(
     console.error(`[rego-lookup] Error: ${err?.message}`);
     return { found: false, reason: err?.message ?? "Unknown error", rego: upper, state };
   } finally {
-    // Release session to avoid billing leaks
+    // Always release the session
     if (sessionId) {
       fetch(`https://www.browserbase.com/v1/sessions/${sessionId}`, {
         method: "POST",
