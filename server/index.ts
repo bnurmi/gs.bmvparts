@@ -31,6 +31,27 @@ app.use(
 
 app.use(express.urlencoded({ extended: false }));
 
+declare global {
+  namespace Express {
+    interface Request {
+      bmvVinHost?: boolean;
+    }
+  }
+}
+
+function isBmvVinHostname(hostHeader: string | undefined): boolean {
+  const hostname = (hostHeader || "").split(":")[0]?.toLowerCase() || "";
+  return hostname === "bmv.vin" || hostname === "www.bmv.vin" || hostname.endsWith(".bmv.vin");
+}
+
+// Tag vanity-host traffic before registering routes. The bmv.vin SEO/router
+// layer depends on this to keep the VIN surface separate from bmv.parts.
+app.use((req, _res, next) => {
+  const forwardedHost = req.header("x-forwarded-host");
+  req.bmvVinHost = isBmvVinHostname(forwardedHost || req.header("host"));
+  next();
+});
+
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {
     hour: "numeric",

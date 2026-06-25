@@ -134,7 +134,7 @@ export function isLocalizablePath(pathWithoutLocale: string): boolean {
 export function isBmvVinHost(): boolean {
   if (typeof window === "undefined") return false;
   const h = window.location.hostname.toLowerCase();
-  return h === "bmv.vin" || h === "www.bmv.vin";
+  return h === "bmv.vin" || h === "www.bmv.vin" || h.endsWith(".bmv.vin");
 }
 
 // localStorage key for the visitor's chosen language. Read on first paint to
