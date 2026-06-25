@@ -10,7 +10,6 @@ import { useState, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { Loader2 } from "lucide-react";
 import { AiFaqSection } from "@/components/AiFaqSection";
-import VinDecoder from "@/pages/VinDecoder";
 import {
   BMV_VIN_BRANDS, BMV_VIN_FACET_KINDS, BRAND_LABEL, FACET_KIND_LABEL,
   type BmvVinBrand, type BmvVinFacetKind,
@@ -397,7 +396,7 @@ function ValidityPill({ isValid }: { isValid: boolean }) {
 }
 
 // =============================================================================
-// bmv.vin VIN Decoder — self-contained results page
+// bmv.vin Decoder Results — fully branded, self-contained
 // =============================================================================
 
 interface DecodeResponse {
@@ -407,260 +406,391 @@ interface DecodeResponse {
 }
 
 interface BwVehicle {
-  modelName: string | null; manufacturer: string | null; chassis: string | null;
-  engine: string | null; color: string | null; colorCode: string | null;
-  market: string | null; startOfProduction: string | null; drivetrain: string | null;
+  vin: string; codeType: string | null; chassis: string | null;
+  market: string | null; engine: string | null; drivetrain: string | null;
+  transmission: string | null; color: string | null; colorCode: string | null;
+  upholstery: string | null; upholsteryCode: string | null;
+  startOfProduction: string | null; manufacturer: string | null; modelName: string | null;
 }
 
-interface BwResponse {
-  found: boolean;
-  data?: { vehicle: BwVehicle | null; options: { code: string; description: string }[] };
+interface BwOption { code: string; nameEn: string; nameDe: string; imageUrl: string | null; }
+interface BwImages { exteriorUrl: string | null; interiorUrl: string | null; exterior360Urls: string[]; }
+interface BwManual { number: string; language: string; date: string; downloadUrl: string; }
+interface BwData { vehicle: BwVehicle | null; options: BwOption[]; images: BwImages | null; manuals: BwManual[]; }
+interface BwResponse { found: boolean; data?: BwData; coverage?: { missing?: string[] } | null; }
+
+// Kicker label — small uppercase eyebrow
+function Kicker({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{ fontFamily: F.sans, fontSize: 10.5, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: C.ink5, marginBottom: 8 }}>
+      {children}
+    </div>
+  );
 }
+
+// Section heading inside results
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: 16, letterSpacing: "-0.01em", color: C.ink, margin: "0 0 14px" }}>
+      {children}
+    </h2>
+  );
+}
+
+// Info row: label + value pair
+function InfoRow({ label, value, mono }: { label: string; value: string | null | undefined; mono?: boolean }) {
+  if (!value) return null;
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <div style={{ fontFamily: F.sans, fontSize: 10.5, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.10em", color: C.ink5 }}>{label}</div>
+      <div style={{ fontFamily: mono ? F.mono : F.sans, fontSize: 15, fontWeight: mono ? 700 : 500, color: C.ink }}>{value}</div>
+    </div>
+  );
+}
+
+// Tab button
+function Tab({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+  return (
+    <button onClick={onClick} type="button" style={{
+      fontFamily: F.sans, fontSize: 13.5, fontWeight: active ? 600 : 400,
+      color: active ? C.blue : C.ink4,
+      background: "none", border: "none", padding: "10px 0",
+      borderBottom: `2px solid ${active ? C.blue : "transparent"}`,
+      cursor: "pointer", transition: "color 0.12s, border-color 0.12s",
+      whiteSpace: "nowrap",
+    }}
+      onMouseEnter={e => { if (!active) (e.currentTarget as HTMLElement).style.color = C.ink; }}
+      onMouseLeave={e => { if (!active) (e.currentTarget as HTMLElement).style.color = C.ink4; }}
+    >{label}</button>
+  );
+}
+
+type TabId = "vehicle" | "options" | "images" | "manuals";
 
 function BmvVinDecoder({ vin }: { vin: string }) {
-  const qc = useQueryClient();
   const [result, setResult] = useState<DecodeResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [, navigate] = useLocation();
   const [inputVin, setInputVin] = useState(vin);
+  const [activeTab, setActiveTab] = useState<TabId>("vehicle");
+  const [, navigate] = useLocation();
 
   const decodeMutation = useMutation<DecodeResponse, Error, string>({
     mutationFn: async (v: string) => {
-      const res = await fetch("/api/vin/decode", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ vin: v }),
-      });
-      if (!res.ok) throw new Error(`Decode failed: ${res.status}`);
+      const res = await fetch("/api/vin/decode", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ vin: v }) });
+      if (!res.ok) throw new Error(`${res.status}`);
       return res.json();
     },
-    onSuccess: (data) => { setResult(data); setError(null); },
-    onError: (e) => setError(e.message),
+    onSuccess: data => { setResult(data); setError(null); },
+    onError: e => setError(e.message),
   });
 
-  // Auto-decode on mount / vin change
   useEffect(() => {
-    if (vin && vin.length === 17) {
-      setInputVin(vin);
-      decodeMutation.mutate(vin);
-    }
+    if (vin?.length === 17) { setInputVin(vin); decodeMutation.mutate(vin); }
   }, [vin]);
 
+  const decoded = result?.decoded;
+
   const bwQuery = useQuery<BwResponse>({
-    queryKey: ["/api/vin/bimmerwork", result?.decoded.vin],
-    queryFn: async () => {
-      const res = await fetch(`/api/vin/bimmerwork/${result!.decoded.vin}`);
-      return res.json();
-    },
-    enabled: !!result?.decoded.vin && !!result?.decoded.isBmw,
+    queryKey: ["/api/vin/bimmerwork", decoded?.vin],
+    queryFn: async () => { const r = await fetch(`/api/vin/bimmerwork/${decoded!.vin}`); return r.json(); },
+    enabled: !!decoded?.vin && !!decoded?.isBmw,
     staleTime: 5 * 60_000,
   });
 
   const bw = bwQuery.data?.data;
-  const decoded = result?.decoded;
+  const bwv = bw?.vehicle;
+
+  const modelYear = bwv?.startOfProduction
+    ? parseInt(bwv.startOfProduction.match(/(\d{4})/)?.[1] ?? "0", 10) || decoded?.modelYear
+    : decoded?.modelYear;
+
+  const modelTitle = bwv?.modelName
+    ? `${modelYear ? modelYear + " " : ""}${bwv.modelName}${bwv.chassis ? " (" + bwv.chassis + ")" : ""}`
+    : decoded?.chassis
+      ? `${modelYear ? modelYear + " " : ""}BMW ${decoded.chassis}`
+      : "BMW VIN Decoded.";
 
   function handleDecode() {
     const clean = inputVin.replace(/[^A-HJ-NPR-Z0-9]/gi, "").toUpperCase();
-    if (clean.length === 17) {
-      navigate(`/${clean}`);
-      decodeMutation.mutate(clean);
-    }
+    if (clean.length === 17) { navigate(`/${clean}`); decodeMutation.mutate(clean); }
   }
 
-  const modelYear = bw?.vehicle?.startOfProduction
-    ? parseInt(bw.vehicle.startOfProduction.match(/(\d{4})/)?.[1] ?? "0", 10) || decoded?.modelYear
-    : decoded?.modelYear;
-
   return (
-    <PageShell bg={C.white}>
-      <Helmet>
-        <title>{vin} — VIN Decoder | bmv.vin</title>
-      </Helmet>
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: C.white }}>
+      <Helmet><title>{vin} — VIN Decoder | bmv.vin</title></Helmet>
+      <SiteHeader />
 
-      {/* Hero — white, instrument + decode */}
-      <section style={{
-        background: C.white, padding: "64px 48px 56px",
-        borderBottom: `1px solid ${C.rule}`,
-        display: "flex", flexDirection: "column", alignItems: "center",
-      }}>
-        <div style={{ width: "100%", maxWidth: 820 }}>
-          <CellInstrument
-            value={inputVin}
-            onChange={setInputVin}
-            onDecode={handleDecode}
-            isDecoding={decodeMutation.isPending}
-          />
-        </div>
+      {/* Hero: cell instrument */}
+      <section style={{ background: C.white, padding: "48px 48px 40px", borderBottom: `1px solid ${C.rule}`, display: "flex", justifyContent: "center" }}>
+        <CellInstrument value={inputVin} onChange={setInputVin} onDecode={handleDecode} isDecoding={decodeMutation.isPending} />
       </section>
 
       {/* Results */}
-      <section style={{ padding: "48px 48px 72px", maxWidth: 900, margin: "0 auto", width: "100%" }}>
-
-        {/* Error */}
-        {error && (
-          <div style={{
-            background: C.redTint, border: `1px solid #F5C5C7`,
-            borderRadius: 10, padding: "16px 20px", marginBottom: 24,
-          }}>
-            <div style={{ fontFamily: F.sans, fontWeight: 700, fontSize: 14, color: C.red, marginBottom: 4 }}>Decode failed</div>
-            <div style={{ fontFamily: F.sans, fontWeight: 300, fontSize: 13.5, color: C.ink3 }}>{error}</div>
-          </div>
-        )}
+      <main style={{ flex: 1 }}>
 
         {/* Loading */}
         {decodeMutation.isPending && (
-          <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "32px 0", color: C.ink4 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "48px", color: C.ink4 }}>
             <svg width="36" height="36" viewBox="0 0 36 36" fill="none" style={{ animation: "spin 0.8s linear infinite", flexShrink: 0 }}>
               <circle cx="18" cy="18" r="15" stroke={C.rule} strokeWidth="2.5" />
               <path d="M18 3a15 15 0 0 1 15 15" stroke={C.blue} strokeWidth="2.5" strokeLinecap="round" />
             </svg>
             <span style={{ fontFamily: F.sans, fontWeight: 500, fontSize: 15, color: C.ink4 }}>Decoding VIN</span>
+            <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
+          </div>
+        )}
+
+        {/* Error */}
+        {error && !decodeMutation.isPending && (
+          <div style={{ maxWidth: 900, margin: "32px auto", padding: "0 48px" }}>
+            <div style={{ background: C.redTint, border: `1px solid #F5C5C7`, borderRadius: 10, padding: "16px 20px" }}>
+              <div style={{ fontFamily: F.sans, fontWeight: 700, fontSize: 14, color: C.red, marginBottom: 4 }}>Decode failed</div>
+              <div style={{ fontFamily: F.sans, fontWeight: 300, fontSize: 13.5, color: C.ink3 }}>{error}</div>
+            </div>
           </div>
         )}
 
         {decoded && !decodeMutation.isPending && (
           <>
-            {/* VIN string + validity */}
-            <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 32, flexWrap: "wrap" }}>
-              <span style={{ fontFamily: F.mono, fontSize: 18, fontWeight: 700, color: C.ink, letterSpacing: "0.06em" }}>
-                {decoded.vin}
-              </span>
-              <ValidityPill isValid={decoded.isValid} />
-              {bwQuery.isLoading && (
-                <span style={{ fontFamily: F.sans, fontSize: 12, fontWeight: 500, color: C.ink5, display: "flex", alignItems: "center", gap: 6 }}>
-                  <Loader2 style={{ width: 12, height: 12 }} className="animate-spin" /> Enriching
-                </span>
-              )}
-            </div>
+            {/* Vehicle hero band — white */}
+            <section style={{ background: C.white, padding: "40px 48px 0", borderBottom: `1px solid ${C.rule}` }}>
+              <div style={{ maxWidth: 900, margin: "0 auto" }}>
 
-            {/* Validation warnings */}
-            {decoded.validationErrors.length > 0 && (
-              <div style={{ background: "#FFFBF0", border: "1px solid #F0D080", borderRadius: 10, padding: "12px 18px", marginBottom: 24 }}>
-                {decoded.validationErrors.map((e, i) => (
-                  <div key={i} style={{ fontFamily: F.sans, fontWeight: 300, fontSize: 13.5, color: C.ink3 }}>{e}</div>
-                ))}
+                {/* Title + validity */}
+                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: 16, marginBottom: 32 }}>
+                  <div>
+                    <Kicker>Decoded VIN</Kicker>
+                    <h1 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: "clamp(22px, 3vw, 36px)", letterSpacing: "-0.025em", lineHeight: 1.05, color: C.ink, margin: "0 0 6px" }}>
+                      {modelTitle}
+                    </h1>
+                    <div style={{ fontFamily: F.mono, fontSize: 13, fontWeight: 400, color: C.ink5, letterSpacing: "0.06em" }}>{decoded.vin}</div>
+                  </div>
+                  <ValidityPill isValid={decoded.isValid} />
+                </div>
+
+                {/* Validation warnings */}
+                {decoded.validationErrors.length > 0 && (
+                  <div style={{ background: "#FFFBF0", border: "1px solid #F0D080", borderRadius: 8, padding: "10px 16px", marginBottom: 24 }}>
+                    {decoded.validationErrors.map((e, i) => (
+                      <div key={i} style={{ fontFamily: F.sans, fontWeight: 300, fontSize: 13.5, color: C.ink3 }}>{e}</div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Data cards grid */}
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 32 }}>
+                  <DataCard primary label="Manufacturer" value={bwv?.manufacturer || decoded.manufacturer || ""} sub={decoded.wmi} />
+                  <DataCard label="Chassis" value={bwv?.chassis || decoded.chassis || ""} sub={decoded.series || undefined} />
+                  <DataCard label="Model year" value={modelYear ? String(modelYear) : ""} />
+                  <DataCard label="Assembly plant" value={decoded.plant ? decoded.plant.city : ""} sub={decoded.plant?.country} />
+                  {(bwv?.engine) && <DataCard label="Engine" value={bwv.engine} />}
+                  {bwv?.market && <DataCard label="Market" value={bwv.market} />}
+                  {bwv?.drivetrain && <DataCard label="Drivetrain" value={bwv.drivetrain} />}
+                  {bwv?.transmission && <DataCard label="Transmission" value={bwv.transmission} />}
+                  {bwv?.color && <DataCard label="Colour" value={bwv.color} sub={bwv.colorCode || undefined} />}
+                  {bwv?.upholstery && <DataCard label="Upholstery" value={bwv.upholstery} sub={bwv.upholsteryCode || undefined} />}
+                  {bwv?.startOfProduction && <DataCard label="Production date" value={bwv.startOfProduction} />}
+                  {decoded.productionSequence && <DataCard label="Production seq." value={decoded.productionSequence} />}
+                </div>
+
+                {/* Tabs */}
+                <div style={{ display: "flex", gap: 28, borderBottom: `1px solid ${C.rule}` }}>
+                  {(["vehicle", "options", "images", "manuals"] as TabId[]).map(tab => (
+                    <Tab key={tab} label={tab.charAt(0).toUpperCase() + tab.slice(1)} active={activeTab === tab} onClick={() => setActiveTab(tab)} />
+                  ))}
+                </div>
               </div>
-            )}
+            </section>
 
-            {/* Data cards */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 32 }}>
-              <DataCard
-                label="Manufacturer"
-                value={bw?.vehicle?.manufacturer || decoded.manufacturer || ""}
-                sub={decoded.wmi}
-                primary
-              />
-              <DataCard
-                label="Chassis"
-                value={bw?.vehicle?.chassis || decoded.chassis || ""}
-                sub={decoded.series || undefined}
-              />
-              <DataCard
-                label="Model year"
-                value={modelYear ? String(modelYear) : ""}
-              />
-              <DataCard
-                label="Plant"
-                value={decoded.plant ? decoded.plant.city : ""}
-                sub={decoded.plant ? decoded.plant.country : undefined}
-              />
-              <DataCard
-                label="Engine"
-                value={bw?.vehicle?.engine || decoded.chassis || ""}
-              />
-              <DataCard
-                label="Market"
-                value={bw?.vehicle?.market || ""}
-              />
-              {bw?.vehicle?.color && (
-                <DataCard
-                  label="Colour"
-                  value={bw.vehicle.color}
-                  sub={bw.vehicle.colorCode || undefined}
-                />
-              )}
-              {decoded.productionSequence && (
-                <DataCard
-                  label="Production sequence"
-                  value={decoded.productionSequence}
-                />
-              )}
-            </div>
+            {/* Tab content — surface bg */}
+            <section style={{ background: C.surface, padding: "32px 48px 48px", borderBottom: `1px solid ${C.rule}` }}>
+              <div style={{ maxWidth: 900, margin: "0 auto" }}>
 
-            {/* Segment breakdown */}
-            <div style={{ marginBottom: 32 }}>
-              <h2 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: 16, letterSpacing: "-0.01em", color: C.ink, margin: "0 0 16px" }}>
-                VIN structure
-              </h2>
-              <SegmentBreakdown decoded={decoded} />
-            </div>
+                {/* Vehicle tab */}
+                {activeTab === "vehicle" && (
+                  <div>
+                    {/* Segment breakdown */}
+                    <div style={{ marginBottom: 32 }}>
+                      <SectionTitle>VIN structure</SectionTitle>
+                      <SegmentBreakdown decoded={decoded} />
+                    </div>
 
-            {/* Options */}
-            {bw?.options && bw.options.length > 0 && (
-              <div style={{ marginBottom: 32 }}>
-                <h2 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: 16, letterSpacing: "-0.01em", color: C.ink, margin: "0 0 16px" }}>
-                  Factory options
+                    {/* Parts catalog */}
+                    {result?.matchedCars && result.matchedCars.length > 0 && (
+                      <div style={{ marginBottom: 32 }}>
+                        <SectionTitle>OEM parts catalog</SectionTitle>
+                        <div style={{ display: "grid", gap: 8 }}>
+                          {result.matchedCars.map(car => (
+                            <a key={car.id} href={`https://dev-syd-01.bmv.parts/car/${car.slug}`}
+                              style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 20px", border: `1px solid ${C.rule}`, borderRadius: 10, background: C.white, textDecoration: "none", transition: "border-color 0.12s, background 0.12s" }}
+                              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = C.ruleMid; (e.currentTarget as HTMLElement).style.background = "#F0F0F5"; }}
+                              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = C.rule; (e.currentTarget as HTMLElement).style.background = C.white; }}
+                            >
+                              <div>
+                                <div style={{ fontFamily: F.sans, fontSize: 15, fontWeight: 600, color: C.ink }}>{car.chassis} {car.modelName}</div>
+                                <div style={{ fontFamily: F.sans, fontSize: 12, fontWeight: 300, color: C.ink5, marginTop: 2 }}>bmv.parts OEM catalog</div>
+                              </div>
+                              <div style={{ fontFamily: F.mono, fontSize: 12, color: C.blue }}>{car.totalParts.toLocaleString()} parts →</div>
+                            </a>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {bwQuery.isLoading && (
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, color: C.ink5, padding: "16px 0" }}>
+                        <Loader2 style={{ width: 16, height: 16 }} className="animate-spin" />
+                        <span style={{ fontFamily: F.sans, fontSize: 13.5, fontWeight: 300 }}>Loading enrichment data</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Options tab */}
+                {activeTab === "options" && (
+                  <div>
+                    <SectionTitle>Factory options</SectionTitle>
+                    {bwQuery.isLoading ? (
+                      <div style={{ color: C.ink5, fontFamily: F.sans, fontSize: 13.5, fontWeight: 300 }}>Loading options...</div>
+                    ) : (bw?.options && bw.options.length > 0) ? (
+                      <div style={{ border: `1px solid ${C.rule}`, borderRadius: 10, overflow: "hidden", background: C.white }}>
+                        {bw.options.map((opt, i) => (
+                          <div key={i} style={{ display: "grid", gridTemplateColumns: "80px 1fr", gap: 16, padding: "12px 22px", borderTop: i > 0 ? `1px solid ${C.rule}` : "none", transition: "background 0.1s" }}
+                            onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = C.surface}
+                            onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = C.white}
+                          >
+                            <div style={{ fontFamily: F.mono, fontSize: 12, fontWeight: 700, color: C.blue }}>{opt.code}</div>
+                            <div style={{ fontFamily: F.sans, fontSize: 13.5, fontWeight: 300, color: C.ink3 }}>{opt.nameEn}</div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div style={{ fontFamily: F.sans, fontSize: 13.5, fontWeight: 300, color: C.ink5 }}>
+                        {bwQuery.data?.coverage?.missing?.includes("options")
+                          ? "Option codes not available for this VIN. Factory data may be incomplete."
+                          : "No options found for this VIN."}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Images tab */}
+                {activeTab === "images" && (
+                  <div>
+                    <SectionTitle>Vehicle images</SectionTitle>
+                    {bwQuery.isLoading ? (
+                      <div style={{ color: C.ink5, fontFamily: F.sans, fontSize: 13.5, fontWeight: 300 }}>Loading images...</div>
+                    ) : bw?.images?.exteriorUrl ? (
+                      <div style={{ display: "grid", gap: 12 }}>
+                        {bw.images.exteriorUrl && (
+                          <div>
+                            <Kicker>Exterior</Kicker>
+                            <img src={bw.images.exteriorUrl} alt="Exterior" style={{ width: "100%", borderRadius: 10, border: `1px solid ${C.rule}` }} />
+                          </div>
+                        )}
+                        {bw.images.interiorUrl && (
+                          <div>
+                            <Kicker>Interior</Kicker>
+                            <img src={bw.images.interiorUrl} alt="Interior" style={{ width: "100%", borderRadius: 10, border: `1px solid ${C.rule}` }} />
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div style={{ fontFamily: F.sans, fontSize: 13.5, fontWeight: 300, color: C.ink5 }}>No images available for this VIN.</div>
+                    )}
+                  </div>
+                )}
+
+                {/* Manuals tab */}
+                {activeTab === "manuals" && (
+                  <div>
+                    <SectionTitle>Owner's manuals</SectionTitle>
+                    {bwQuery.isLoading ? (
+                      <div style={{ color: C.ink5, fontFamily: F.sans, fontSize: 13.5, fontWeight: 300 }}>Loading manuals...</div>
+                    ) : (bw?.manuals && bw.manuals.length > 0) ? (
+                      <div style={{ border: `1px solid ${C.rule}`, borderRadius: 10, overflow: "hidden", background: C.white }}>
+                        {bw.manuals.map((m, i) => (
+                          <a key={i} href={m.downloadUrl} target="_blank" rel="noopener noreferrer"
+                            style={{ display: "grid", gridTemplateColumns: "1fr 80px 120px", gap: 16, padding: "14px 22px", borderTop: i > 0 ? `1px solid ${C.rule}` : "none", background: C.white, textDecoration: "none", transition: "background 0.1s" }}
+                            onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = C.surface}
+                            onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = C.white}
+                          >
+                            <div style={{ fontFamily: F.sans, fontSize: 13.5, fontWeight: 500, color: C.ink }}>Manual {m.number}</div>
+                            <div style={{ fontFamily: F.sans, fontSize: 12, fontWeight: 300, color: C.ink5 }}>{m.language.toUpperCase()}</div>
+                            <div style={{ fontFamily: F.sans, fontSize: 12, color: C.blue, textAlign: "right" }}>Download →</div>
+                          </a>
+                        ))}
+                      </div>
+                    ) : (
+                      <div style={{ fontFamily: F.sans, fontSize: 13.5, fontWeight: 300, color: C.ink5 }}>No manuals available for this VIN.</div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </section>
+
+            {/* FAQ + SEO block — white */}
+            <section style={{ background: C.white, padding: "56px 48px 72px" }}>
+              <div style={{ maxWidth: 900, margin: "0 auto" }}>
+                <h2 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: "clamp(20px, 2.5vw, 28px)", letterSpacing: "-0.02em", color: C.ink, margin: "0 0 32px" }}>
+                  About this VIN.
                 </h2>
-                <div style={{ border: `1px solid ${C.rule}`, borderRadius: 10, overflow: "hidden" }}>
-                  {bw.options.map((opt, i) => (
-                    <div key={i} style={{
-                      display: "grid", gridTemplateColumns: "80px 1fr",
-                      gap: 16, padding: "12px 22px",
-                      borderTop: i > 0 ? `1px solid ${C.rule}` : "none",
-                      background: C.white, transition: "background 0.1s",
-                    }}
-                      onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = C.surface}
-                      onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = C.white}
-                    >
-                      <div style={{ fontFamily: F.mono, fontSize: 12, fontWeight: 700, color: C.blue }}>{opt.code}</div>
-                      <div style={{ fontFamily: F.sans, fontSize: 13.5, fontWeight: 300, color: C.ink3 }}>{opt.description}</div>
+
+                {/* How-it-works steps */}
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 48 }}>
+                  {[
+                    { n: "01", title: "Structural decode.", body: "WMI, VDS, and VIS segments extracted. Check digit validated against the ISO 3779 formula." },
+                    { n: "02", title: "Factory enrichment.", body: "VDS cross-referenced against BMW's internal production data to resolve chassis, engine, market, and build options." },
+                    { n: "03", title: "Catalog match.", body: "Chassis code mapped to the OEM parts catalog on bmv.parts. Jump straight to diagrams and part numbers." },
+                  ].map(s => (
+                    <div key={s.n} style={{ background: C.white, border: `1px solid ${C.rule}`, borderRadius: 10, padding: "26px 24px" }}>
+                      <div style={{ fontFamily: F.sans, fontSize: 11, fontWeight: 600, letterSpacing: "0.10em", color: C.blue, marginBottom: 10 }}>{s.n}</div>
+                      <div style={{ fontFamily: F.sans, fontSize: 16, fontWeight: 700, letterSpacing: "-0.01em", color: C.ink, marginBottom: 8 }}>{s.title}</div>
+                      <div style={{ fontFamily: F.sans, fontSize: 13.5, fontWeight: 300, lineHeight: 1.65, color: C.ink4 }}>{s.body}</div>
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
 
-            {/* Parts catalog links */}
-            {result?.matchedCars && result.matchedCars.length > 0 && (
-              <div>
-                <h2 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: 16, letterSpacing: "-0.01em", color: C.ink, margin: "0 0 16px" }}>
-                  OEM parts catalog
-                </h2>
-                <div style={{ display: "grid", gap: 8 }}>
-                  {result.matchedCars.map(car => (
-                    <a key={car.id} href={`https://dev-syd-01.bmv.parts/car/${car.slug}`}
-                      style={{
-                        display: "flex", alignItems: "center", justifyContent: "space-between",
-                        padding: "14px 20px",
-                        border: `1px solid ${C.rule}`, borderRadius: 10,
-                        background: C.white, textDecoration: "none",
-                        transition: "border-color 0.12s, background 0.12s",
-                      }}
-                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = C.ruleMid; (e.currentTarget as HTMLElement).style.background = C.surface; }}
-                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = C.rule; (e.currentTarget as HTMLElement).style.background = C.white; }}
-                    >
-                      <span style={{ fontFamily: F.sans, fontSize: 15, fontWeight: 500, color: C.ink }}>
-                        {car.chassis} {car.modelName}
-                      </span>
-                      <span style={{ fontFamily: F.mono, fontSize: 12, color: C.ink5 }}>
-                        {car.totalParts.toLocaleString()} parts →
-                      </span>
-                    </a>
-                  ))}
+                {/* Decode another */}
+                <div style={{ borderTop: `1px solid ${C.rule}`, paddingTop: 40 }}>
+                  <h3 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: 16, letterSpacing: "-0.01em", color: C.ink, margin: "0 0 20px" }}>Decode another VIN.</h3>
+                  <CellInstrument value={inputVin} onChange={setInputVin} onDecode={handleDecode} isDecoding={decodeMutation.isPending} />
                 </div>
               </div>
-            )}
+            </section>
           </>
         )}
-      </section>
-    </PageShell>
+      </main>
+
+      <SiteFooter />
+    </div>
   );
 }
 
 // =============================================================================
-// DecoderHome — Variant B (DESIGN2.md corrected spec)
-// White hero + cell instrument, then surface browse block
+// Crumb nav
 // =============================================================================
+function Crumb({ items }: { items: { label: string; href?: string }[] }) {
+  return (
+    <nav style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 24, fontFamily: F.sans, fontSize: 13, color: C.ink4 }}>
+      {items.map((it, i) => (
+        <span key={i} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          {i > 0 && <span style={{ color: C.ruleMid }}>›</span>}
+          {it.href
+            ? <Link href={it.href} style={{ color: C.ink4, textDecoration: "none" }}>{it.label}</Link>
+            : <span style={{ color: C.ink3 }}>{it.label}</span>}
+        </span>
+      ))}
+    </nav>
+  );
+}
+
+export function BmvVinDecoderPage({ vin }: { vin: string }) {
+  return <BmvVinDecoder vin={vin} />;
+}
+
+// =============================================================================
+
 
 export function DecoderHome() {
   const [vinInput, setVinInput] = useState("");
@@ -821,102 +951,6 @@ export function BrandDecoderHub() {
   );
 }
 
-// =============================================================================
-// Crumb nav
-// =============================================================================
-function Crumb({ items }: { items: { label: string; href?: string }[] }) {
-  return (
-    <nav style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 24, fontFamily: F.sans, fontSize: 13, color: C.ink4 }}>
-      {items.map((it, i) => (
-        <span key={i} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          {i > 0 && <span style={{ color: C.ruleMid }}>›</span>}
-          {it.href
-            ? <Link href={it.href} style={{ color: C.ink4, textDecoration: "none" }}>{it.label}</Link>
-            : <span style={{ color: C.ink3 }}>{it.label}</span>}
-        </span>
-      ))}
-    </nav>
-  );
-}
-
-// =============================================================================
-// BmvVinDecoderPage — wraps the shared VinDecoder in the bmv.vin shell.
-// The VinDecoder component handles all data, tabs, enrichment, and FAQ.
-// We only provide the shell (header/footer) and pass the VIN as a param.
-// =============================================================================
-
-/** Read-only display of a filled VIN in the segment instrument. No interactivity. */
-function CellInstrumentReadonly({ vin }: { vin: string }) {
-  const chars = vin.toUpperCase().split("");
-  return (
-    <div style={{ width: "100%", maxWidth: 820 }}>
-      <div style={{
-        background: C.white,
-        border: `1.5px solid ${C.ruleMid}`,
-        borderRadius: 16,
-        padding: "28px 28px 20px",
-        boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
-      }}>
-        <div style={{ display: "flex", gap: 10, alignItems: "flex-end" }}>
-          {SEG_CONFIG.map(seg => (
-            <div key={seg.key} style={{ flex: SEG_FLEX[seg.key] }}>
-              <div style={{ borderBottom: `2px solid ${seg.color}`, paddingBottom: 6, marginBottom: 8 }}>
-                <div style={{ fontFamily: F.sans, fontSize: 9, fontWeight: 700, color: seg.color, textTransform: "uppercase", letterSpacing: "0.06em" }}>{seg.label}</div>
-                <div style={{ fontFamily: F.sans, fontSize: 10, fontWeight: 400, color: C.ink5 }}>{seg.name}</div>
-              </div>
-              <div style={{ display: "flex", gap: 3 }}>
-                {seg.positions.map((pos, ci) => (
-                  <div key={ci} style={{
-                    flex: 1, height: 50,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    position: "relative",
-                    background: C.white, border: `1.5px solid ${C.ruleMid}`, borderRadius: 6,
-                  }}>
-                    <span style={{ position: "absolute", top: 3, right: 4, fontFamily: F.sans, fontSize: 7, fontWeight: 500, color: C.ink5 }}>{pos + 1}</span>
-                    <span style={{ fontFamily: F.mono, fontSize: 17, fontWeight: 700, color: C.ink }}>{chars[pos] ?? ""}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 10 }}>
-          <span style={{ fontFamily: F.mono, fontSize: 11, color: C.green }}>17 / 17</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export function BmvVinDecoderPage({ vin }: { vin: string }) {
-  return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: C.white }}>
-      <Helmet>
-        <title>{vin} — VIN Decoder | bmv.vin</title>
-      </Helmet>
-      <SiteHeader />
-
-      {/* Read-only cell instrument showing the decoded VIN */}
-      <section style={{
-        background: C.white, padding: "48px 48px 40px",
-        borderBottom: `1px solid ${C.rule}`,
-        display: "flex", flexDirection: "column", alignItems: "center",
-      }}>
-        <CellInstrumentReadonly vin={vin} />
-      </section>
-
-      {/* Full VinDecoder — all tabs, enrichment, FAQ, everything */}
-      <main style={{ flex: 1, padding: "32px 48px" }}>
-        <VinDecoder params={{ vin }} />
-      </main>
-
-      <SiteFooter />
-    </div>
-  );
-}
-
-// =============================================================================
-// Facet Hub
 // =============================================================================
 export function FacetHub() {
   const [, params] = useRoute("/:kind/:value");
