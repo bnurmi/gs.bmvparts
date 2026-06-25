@@ -12,6 +12,10 @@
    Version: 1.0
    ============================================================ */
 
+/* Font loading is handled by index.html to avoid double-loading.
+   The Google Fonts @import below is intentionally omitted here.
+   Required: Inter Tight + JetBrains Mono (both loaded in <head>). */
+
 /* ============================================================
    ROOT — shared tokens (typography, spacing, motion)
    ============================================================ */

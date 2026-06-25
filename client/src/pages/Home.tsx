@@ -490,14 +490,14 @@ export default function Home() {
             { id: "fully-synced", icon: CheckCircle2, label: t.home.statFullySynced, value: stats?.scrapedCars ?? cars.filter(c => c.scrapeStatus === "complete").length },
             { id: "total-parts", icon: Package, label: t.home.statTotalParts, value: stats?.totalParts ? stats.totalParts.toLocaleString() : (statsLoading ? "—" : "0") },
           ].map(({ id, icon: Icon, label, value }) => (
-            <Card key={id} data-testid={`stat-${id}`}>
+            <Card key={id} data-testid={`stat-${id}`} className="bmv-paper">
               <CardContent className="flex flex-col items-center gap-1.5 p-3 sm:flex-row sm:gap-3 sm:p-4">
-                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-md bg-primary/10 flex items-center justify-center shrink-0">
-                  <Icon className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-primary" />
+                <div className="w-8 h-8 sm:w-9 sm:h-9 border border-border-default flex items-center justify-center shrink-0">
+                  <Icon className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-bmv-accent" />
                 </div>
                 <div className="text-center sm:text-left min-w-0">
-                  <div className="text-lg sm:text-xl font-bold tabular-nums truncate">{value}</div>
-                  <div className="text-[10px] sm:text-xs text-muted-foreground leading-tight">{label}</div>
+                  <div className="text-lg sm:text-xl font-bold tabular-nums truncate font-mono">{value}</div>
+                  <div className="bmv-eyebrow mt-0.5">{label}</div>
                 </div>
               </CardContent>
             </Card>
@@ -506,7 +506,7 @@ export default function Home() {
       )}
 
       {hasRunning && (
-        <div className="mb-4 flex items-center gap-2 text-sm text-primary bg-primary/5 border border-primary/20 rounded-md px-3 py-2">
+        <div className="mb-4 flex items-center gap-2 text-sm border px-3 py-2" style={{background: 'var(--state-signal-fog)', borderColor: 'var(--state-signal)', color: 'var(--state-signal)'}}>
           <Loader2 className="w-4 h-4 animate-spin shrink-0" />
           {t.home.syncingBanner}
         </div>
@@ -520,8 +520,8 @@ export default function Home() {
         ) : null
       )}
 
-      <div className="mt-6 p-4 rounded-md bg-muted/50 border border-border text-sm text-muted-foreground">
-        <strong className="text-foreground">{t.home.aboutLabel}</strong> {t.home.aboutBody}
+      <div className="mt-6 p-4 border border-border-default text-sm text-ink-tertiary" style={{background: 'var(--surface-sunken)'}}>
+        <strong className="text-ink-primary">{t.home.aboutLabel}</strong> {t.home.aboutBody}
       </div>
 
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
