@@ -406,12 +406,55 @@ interface DecodedVin {
 
 function SegmentBreakdown({ decoded }: { decoded: DecodedVin }) {
   const segments = [
-    { label: "WMI", name: "World Manufacturer",   chars: decoded.wmi || decoded.vin.slice(0,3),  range: "Pos 1 to 3",   color: C.segWMI, interp: decoded.manufacturer ?? "" },
-    { label: "VDS", name: "Vehicle Descriptor",   chars: decoded.vds || decoded.vin.slice(3,8),  range: "Pos 4 to 8",   color: C.segVDS, interp: [decoded.chassis, decoded.series].filter(Boolean).join(" · ") },
-    { label: "CHK", name: "Check digit",          chars: decoded.vin[8] ?? "",                   range: "Pos 9",         color: C.segCHK, interp: decoded.isValid ? "Valid" : "Structural check" },
-    { label: "VIS", name: "Vehicle Identifier",   chars: decoded.vis || decoded.vin.slice(9),    range: "Pos 10 to 17", color: C.segVIS, interp: decoded.modelYear ? `Model year ${decoded.modelYear}` : "" },
+    { label: "WMI", name: "World Manufacturer",   chars: decoded.wmi || decoded.vin.slice(0,3),  range: "Pos 1–3",   color: C.segWMI, interp: decoded.manufacturer ?? "" },
+    { label: "VDS", name: "Vehicle Descriptor",   chars: decoded.vds || decoded.vin.slice(3,8),  range: "Pos 4–8",   color: C.segVDS, interp: [decoded.chassis, decoded.series].filter(Boolean).join(" · ") },
+    { label: "CHK", name: "Check digit",          chars: decoded.vin[8] ?? "",                   range: "Pos 9",     color: C.segCHK, interp: decoded.isValid ? "Valid" : "Structural check" },
+    { label: "VIS", name: "Vehicle Identifier",   chars: decoded.vis || decoded.vin.slice(9),    range: "Pos 10–17", color: C.segVIS, interp: decoded.modelYear ? `Model year ${decoded.modelYear}` : "" },
   ];
 
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined" && window.innerWidth < 640
+  );
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  if (isMobile) {
+    // Mobile: horizontal cards, one per segment
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 8, fontFamily: F.sans }}>
+        {segments.map(s => (
+          <div key={s.label} style={{
+            border: `1px solid ${C.rule}`, borderRadius: 10, padding: "12px 14px",
+            background: C.white,
+          }}>
+            {/* Header: segment label + range */}
+            <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
+              <span style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: s.color }}>{s.label}</span>
+              <span style={{ fontSize: 10, color: C.ink5, fontFamily: F.mono }}>{s.range}</span>
+              <span style={{ fontSize: 11, color: C.ink4, marginLeft: "auto" }}>{s.interp || s.name}</span>
+            </div>
+            {/* Chars: horizontal row */}
+            <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+              {s.chars.split("").map((ch, i) => (
+                <div key={i} style={{
+                  width: 32, height: 32,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  border: `1.5px solid ${C.ruleMid}`, borderRadius: 4,
+                  fontFamily: F.mono, fontSize: 14, fontWeight: 700, color: s.color,
+                }}>{ch}</div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  // Desktop: table layout
   return (
     <div style={{ border: `1px solid ${C.rule}`, borderRadius: 10, overflow: "hidden", fontFamily: F.sans }}>
       {/* Header row */}
@@ -434,10 +477,8 @@ function SegmentBreakdown({ decoded }: { decoded: DecodedVin }) {
               <div key={i} style={{
                 width: 30, height: 30,
                 display: "flex", alignItems: "center", justifyContent: "center",
-                border: `1.5px solid ${C.ruleMid}`,
-                borderRadius: 3,
-                fontFamily: F.mono, fontSize: 13, fontWeight: 700,
-                color: s.color,
+                border: `1.5px solid ${C.ruleMid}`, borderRadius: 3,
+                fontFamily: F.mono, fontSize: 13, fontWeight: 700, color: s.color,
               }}>{ch}</div>
             ))}
           </div>
