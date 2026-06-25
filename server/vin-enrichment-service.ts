@@ -558,11 +558,10 @@ export async function enrichVin(vin: string, opts?: { providedHash?: string; all
     importPaths: missing.length > 0 ? [...FA_IMPORT_PATHS] : undefined,
   };
 
-  // For ETK-covered VINs we always return a result — even when only
-  // the per-type-code vehicle metadata is present and FA is missing.
-  // Returning null here would re-trigger the bimmer.work batch queue
-  // in the route handler, which is exactly what Task #83 forbids.
-  if (!vehicle && options.length === 0 && !images && manuals.length === 0 && !isEtkCovered) {
+  // Strict first-party mode may return an ETK coverage placeholder so admins can see
+  // what first-party data is missing. User-facing bmv.vin fallback mode should not
+  // cache or return an empty placeholder as enrichment.
+  if (!vehicle && options.length === 0 && !images && manuals.length === 0 && (allowThirdParty || !isEtkCovered)) {
     return null;
   }
 
