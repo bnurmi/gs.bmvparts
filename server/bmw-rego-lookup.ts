@@ -3,19 +3,17 @@
  *
  * Resolves an Australian rego plate → VIN via BMW Australia's recall site.
  *
- * reCAPTCHA v3 strategy: Browserbase cloud browser (real residential IP,
- * real Chromium session) navigates recall.bmw.com.au, fills the form,
- * and intercepts the fg.recall.bmw.com.au API response directly.
- * No token forwarding, no solving service -- reCAPTCHA runs natively in
- * a real browser on a real residential IP and BMW's score threshold is met.
+ * reCAPTCHA strategy: Browserbase cloud browser with solveCaptchas:true.
+ * Browserbase handles reCAPTCHA v3 natively on a real residential IP -- no
+ * solving service, no token forwarding, no datacenter IP issues.
  *
  * Flow:
  *   1. Cache check (rego_vin_cache table) -- instant return if known
- *   2. Create Browserbase session (residential AU context)
+ *   2. Create Browserbase session (residential AU, captcha solving on)
  *   3. Connect Playwright via CDP
  *   4. Navigate BMW recall page, fill rego + state, click Next
  *   5. Intercept /BmwRecall/Rego network response
- *   6. Parse VIN, fetch vehicle details, cache result, return
+ *   6. Parse VIN, cache result, return
  */
 
 import { db } from "./storage.js";
@@ -28,18 +26,6 @@ import { eq, and } from "drizzle-orm";
 
 export const AUS_STATES = ["ACT", "NSW", "NT", "QLD", "SA", "TAS", "VIC", "WA"] as const;
 export type AusState = typeof AUS_STATES[number];
-
-// State code -> display value used in BMW's select dropdown
-const STATE_DISPLAY: Record<AusState, string> = {
-  ACT: "Australian Capital Territory",
-  NSW: "New South Wales",
-  NT:  "Northern Territory",
-  QLD: "Queensland",
-  SA:  "South Australia",
-  TAS: "Tasmania",
-  VIC: "Victoria",
-  WA:  "Western Australia",
-};
 
 // ---------------------------------------------------------------------------
 // Types
@@ -83,13 +69,13 @@ export async function checkRegoCache(
   if (!rows.length) return null;
   const r = rows[0];
   return {
-    found: true,
-    vin: r.vin,
-    model: r.model,
-    year: r.year,
+    found:  true,
+    vin:    r.vin,
+    model:  r.model,
+    year:   r.year,
     colour: r.colour,
-    rego: r.rego,
-    state: r.state as AusState,
+    rego:   r.rego,
+    state:  r.state as AusState,
     source: "cache",
   };
 }
@@ -98,13 +84,12 @@ export async function checkRegoCache(
 // Browserbase + Playwright scraper
 // ---------------------------------------------------------------------------
 
-const BMW_RECALL_URL   = "https://www.recall.bmw.com.au/";
-const BMW_REGO_API_URL = "https://fg.recall.bmw.com.au/BmwRecall/Rego";
+const BMW_RECALL_URL = "https://www.recall.bmw.com.au/";
 
 export async function lookupRegoWithToken(
   rego: string,
   state: AusState,
-  _recaptchaToken?: string, // kept for API compat -- not used; Browserbase handles reCAPTCHA
+  _recaptchaToken?: string, // API compat -- Browserbase handles reCAPTCHA natively
 ): Promise<RegoLookupOutcome> {
   const upper = rego.toUpperCase().trim();
 
@@ -116,12 +101,12 @@ export async function lookupRegoWithToken(
     return { found: false, reason: "Rego lookup service not configured", rego: upper, state };
   }
 
-  console.log(`[rego-lookup] ${upper}/${state} -- starting Browserbase session`);
+  console.log(`[rego-lookup] ${upper}/${state} -- creating Browserbase session`);
 
   let sessionId: string | null = null;
 
   try {
-    // 1. Create Browserbase session
+    // 1. Create Browserbase session with CAPTCHA solving enabled
     const sessionRes = await fetch("https://www.browserbase.com/v1/sessions", {
       method: "POST",
       headers: {
@@ -131,52 +116,55 @@ export async function lookupRegoWithToken(
       body: JSON.stringify({
         projectId: bbProjectId,
         browserSettings: {
-          context: { persist: false },
-          // Request an Australian geolocation for best reCAPTCHA score
-          geolocation: { country: "AU" },
+          solveCaptchas: true,           // Browserbase handles reCAPTCHA natively
+          geolocation: { country: "AU" }, // AU exit node -- helps reCAPTCHA score
         },
       }),
     });
 
     if (!sessionRes.ok) {
       const err = await sessionRes.text();
-      console.error(`[rego-lookup] Browserbase session creation failed ${sessionRes.status}: ${err.substring(0, 120)}`);
+      console.error(`[rego-lookup] Session create failed ${sessionRes.status}: ${err.substring(0, 120)}`);
       return { found: false, reason: "Browser session unavailable", rego: upper, state };
     }
 
     const session: any = await sessionRes.json();
-    sessionId = session.id;
-    const wsUrl = session.connectUrl ?? `wss://connect.browserbase.com?apiKey=${bbApiKey}&sessionId=${sessionId}`;
+    sessionId = session.id as string;
+    const wsUrl: string = session.connectUrl
+      ?? `wss://connect.browserbase.com?apiKey=${bbApiKey}&sessionId=${sessionId}`;
 
-    console.log(`[rego-lookup] Session ${sessionId} created`);
+    console.log(`[rego-lookup] Session ${sessionId} ready`);
 
     // 2. Connect Playwright via CDP
     const { chromium } = await import("playwright");
     const browser = await chromium.connectOverCDP(wsUrl);
-    const pages   = browser.contexts()[0]?.pages() ?? [];
-    const page    = pages[0] ?? await browser.contexts()[0]?.newPage();
+    const ctx     = browser.contexts()[0];
+    const page    = ctx?.pages()[0] ?? await ctx?.newPage();
 
-    if (!page) throw new Error("No page available in Browserbase session");
+    if (!page) throw new Error("No page in Browserbase session");
 
-    // 3. Intercept the BMW API response before it's processed
-    let apiResponse: { status: number; body: string } | null = null;
+    // 3. Intercept BMW API response
+    type ApiCapture = { status: number; body: string };
+    const capture: { value: ApiCapture | null } = { value: null };
+
     page.on("response", async (res) => {
       if (res.url().includes("fg.recall.bmw.com.au/BmwRecall/Rego")) {
         try {
-          apiResponse = { status: res.status(), body: await res.text() };
-        } catch { /* ignore */ }
+          const body = await res.text();
+          capture.value = { status: res.status(), body };
+        } catch { /* response already consumed */ }
       }
     });
 
-    // 4. Navigate to BMW recall page
+    // 4. Navigate BMW recall page
     await page.goto(BMW_RECALL_URL, { waitUntil: "domcontentloaded", timeout: 30_000 });
     await page.waitForSelector("#rego", { timeout: 15_000 });
 
-    // Dismiss cookie/privacy modal if present
+    // Dismiss cookie modal if present
     await page.click("button.close", { timeout: 2000 }).catch(() => {});
 
-    // 5. Fill the form using native value setters (required for Angular reactive forms)
-    await page.evaluate(({ regoVal, stateVal }) => {
+    // 5. Fill form -- Angular reactive forms need native value setters
+    await page.evaluate(({ regoVal, stateVal }: { regoVal: string; stateVal: string }) => {
       const inp = document.querySelector<HTMLInputElement>("#rego");
       if (inp) {
         const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")!.set!;
@@ -192,14 +180,14 @@ export async function lookupRegoWithToken(
       }
     }, { regoVal: upper, stateVal: state });
 
-    // 6. Wait for reCAPTCHA to observe the session (improves score)
+    // 6. Wait for reCAPTCHA to run (Browserbase solves it automatically)
     await page.waitForTimeout(3000);
 
-    // 7. Click Next (confirmed: <a class="btn btn-primary left">Next …</a>)
-    const clicked = await page.evaluate(() => {
+    // 7. Click Next (<a class="btn btn-primary left">)
+    const clicked = await page.evaluate((): boolean => {
       const a = Array.from(document.querySelectorAll("a"))
-        .find((el) => el.textContent?.includes("Next"));
-      if (a) { (a as HTMLElement).click(); return true; }
+        .find((el) => el.textContent?.includes("Next")) as HTMLElement | undefined;
+      if (a) { a.click(); return true; }
       return false;
     });
 
@@ -208,40 +196,40 @@ export async function lookupRegoWithToken(
       return { found: false, reason: "Could not submit rego form", rego: upper, state };
     }
 
-    // 8. Wait for the BMW API response (up to 15s)
-    let waited = 0;
-    while (!apiResponse && waited < 15_000) {
+    // 8. Wait for BMW API response (up to 15s)
+    for (let i = 0; i < 30 && !capture.value; i++) {
       await page.waitForTimeout(500);
-      waited += 500;
     }
 
     await browser.close();
 
-    // 9. Parse result
-    if (!apiResponse) {
-      console.log(`[rego-lookup] ${upper}/${state} -- no API response after form submit`);
+    // 9. Parse
+    if (!capture.value) {
+      console.log(`[rego-lookup] ${upper}/${state} -- no BMW API response captured`);
       return { found: false, reason: "No response from BMW recall API", rego: upper, state };
     }
 
-    console.log(`[rego-lookup] BMW API ${apiResponse.status} for ${upper}/${state}: ${apiResponse.body.substring(0, 80)}`);
+    const { status, body } = capture.value;
+    console.log(`[rego-lookup] BMW API ${status} for ${upper}/${state}: ${body.substring(0, 80)}`);
 
-    if (apiResponse.status !== 200) {
-      const reason = apiResponse.body.includes("ReCaptcha")
-        ? "reCAPTCHA check failed"
-        : `BMW API error ${apiResponse.status}`;
-      return { found: false, reason, rego: upper, state };
+    if (status !== 200) {
+      return {
+        found: false,
+        reason: body.includes("ReCaptcha") ? "reCAPTCHA check failed" : `BMW API error ${status}`,
+        rego: upper, state,
+      };
     }
 
-    const regoData: any = JSON.parse(apiResponse.body);
+    const regoData = JSON.parse(body) as { success: boolean; found: boolean; vin?: string };
     console.log(`[rego-lookup] BMW 200: success=${regoData.success} found=${regoData.found} vin=${regoData.vin ?? "none"}`);
 
     if (!regoData.success || !regoData.found || !regoData.vin) {
       return { found: false, reason: "Registration not found in BMW system", rego: upper, state };
     }
 
-    const vin: string = regoData.vin;
+    const vin = regoData.vin;
 
-    // 10. Cache the result
+    // 10. Cache
     await db
       .insert(regoVinCache)
       .values({ rego: upper, state, vin, model: null, year: null, colour: null, source: "bmw_recall" })
@@ -250,18 +238,18 @@ export async function lookupRegoWithToken(
         set: { vin, model: null, year: null, colour: null, lookedUpAt: new Date(), source: "bmw_recall" },
       });
 
-    console.log(`[rego-lookup] ${upper}/${state} -> ${vin}`);
+    console.log(`[rego-lookup] ${upper}/${state} -> ${vin} (cached)`);
     return { found: true, vin, model: null, year: null, colour: null, rego: upper, state, source: "bmw_recall" };
 
   } catch (err: any) {
     console.error(`[rego-lookup] Error: ${err?.message}`);
     return { found: false, reason: err?.message ?? "Unknown error", rego: upper, state };
   } finally {
-    // Always terminate the Browserbase session to avoid billing leaks
-    if (sessionId && (process.env.BROWSERBASE_API_KEY || "").trim()) {
+    // Release session to avoid billing leaks
+    if (sessionId) {
       fetch(`https://www.browserbase.com/v1/sessions/${sessionId}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "X-BB-API-Key": process.env.BROWSERBASE_API_KEY! },
+        headers: { "Content-Type": "application/json", "X-BB-API-Key": bbApiKey },
         body: JSON.stringify({ status: "REQUEST_RELEASE" }),
       }).catch(() => {});
     }
