@@ -1536,7 +1536,7 @@ export function DecoderHome() {
                   onChange={e => setRegoInput(e.target.value.toUpperCase())}
                   onKeyDown={e => e.key === "Enter" && regoStatus !== "pending" && handleRegoSearch()}
                   maxLength={9}
-                  placeholder="e.g. NBW51M"
+                  placeholder="e.g. ABC123"
                   disabled={regoStatus === "pending"}
                   style={{
                     flex: 1, padding: "12px 16px",
