@@ -25,8 +25,11 @@ function Router() {
   );
 }
 
-class AppErrorBoundary extends Component<{ children: ReactNode }, { error: Error | null }> {
-  state = { error: null };
+class AppErrorBoundary extends Component<
+  { children: ReactNode },
+  { error: Error | null; componentStack: string }
+> {
+  state: { error: Error | null; componentStack: string } = { error: null, componentStack: "" };
 
   static getDerivedStateFromError(error: Error) {
     return { error };
@@ -34,6 +37,7 @@ class AppErrorBoundary extends Component<{ children: ReactNode }, { error: Error
 
   componentDidCatch(error: Error, info: ErrorInfo) {
     console.error("BMV app render error", error, info.componentStack);
+    this.setState({ componentStack: info.componentStack || "" });
   }
 
   render() {
@@ -42,6 +46,7 @@ class AppErrorBoundary extends Component<{ children: ReactNode }, { error: Error
         <div className="min-h-screen bg-background p-6 text-foreground">
           <h1 className="text-xl font-semibold">BMV app failed to render</h1>
           <p className="mt-2 text-sm text-muted-foreground">{this.state.error.message || String(this.state.error)}</p>
+          <pre className="mt-4 whitespace-pre-wrap text-xs text-muted-foreground">{this.state.componentStack}</pre>
         </div>
       );
     }
