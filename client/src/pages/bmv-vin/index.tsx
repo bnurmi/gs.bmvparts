@@ -291,11 +291,15 @@ function CellInstrument({ value, onChange, onDecode, isDecoding }: CellInstrumen
 
 interface DecodedVin {
   vin: string; wmi: string; vds: string; vis: string;
-  manufacturer: string | null; chassis: string | null; series: string | null;
-  modelYear: number | null; plant: { code: string; city: string; country: string } | null;
-  isValid: boolean; validationErrors: string[];
-  productionSequence: string | null;
+  manufacturer: string | null; division?: string | null;
+  chassis: string | null; series: string | null;
+  generation?: string | null; bodyType?: string | null;
+  modelName?: string | null; modelYear: number | null;
+  plant: { code: string; city: string; country: string } | null;
+  engine?: string | null; engineFamily?: string | null;
   driveType?: string | null;
+  isValid: boolean; validationErrors: string[];
+  productionSequence: string | null; last7?: string | null;
 }
 
 function SegmentBreakdown({ decoded }: { decoded: DecodedVin }) {
@@ -950,14 +954,15 @@ function BmvVinDecoder({ vin }: { vin: string }) {
                 {/* Data cards grid */}
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 32 }}>
                   <DataCard primary label="Manufacturer" value={bwv?.manufacturer || decoded.manufacturer || ""} sub={decoded.wmi} />
-                  <DataCard label="Chassis" value={bwv?.chassis || decoded.chassis || ""} sub={decoded.series || undefined} />
+                  <DataCard label="Chassis" value={decoded.chassis || ""} sub={bwv?.chassis || decoded.series || undefined} />
                   <DataCard label="Model year" value={modelYear ? String(modelYear) : ""} />
                   <DataCard label="Assembly plant"
-                    value={decoded.plant ? `${countryFlag(decoded.plant.country)} ${decoded.plant.city}` : ""}
+                    value={decoded.plant ? `${countryFlag(decoded.plant.country)} ${decoded.plant.city}` : (bwv?.manufacturer ? bwv.manufacturer.split("/").pop()?.trim() || "" : "")}
                     sub={decoded.plant?.country}
                   />
-                  {(bwv?.engine) && <DataCard label="Engine" value={bwv.engine} />}
+                  {(bwv?.engine || decoded.engine) && <DataCard label="Engine" value={bwv?.engine || ""} code={decoded.engine || undefined} sub={decoded.engineFamily !== decoded.engine ? decoded.engineFamily || undefined : undefined} />}
                   {bwv?.market && <DataCard label="Market" value={bwv.market} />}
+                  {decoded.division && decoded.division !== "Standard" && <DataCard label="Division" value={decoded.division} />}
                   {(bwv?.drivetrain || decoded?.driveType) && (() => {
                     const { display, sub } = normaliseDrivetrain(bwv?.drivetrain || decoded?.driveType, bwv?.modelName);
                     return <DataCard label="Drivetrain" value={display} sub={sub || undefined} />;
@@ -970,6 +975,7 @@ function BmvVinDecoder({ vin }: { vin: string }) {
                     const { display, sub } = normaliseUpholstery(bwv.upholstery);
                     return <DataCard label="Upholstery" value={display} code={bwv.upholsteryCode || undefined} sub={sub || undefined} />;
                   })()}
+                  {decoded.last7 && <DataCard label="Last 7 (Serial)" value={decoded.last7} />}
                   {bwv?.startOfProduction && <DataCard label="Production date" value={bwv.startOfProduction} />}
                   {decoded.productionSequence && <DataCard label="Production seq." value={decoded.productionSequence} />}
                 </div>
