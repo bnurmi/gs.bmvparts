@@ -572,6 +572,7 @@ function BmvVinDecoder({ vin }: { vin: string }) {
   const [result, setResult] = useState<DecodeResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [inputVin, setInputVin] = useState(vin);
+  const [secondVin, setSecondVin] = useState("");
   const [activeTab, setActiveTab] = useState<TabId>("vehicle");
   const [, navigate] = useLocation();
 
@@ -621,9 +622,28 @@ function BmvVinDecoder({ vin }: { vin: string }) {
       <Helmet><title>{vin} — VIN Decoder | bmv.vin</title></Helmet>
       <SiteHeader />
 
-      {/* Hero: cell instrument */}
+      {/* Hero: cell instrument + clear button */}
       <section style={{ background: C.white, padding: "48px 48px 40px", borderBottom: `1px solid ${C.rule}`, display: "flex", justifyContent: "center" }}>
-        <CellInstrument value={inputVin} onChange={setInputVin} onDecode={handleDecode} isDecoding={decodeMutation.isPending} />
+        <div style={{ width: "100%", maxWidth: 820 }}>
+          <CellInstrument value={inputVin} onChange={setInputVin} onDecode={handleDecode} isDecoding={decodeMutation.isPending} />
+          {inputVin.length > 0 && (
+            <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 8 }}>
+              <button
+                type="button"
+                onClick={() => setInputVin("")}
+                style={{
+                  fontFamily: F.sans, fontSize: 12, fontWeight: 500,
+                  color: C.ink5, background: "none", border: "none",
+                  cursor: "pointer", padding: "4px 0",
+                }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = C.ink}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = C.ink5}
+              >
+                ✕ Clear VIN
+              </button>
+            </div>
+          )}
+        </div>
       </section>
 
       {/* Results */}
@@ -861,7 +881,15 @@ function BmvVinDecoder({ vin }: { vin: string }) {
                 {/* Decode another */}
                 <div style={{ borderTop: `1px solid ${C.rule}`, paddingTop: 40 }}>
                   <h3 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: 16, letterSpacing: "-0.01em", color: C.ink, margin: "0 0 20px" }}>Decode another VIN.</h3>
-                  <CellInstrument value={inputVin} onChange={setInputVin} onDecode={handleDecode} isDecoding={decodeMutation.isPending} />
+                  <CellInstrument
+                    value={secondVin}
+                    onChange={setSecondVin}
+                    onDecode={() => {
+                      const clean = secondVin.replace(/[^A-HJ-NPR-Z0-9]/gi, "").toUpperCase();
+                      if (clean.length === 17) navigate(`/${clean}`);
+                    }}
+                    isDecoding={false}
+                  />
                 </div>
               </div>
             </section>
