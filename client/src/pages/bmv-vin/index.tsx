@@ -1433,6 +1433,9 @@ async function solveRecaptchaInBrowser(): Promise<string | null> {
     await new Promise<void>(resolve => {
       (window as any).grecaptcha.ready(resolve);
     });
+    // Brief pause -- lets reCAPTCHA v3 observe the session before executing.
+    // A small delay improves the score by allowing reCAPTCHA to record user behaviour.
+    await new Promise(r => setTimeout(r, 1500));
     const token: string = await (window as any).grecaptcha.execute(BMW_RECAPTCHA_SITE_KEY, { action: "bmwrecall" });
     return token;
   } catch {
@@ -1614,7 +1617,7 @@ export function DecoderHome() {
               }}
             >Decode by VIN</button>
             <button
-              onClick={() => setTab("rego")}
+              onClick={() => { setTab("rego"); loadRecaptchaScript().catch(() => {}); }}
               style={{
                 flex: 1, padding: "10px 20px",
                 background: tab === "rego" ? C.blue : C.white,
