@@ -45,6 +45,7 @@ import {
   DataPage as BmvVinDataPage,
   VinToolPage,
   ModelVinPage,
+  BmvVinDecoderPage,
 } from "@/pages/bmv-vin";
 
 function Router() {
@@ -112,7 +113,7 @@ function BmvVinSingleSegmentRoute() {
   const [location] = useLocation();
   const segment = decodeURIComponent(location.replace(/^\//, "").replace(/\/+$/, ""));
 
-  if (/^[A-HJ-NPR-Z0-9]{17}$/i.test(segment)) return <VinDecoder />;
+  if (/^[A-HJ-NPR-Z0-9]{17}$/i.test(segment)) return <BmvVinDecoderPage vin={segment.toUpperCase()} />;
   if ((BMV_VIN_FACET_KINDS as readonly string[]).includes(segment)) return <FacetHub />;
   if (segment.startsWith("bmw-")) return <ModelVinPage />;
   return <NotFound />;
