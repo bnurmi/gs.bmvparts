@@ -111,7 +111,7 @@ export async function checkRegoCache(
 // CapSolver -- obtain reCAPTCHA v3 token
 // ---------------------------------------------------------------------------
 
-async function solveRecaptchaV3(action = "rego"): Promise<string> {
+async function solveRecaptchaV3(action = "bmwrecall"): Promise<string> {
   const clientKey = getCapsolverKey();
 
   // Create task
