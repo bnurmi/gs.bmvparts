@@ -969,11 +969,13 @@ function BmvVinDecoder({ vin }: { vin: string }) {
                   })()}
                   {bwv?.color && (() => {
                     const { display, sub } = normaliseColour(bwv.color, bwv.colorCode);
-                    return <DataCard label="Colour" value={display} code={bwv.colorCode || undefined} sub={sub || undefined} />;
+                    // Code (e.g. 668) is the key identifier — show big. Translated name as sub.
+                    return <DataCard label="Colour" value={bwv.colorCode || display} sub={bwv.colorCode ? display : (sub || undefined)} />;
                   })()}
                   {bwv?.upholstery && (() => {
                     const { display, sub } = normaliseUpholstery(bwv.upholstery);
-                    return <DataCard label="Upholstery" value={display} code={bwv.upholsteryCode || undefined} sub={sub || undefined} />;
+                    // Code (e.g. AYAT) is the key identifier — show big. Translated name as sub.
+                    return <DataCard label="Upholstery" value={bwv.upholsteryCode || display} sub={bwv.upholsteryCode ? display : (sub || undefined)} />;
                   })()}
                   {decoded.last7 && <DataCard label="Last 7 (Serial)" value={decoded.last7} />}
                   {bwv?.startOfProduction && <DataCard label="Production date" value={bwv.startOfProduction} />}
