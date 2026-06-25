@@ -6,6 +6,7 @@ RUN npm ci
 
 FROM deps AS build
 WORKDIR /app
+ARG CACHEBUST=1
 COPY . .
 RUN npm run build
 
