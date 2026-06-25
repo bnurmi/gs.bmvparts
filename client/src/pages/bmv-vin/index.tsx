@@ -659,7 +659,7 @@ const BMW_PAINT_CODES: Record<string, string> = {
   "B90":"Frozen Arctic Grey Metallic","B91":"Emerald Grey Metallic",
   "B92":"Tasman Green Metallic","B93":"Papyrus White",
   "C01":"Sparkling Graphite Metallic","C02":"Oxford Green Metallic",
-  "C04":"Ferric Grey Metallic","C05":"Bluestone Metallic","C27":"Arktis Grey Brilliant Effect",
+  "C04":"Ferric Grey Metallic","C05":"Bluestone Metallic","C27":"Arktis Grey Brilliant Effect","C28":"Donington Grey Metallic","C29":"Tasman Green Metallic","C30":"Grigio Telesto Metallic","C3F":"Thundernight Metallic","C4A":"Vegas Red","C5G":"Atacama Yellow","C6M":"Aventurine Red Metallic",
   "C35":"Blue Ridge Mountain Metallic","C36":"Grigio Telesto",
   "D01":"Mineral White Metallic","D02":"Marina Bay Blue Metallic","D03":"Java Green Metallic",
   "D04":"Snapper Rocks Blue Metallic","D05":"Smoked White","D06":"Mocha Metallic",
