@@ -36,17 +36,16 @@ import NotFound from "@/pages/not-found";
 import {
   DecoderHome,
   BrandDecoderHub,
-  FacetIndex,
   FacetHub,
   GuideIndex,
   GuideDetail,
   GlossaryIndex,
   GlossaryTerm,
-  ModelVinPage,
   ComparePage as BmvVinComparePage,
   DataPage as BmvVinDataPage,
+  VinToolPage,
+  ModelVinPage,
 } from "@/pages/bmv-vin";
-import { BMV_VIN_FACET_KINDS } from "../../shared/bmv-vin/feature-registry";
 
 function Router() {
   return (
@@ -107,12 +106,14 @@ function BmvVinRouter() {
   );
 }
 
+import { BMV_VIN_FACET_KINDS } from "../../shared/bmv-vin/feature-registry";
+
 function BmvVinSingleSegmentRoute() {
   const [location] = useLocation();
   const segment = decodeURIComponent(location.replace(/^\//, "").replace(/\/+$/, ""));
 
   if (/^[A-HJ-NPR-Z0-9]{17}$/i.test(segment)) return <VinDecoder />;
-  if ((BMV_VIN_FACET_KINDS as readonly string[]).includes(segment)) return <FacetIndex />;
+  if ((BMV_VIN_FACET_KINDS as readonly string[]).includes(segment)) return <FacetHub />;
   if (segment.startsWith("bmw-")) return <ModelVinPage />;
   return <NotFound />;
 }
