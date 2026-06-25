@@ -9452,7 +9452,12 @@ ${editorialLink ? `Set editorialLink to "${editorialLink}" for recommendations t
         return res.json({ status: "found", source: "cache", ...cached });
       }
 
-      // Kick off async Playwright scrape (handles reCAPTCHA natively via residential proxy)
+      // No token -- tell frontend to solve reCAPTCHA in the user's browser
+      if (!recaptchaToken || typeof recaptchaToken !== "string") {
+        return res.json({ status: "needs_token" });
+      }
+
+      // Kick off async BMW call with the browser-provided token
       cleanOldRegoJobs();
       const jobId = `${upperRego}-${st}-${Date.now()}`;
       regoJobs.set(jobId, { status: "pending", startedAt: Date.now() });

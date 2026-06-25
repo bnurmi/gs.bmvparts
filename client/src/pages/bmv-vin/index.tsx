@@ -1484,19 +1484,24 @@ export function DecoderHome() {
         return;
       }
 
-      // needs_token is no longer used (Playwright handles reCAPTCHA server-side)
-      // but handle it gracefully for backward compat
       if (data.status === "needs_token") {
+        // Cache miss -- solve reCAPTCHA v3 in the user's browser (real residential IP = high score)
+        const token = await solveRecaptchaInBrowser();
+        if (!token) {
+          setRegoStatus("failed");
+          setRegoError("Could not verify. Please try again.");
+          return;
+        }
         const res2 = await fetch("/api/rego-lookup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ rego: upper, state: regoState, recaptchaToken: "browser-handled" }),
+          body: JSON.stringify({ rego: upper, state: regoState, recaptchaToken: token }),
         });
         const data2 = await res2.json();
         if (data2.status === "found") { navigate(`/${data2.vin}`); return; }
         if (data2.status === "pending" && data2.jobId) { startPolling(data2.jobId); return; }
         setRegoStatus("failed");
-        setRegoError(data2.error ?? "Unexpected response.");
+        setRegoError("Registration not found. Check the plate and state and try again.");
         return;
       }
 
