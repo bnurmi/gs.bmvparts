@@ -1048,9 +1048,13 @@ function BmvVinDecoder({ vin }: { vin: string }) {
                   {(bwv?.engine || decoded.engine) && (() => {
                     // Prefer decoded.engineFamily (e.g. "S58 3.0L Twin-Turbo I6") over bwv.engine raw code (e.g. "S58T")
                     // Fall back to lookup table, then raw bwv string
-                    const engineDesc = decoded.engineFamily || describeEngine(decoded.engine) || bwv?.engine || null;
-                    const engineCode = decoded.engine || undefined;
-                    return <DataCard label="Engine" value={engineDesc || engineCode || ""} code={engineDesc ? engineCode : undefined} />;
+                    const engineDesc = decoded.engineFamily || describeEngine(decoded.engine) || null;
+                    // Badge: bwv.engine is the most specific variant code (S58T > S58) -- use it when it looks like a code (short, no spaces)
+                    const bwvIsCode = bwv?.engine && !/\s/.test(bwv.engine) && bwv.engine.length <= 8;
+                    const engineCode = bwvIsCode ? bwv!.engine : (decoded.engine || undefined);
+                    // If we have no description at all, fall back to raw bwv string as primary
+                    const engineValue = engineDesc || bwv?.engine || engineCode || "";
+                    return <DataCard label="Engine" value={engineValue} code={engineDesc || bwvIsCode ? engineCode : undefined} />;
                   })()}
                   {bwv?.market && <DataCard label="Market" value={bwv.market} />}
                   {decoded.division && decoded.division !== "Standard" && <DataCard label="Division" value={decoded.division} />}
