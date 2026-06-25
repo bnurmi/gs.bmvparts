@@ -166,51 +166,49 @@ async function attemptLookup(
       }
     });
 
-    // 5. Navigate -- networkidle ensures reCAPTCHA scripts fully initialise
-    await page.goto(BMW_RECALL_URL, { waitUntil: "networkidle", timeout: 60_000 });
+    // 5. Navigate -- domcontentloaded is enough; reCAPTCHA loads async after
+    await page.goto(BMW_RECALL_URL, { waitUntil: "domcontentloaded", timeout: 30_000 });
     await page.waitForSelector("#rego", { timeout: 15_000 });
 
-    // 6. Human-like preamble -- mouse movement + scroll before touching the form
-    await page.mouse.move(200, 300);
-    await page.waitForTimeout(400 + Math.random() * 300);
-    await page.mouse.move(500, 400, { steps: 10 });
-    await page.waitForTimeout(600 + Math.random() * 400);
-    await page.mouse.wheel(0, 250);
-    await page.waitForTimeout(800 + Math.random() * 400);
-    await page.mouse.wheel(0, -80);
-    await page.waitForTimeout(500);
+    // 6. Brief human preamble -- enough for reCAPTCHA to register session signals
+    await page.mouse.move(300, 350, { steps: 8 });
+    await page.waitForTimeout(300 + Math.random() * 200);
+    await page.mouse.wheel(0, 150);
+    await page.waitForTimeout(400 + Math.random() * 200);
+    await page.mouse.wheel(0, -50);
+    await page.waitForTimeout(300);
 
-    // 7. Dismiss cookie modal with a real mouse click
+    // 7. Dismiss cookie modal
     try {
       const closeBtn = await page.$("button.close");
       if (closeBtn) {
         const box = await closeBtn.boundingBox();
         if (box) {
-          await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2, { steps: 6 });
-          await page.waitForTimeout(200 + Math.random() * 200);
+          await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2, { steps: 5 });
+          await page.waitForTimeout(150);
           await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
-          await page.waitForTimeout(400);
+          await page.waitForTimeout(300);
         }
       }
     } catch { /* no modal */ }
 
-    // 8. Click the rego input naturally
+    // 8. Click rego input naturally
     const regoEl  = await page.$("#rego");
     const regoBox = await regoEl?.boundingBox();
     if (regoBox) {
-      await page.mouse.move(regoBox.x + 15, regoBox.y + regoBox.height / 2, { steps: 12 });
-      await page.waitForTimeout(300 + Math.random() * 200);
+      await page.mouse.move(regoBox.x + 15, regoBox.y + regoBox.height / 2, { steps: 8 });
+      await page.waitForTimeout(200);
       await page.mouse.click(regoBox.x + 15, regoBox.y + regoBox.height / 2);
-      await page.waitForTimeout(300);
+      await page.waitForTimeout(200);
     }
 
-    // 9. Type rego with natural character-by-character delays
+    // 9. Natural typing
     for (const char of upper) {
-      await page.keyboard.type(char, { delay: 70 + Math.random() * 130 });
+      await page.keyboard.type(char, { delay: 60 + Math.random() * 100 });
     }
-    await page.waitForTimeout(500 + Math.random() * 300);
+    await page.waitForTimeout(300 + Math.random() * 200);
 
-    // 10. Set state via Angular-compatible setter
+    // 10. Set state
     await page.evaluate((stateVal: string) => {
       const sel = document.querySelector<HTMLSelectElement>("select[formcontrolname='regoState']");
       if (sel) {
@@ -218,18 +216,13 @@ async function attemptLookup(
         sel.dispatchEvent(new Event("change", { bubbles: true }));
       }
     }, state);
-    await page.waitForTimeout(600 + Math.random() * 400);
+    await page.waitForTimeout(400 + Math.random() * 200);
 
-    // 11. More idle mouse movement -- reCAPTCHA observes the full session
-    await page.mouse.move(400, 500, { steps: 10 });
-    await page.waitForTimeout(1000 + Math.random() * 500);
-    await page.mouse.move(600, 350, { steps: 8 });
-    await page.waitForTimeout(800 + Math.random() * 400);
+    // 11. Brief idle movement then let reCAPTCHA score -- 6s minimum
+    await page.mouse.move(500, 400, { steps: 6 });
+    await page.waitForTimeout(6000);
 
-    // Let reCAPTCHA score the session -- 10s dwell after all interaction
-    await page.waitForTimeout(10_000);
-
-    // 12. Click Next with natural mouse movement
+    // 12. Click Next
     const nextHandle = await page.evaluateHandle((): HTMLElement | null => {
       const a = Array.from(document.querySelectorAll("a"))
         .find((el) => el.textContent?.includes("Next")) as HTMLElement | undefined;
