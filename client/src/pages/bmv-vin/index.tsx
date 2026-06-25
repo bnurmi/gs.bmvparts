@@ -347,7 +347,7 @@ function SegmentBreakdown({ decoded }: { decoded: DecodedVin }) {
 // Data Cards Grid (results)
 // =============================================================================
 
-function DataCard({ label, value, sub, primary }: { label: string; value: string; sub?: string; primary?: boolean }) {
+function DataCard({ label, value, sub, code, primary }: { label: string; value: string; sub?: string; code?: string; primary?: boolean }) {
   return (
     <div style={{
       background: primary ? C.blue : C.surface,
@@ -357,8 +357,19 @@ function DataCard({ label, value, sub, primary }: { label: string; value: string
       <div style={{ fontFamily: F.sans, fontSize: 10.5, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.10em", color: primary ? "rgba(255,255,255,0.65)" : C.ink5, marginBottom: 6 }}>
         {label}
       </div>
-      <div style={{ fontFamily: F.sans, fontSize: 21, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.15, color: primary ? C.white : C.ink }}>
-        {value || "—"}
+      <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
+        <div style={{ fontFamily: F.sans, fontSize: 21, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.15, color: primary ? C.white : C.ink }}>
+          {value || "—"}
+        </div>
+        {code && (
+          <span style={{
+            fontFamily: F.mono, fontSize: 11, fontWeight: 700,
+            color: primary ? "rgba(255,255,255,0.60)" : C.ink4,
+            letterSpacing: "0.04em",
+          }}>
+            {code}
+          </span>
+        )}
       </div>
       {sub && (
         <div style={{ fontFamily: F.sans, fontSize: 12, fontWeight: 300, color: primary ? "rgba(255,255,255,0.55)" : C.ink3, marginTop: 4 }}>
@@ -863,11 +874,11 @@ function BmvVinDecoder({ vin }: { vin: string }) {
                   {bwv?.drivetrain && <DataCard label="Drivetrain" value={normaliseDrivetrain(bwv.drivetrain)} />}
                   {bwv?.color && (() => {
                     const { display, sub } = normaliseColour(bwv.color, bwv.colorCode);
-                    return <DataCard label="Colour" value={display} sub={sub ?? (bwv.colorCode ? `Code ${bwv.colorCode}` : undefined)} />;
+                    return <DataCard label="Colour" value={display} code={bwv.colorCode || undefined} sub={sub || undefined} />;
                   })()}
                   {bwv?.upholstery && (() => {
                     const { display, sub } = normaliseUpholstery(bwv.upholstery);
-                    return <DataCard label="Upholstery" value={display} sub={sub ?? (bwv.upholsteryCode || undefined)} />;
+                    return <DataCard label="Upholstery" value={display} code={bwv.upholsteryCode || undefined} sub={sub || undefined} />;
                   })()}
                   {bwv?.startOfProduction && <DataCard label="Production date" value={bwv.startOfProduction} />}
                   {decoded.productionSequence && <DataCard label="Production seq." value={decoded.productionSequence} />}
