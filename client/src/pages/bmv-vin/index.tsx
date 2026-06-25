@@ -486,6 +486,89 @@ type TabId = "vehicle" | "options" | "images" | "manuals";
 // =============================================================================
 
 // =============================================================================
+// BMW engine code → human description lookup
+// Covers families seen in our DB. Code is the primary identifier; this provides
+// the human-readable description shown as the sub-label when bwv.engine is null.
+// =============================================================================
+const BMW_ENGINE_CODES: Record<string, string> = {
+  // ── B-series modular (current gen) ──────────────────────────────────────────
+  // B38 — 3-cyl 1.5L petrol
+  "B38": "1.5L 3-cyl Turbo Petrol", "B38A15M2": "1.5L 3-cyl Turbo Petrol",
+  "B38C": "1.5L 3-cyl Turbo Petrol",
+  // B46 — 4-cyl 1.5L diesel (rare)
+  "B46": "1.5L 4-cyl Turbo Diesel", "B46A20O2": "2.0L 4-cyl Turbo Diesel",
+  "B46B20O1": "2.0L 4-cyl Turbo Diesel", "B46D": "2.0L 4-cyl Turbo Diesel",
+  // B47 — 4-cyl 2.0L diesel
+  "B47": "2.0L 4-cyl Turbo Diesel", "B47B": "2.0L 4-cyl Turbo Diesel",
+  "B47C20O2": "2.0L 4-cyl Turbo Diesel", "B47C20U2": "2.0L 4-cyl Turbo Diesel",
+  "B47D": "2.0L 4-cyl Turbo Diesel", "B47D20O0": "2.0L 4-cyl Turbo Diesel",
+  "B47D20O1": "2.0L 4-cyl Turbo Diesel", "B47D20O2": "2.0L 4-cyl Turbo Diesel",
+  "B47D20U1": "2.0L 4-cyl Turbo Diesel", "B47F": "2.0L 4-cyl Turbo Diesel",
+  "N47": "2.0L 4-cyl Turbo Diesel", "N47N": "2.0L 4-cyl Turbo Diesel",
+  "N47S": "2.0L 4-cyl Turbo Diesel", "N47S1": "2.0L 4-cyl Turbo Diesel",
+  // B48 — 4-cyl 2.0L petrol
+  "B48": "2.0L 4-cyl Turbo Petrol", "B48A20M1": "2.0L 4-cyl Turbo Petrol",
+  "B48A20M2": "2.0L 4-cyl Turbo Petrol", "B48A20O2": "2.0L 4-cyl Turbo Petrol",
+  "B48A20T2": "2.0L 4-cyl Turbo Petrol", "B48B16M0": "1.6L 4-cyl Turbo Petrol",
+  "B48B16M2": "1.6L 4-cyl Turbo Petrol", "B48B20M0": "2.0L 4-cyl Turbo Petrol",
+  "B48B20M1": "2.0L 4-cyl Turbo Petrol", "B48B20M2": "2.0L 4-cyl Turbo Petrol",
+  "B48B20O1": "2.0L 4-cyl Turbo Petrol", "B48B20O2": "2.0L 4-cyl Turbo Petrol",
+  "B48C": "2.0L 4-cyl Turbo Petrol", "B48D": "2.0L 4-cyl Turbo Petrol",
+  "B48E": "2.0L 4-cyl Turbo Petrol",
+  "N20": "2.0L 4-cyl Turbo Petrol", "N13": "1.6L 4-cyl Turbo Petrol",
+  "N43": "2.0L 4-cyl Petrol", "N46": "2.0L 4-cyl Petrol", "N46N": "2.0L 4-cyl Petrol",
+  "N52": "3.0L I6 Petrol", "N52N": "3.0L I6 Petrol",
+  // B57 — 6-cyl 3.0L diesel
+  "B57": "3.0L I6 Turbo Diesel", "B57D30O0": "3.0L I6 Turbo Diesel",
+  "B57D30O2": "3.0L I6 Turbo Diesel", "B57D30O3": "3.0L I6 Tri-Turbo Diesel",
+  "B57D30S0": "3.0L I6 Turbo Diesel", "B57D30T0": "3.0L I6 Twin-Turbo Diesel",
+  "B57D30T2": "3.0L I6 Twin-Turbo Diesel", "B57D30T3": "3.0L I6 Tri-Turbo Diesel",
+  "N57": "3.0L I6 Turbo Diesel", "N57N": "3.0L I6 Turbo Diesel",
+  "N57S": "3.0L I6 Twin-Turbo Diesel", "N57Z": "3.0L I6 Quad-Turbo Diesel",
+  "M47N": "2.0L 4-cyl Turbo Diesel", "M57N2": "3.0L I6 Twin-Turbo Diesel",
+  // B58 — 6-cyl 3.0L petrol (current)
+  "B58": "3.0L I6 Twin-Turbo Petrol", "B58B30M0": "3.0L I6 Twin-Turbo Petrol",
+  "B58B30M1": "3.0L I6 Twin-Turbo Petrol", "B58B30M2": "3.0L I6 Twin-Turbo Petrol",
+  "B58B30O1": "3.0L I6 Twin-Turbo Petrol", "B58B30U2": "3.0L I6 Twin-Turbo Petrol",
+  "B58C": "3.0L I6 Twin-Turbo Petrol",
+  "N54": "3.0L I6 Twin-Turbo Petrol", "N55": "3.0L I6 Twin-Turbo Petrol",
+  // ── M-division engines ──────────────────────────────────────────────────────
+  "S55": "3.0L I6 Twin-Turbo Petrol (M)",   // F80 M3 / F82 M4
+  "S58": "3.0L I6 Twin-Turbo Petrol (M)",   // G80 M3 / G82 M4
+  "S58B30O0": "3.0L I6 Twin-Turbo Petrol (M)",
+  "S58B30T0": "3.0L I6 Twin-Turbo Petrol (M)",
+  "S52": "3.2L I6 Petrol (M)",              // E36 M3
+  "S62": "5.0L V8 Petrol (M)",              // E39 M5
+  "S65": "4.0L V8 Petrol (M)",              // E90 M3
+  "S85": "5.0L V10 Petrol (M)",             // E60 M5
+  "S63R": "4.4L V8 Twin-Turbo Petrol (M)",  // F10 M5 / F12 M6
+  "N63": "4.4L V8 Twin-Turbo Petrol",       // non-M
+  "N63B44T3": "4.4L V8 Twin-Turbo Petrol",
+  "S68B44T0": "4.4L V8 Twin-Turbo Petrol (M)", // G60 M5
+  "M42": "1.8L I4 Petrol", "M43": "1.8L I4 Petrol",
+  "M50": "2.5L I6 Petrol", "M52": "2.8L I6 Petrol", "M54": "3.0L I6 Petrol",
+  "M62": "4.4L V8 Petrol", "M73": "5.4L V12 Petrol",
+  "N62": "4.4L V8 Petrol", "N62N": "4.4L V8 Petrol",
+  // ── Electric / hybrid ───────────────────────────────────────────────────────
+  "HA0001N0": "Electric Motor (eAWD)", "HA0001N1": "Electric Motor (eAWD)",
+  "HA0004N0": "Electric Motor", "HB0003N0": "Electric Motor",
+  "HB0003N1": "Electric Motor",
+  "XB1114M1": "Electric Motor", "XB1141M1": "Electric Motor",
+  "XB1141M2": "Electric Motor", "XB1151M1": "Electric Motor",
+  "XB1151U2": "Electric Motor", "XB1161T0": "Electric Motor",
+  "XB2231O0": "Electric Motor", "XD5141O0": "Electric Motor",
+  "XE2A01N0": "Electric Motor (Rear)", "XE2A01N1": "Electric Motor (Rear)",
+  "XE2A02N0": "Electric Motor (Front)", "XE2A03N0": "Electric Motor",
+  "XE2B01N0": "Electric Motor", "XE2B01N1": "Electric Motor",
+  "XE2D11N0": "Electric Motor",
+};
+
+/** Look up a human description for a BMW engine code. Returns null if unknown. */
+function describeEngine(code: string | null | undefined): string | null {
+  if (!code) return null;
+  return BMW_ENGINE_CODES[code] ?? BMW_ENGINE_CODES[code.replace(/[A-Z]\d+$/, "")] ?? null;
+}
+
 // Helpers: colour/upholstery/drivetrain normalisation + country flag
 // =============================================================================
 
@@ -960,7 +1043,11 @@ function BmvVinDecoder({ vin }: { vin: string }) {
                     value={decoded.plant ? `${countryFlag(decoded.plant.country)} ${decoded.plant.city}` : (bwv?.manufacturer ? bwv.manufacturer.split("/").pop()?.trim() || "" : "")}
                     sub={decoded.plant?.country}
                   />
-                  {(bwv?.engine || decoded.engine) && <DataCard label="Engine" value={bwv?.engine || decoded.engine || ""} code={bwv?.engine ? decoded.engine || undefined : undefined} />}
+                  {(bwv?.engine || decoded.engine) && (() => {
+                    const engineDesc = bwv?.engine || describeEngine(decoded.engine);
+                    const engineCode = decoded.engine || undefined;
+                    return <DataCard label="Engine" value={engineDesc || engineCode || ""} code={engineDesc ? engineCode : undefined} />;
+                  })()}
                   {bwv?.market && <DataCard label="Market" value={bwv.market} />}
                   {decoded.division && decoded.division !== "Standard" && <DataCard label="Division" value={decoded.division} />}
                   {(bwv?.drivetrain || decoded?.driveType) && (() => {
