@@ -123,22 +123,35 @@ export async function scrapeRegoVin(
     // Wait for the Angular app to mount and render the rego input
     await page.waitForSelector("input#rego", { timeout: 15_000 });
 
-    // Fill the rego field — use Angular-compatible input events
+    // Fill rego -- click first to focus, then type char-by-char so Angular
+    // reactive forms get proper keydown/keypress/keyup/input events
     const regoInput = page.locator("input#rego");
     await regoInput.click();
-    await regoInput.fill(upper);
-    await regoInput.dispatchEvent("input");
-    await regoInput.dispatchEvent("change");
+    await page.keyboard.type(upper, { delay: 80 });
 
-    // Select the state — the <select> doesn't have an id, grab by tag within the form area
+    // Select the state -- click the select, then use keyboard to pick the right option
+    await page.locator("select").click();
     await page.selectOption("select", state);
-    await page.locator("select").dispatchEvent("change");
+    // Dispatch change event explicitly for Angular
+    await page.locator("select").evaluate((el: HTMLSelectElement, val: string) => {
+      el.value = val;
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+    }, state);
 
-    // Allow reCAPTCHA v3 to run (it fires in the background automatically)
-    await page.waitForTimeout(1500);
+    // Wait for reCAPTCHA v3 to run in the background (it fires automatically)
+    await page.waitForTimeout(2000);
 
-    // Click Next — it's an <a> containing the text "Next"
-    await page.locator("a:has-text('Next')").click();
+    // Click Next -- use the visible link text. If that fails, try direct click via JS
+    try {
+      await page.locator("a.btn-primary:has-text('Next')").click({ timeout: 5_000 });
+    } catch {
+      // Fallback: JS click on any element whose trimmed text starts with "Next"
+      await page.evaluate(() => {
+        const el = Array.from(document.querySelectorAll("a, button"))
+          .find(e => e.textContent?.trim().startsWith("Next")) as HTMLElement | undefined;
+        el?.click();
+      });
+    }
 
     // Wait for both API responses — the Rego call fires on click, Vehicle fires after
     const deadline = Date.now() + 20_000;
