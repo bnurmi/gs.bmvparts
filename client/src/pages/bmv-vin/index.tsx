@@ -361,7 +361,7 @@ function DataCard({ label, value, sub, primary }: { label: string; value: string
         {value || "—"}
       </div>
       {sub && (
-        <div style={{ fontFamily: F.sans, fontSize: 12, fontWeight: 300, color: primary ? "rgba(255,255,255,0.55)" : C.ink5, marginTop: 4 }}>
+        <div style={{ fontFamily: F.sans, fontSize: 12, fontWeight: 300, color: primary ? "rgba(255,255,255,0.55)" : C.ink3, marginTop: 4 }}>
           {sub}
         </div>
       )}
@@ -469,6 +469,10 @@ type TabId = "vehicle" | "options" | "images" | "manuals";
 // Helpers: colour normalisation + country flag
 // =============================================================================
 
+// =============================================================================
+// Helpers: colour/upholstery/drivetrain normalisation + country flag
+// =============================================================================
+
 /** Country name → flag emoji. Covers all BMW plant countries. */
 const COUNTRY_FLAGS: Record<string, string> = {
   "Germany":      "🇩🇪",
@@ -491,81 +495,189 @@ function countryFlag(country: string | null | undefined): string {
   return COUNTRY_FLAGS[country] ?? "";
 }
 
-/**
- * Normalise a BMW colour string to English display name + raw sub-label.
- * Input examples:
- *   "black-sapphire metallic"        → { display: "Black Sapphire Metallic", raw: null }
- *   "Alpinweiß Iii"                  → { display: "Alpinweiß III", raw: "Alpinweiß Iii" }
- *   "donington-grau metallic"        → { display: "Donington Grau Metallic", raw: "donington-grau metallic" }
- *   "Black Sapphire Metallic (475)"  → { display: "Black Sapphire Metallic", raw: null }
- *
- * We show raw underneath only when it's meaningfully different (German name,
- * unusual casing, or contains extra detail the normalised form drops).
- */
-
-// Known German → English colour word translations
-const DE_EN: Record<string, string> = {
-  "schwarz":    "Black",
-  "weiss":      "White",
-  "weiß":       "White",
-  "silber":     "Silver",
-  "silbern":    "Silver",
-  "grau":       "Grey",
-  "blau":       "Blue",
-  "rot":        "Red",
-  "grün":       "Green",
-  "gelb":       "Yellow",
-  "orange":     "Orange",
-  "braun":      "Brown",
-  "beige":      "Beige",
-  "violett":    "Violet",
-  "turmalin":   "Tourmaline",
-  "saphir":     "Sapphire",
-  "titan":      "Titanium",
-  "oxid":       "Oxide",
-  "karbon":     "Carbon",
-  "mineral":    "Mineral",
-  "bernstein":  "Amber",
-  "brillant":   "Brilliant",
-  "frozen":     "Frozen",
-  "individual": "Individual",
+/** BMW paint code → English name. Source: PaintRef.com + bmwvin.com (2026-06-25). */
+const BMW_PAINT_CODES: Record<string, string> = {
+  "001":"Arctic Silver Metallic","003":"Bronzit Beige","004":"Sahara","005":"Havana Beige Metallic",
+  "006":"Agave","007":"Coral Red","008":"Scarlet Red","009":"Cardinal Red","010":"Cinnabar Red",
+  "011":"Nile Green","012":"Sierra Green","013":"Silver Gray Metallic","014":"Aquamarine",
+  "015":"Neptune Blue","016":"Acapulco Blue Metallic","017":"Fjord Gray Metallic",
+  "018":"Steel Blue Metallic","019":"Torc Blue Metallic","020":"Navy Blue Metallic",
+  "021":"Ivory","022":"Midnight Blue","023":"Forest Green","024":"Orion Silver Metallic",
+  "025":"Metallic Beige","026":"Coupe Gray","027":"Buff Beige","028":"Silver Blue",
+  "029":"Medium Green Metallic","030":"Cinnabar Red Metallic","031":"Fjord Gray Metallic",
+  "033":"Walnut Brown Metallic","034":"Rosso Corsa Red","035":"Mauve Red",
+  "036":"Coral Red Metallic","037":"Apricot Beige Metallic","038":"Beige Gray",
+  "039":"Dark Anthracite Metallic","040":"Silver Green Metallic","041":"Black Sapphire Metallic",
+  "042":"Dark Brown Metallic","043":"Beige","044":"Brown Sienna","045":"Dark Brown",
+  "046":"Cocoa Brown Metallic","047":"Cinnamon Brown Metallic","048":"Golden Brown Metallic",
+  "049":"Henna Red","050":"Reseda Green Metallic","051":"Kelp Green","052":"Light Green",
+  "053":"Reseda Green Metallic","054":"Fir Green Metallic","055":"Burgundy","057":"Orange",
+  "059":"Lotus White","062":"Agave Green","063":"Tundra Green","064":"Forest Green",
+  "065":"Fern Green Metallic","066":"Light Yellow","067":"Signal Yellow","068":"Ivory",
+  "069":"Sunflower Yellow","070":"Bahama Yellow","071":"Dakar Yellow","072":"Garnet Red",
+  "073":"Dark Red Metallic","074":"Cardinal Red","075":"Polaris Silver","076":"Light Ivory",
+  "077":"Champagne","078":"White","079":"Opaque White","080":"Alpine White",
+  "081":"Polar Silver","082":"Titanium Silver Metallic","083":"Titan Silver Metallic",
+  "084":"Glacier Silver Metallic","085":"Sterling Silver Metallic","086":"Silver Metallic",
+  "087":"Black","088":"Jet Black","089":"Dark Gray","090":"Dark Gray Metallic",
+  "091":"Graphite Metallic","092":"Obsidian Black Metallic","093":"Dark Gray Metallic",
+  "094":"Gray","095":"Brown","096":"Tanning Red","097":"Violet","098":"Gray",
+  "099":"Olive Brown Metallic","100":"Atlantic Blue Metallic","101":"Orient Blue Metallic",
+  "102":"Cobalt Blue Metallic","103":"Mystic Blue Metallic","104":"Estoril Blue Metallic",
+  "105":"Scamander Blue","106":"Monaco Blue Metallic","107":"Lagoon Blue",
+  "108":"Topaz Blue Metallic","109":"Mauritius Blue Metallic","110":"Sea Blue Metallic",
+  "111":"Light Blue","112":"Salmon Silver","114":"Ocean Blue Metallic","115":"Turquoise",
+  "120":"Stratos Blue","121":"Light Blue Metallic","125":"Silver Blue Metallic",
+  "126":"Steel Blue","127":"Steel Blue Metallic","128":"Interlagos Blue Metallic",
+  "130":"Sky Blue Metallic","131":"Deep Sea Blue Metallic","132":"Isar Blue",
+  "133":"Night Blue","134":"Santorini Blue","136":"Dove Blue","137":"Violet Blue",
+  "139":"Midnight Blue Metallic","140":"Azure Blue","141":"Lazur Blue","142":"Riviera Mauve",
+  "143":"Madeira Blue","144":"Bermuda Blue","145":"Denim Blue","150":"Lavender",
+  "152":"Dolphin Sea Blue","156":"Brilliant Blue","157":"Ultra Marine Blue",
+  "175":"Cosmos Black","176":"Night Black Metallic","177":"Smoke White",
+  "178":"Havana Beige Metallic","179":"Caramel Beige Metallic","180":"Pastel Yellow",
+  "181":"Pastel Blue","183":"Pastel Pink","184":"Pearl","300":"Arctic White",
+  "301":"Opal White","303":"Cosmos Black Metallic","430":"Le Mans Blue","431":"Imola Red",
+  "475":"Carbon Black Metallic","668":"Velvet Blue Metallic",
+  "A06":"Tansanit Blue Metallic","A09":"Laguna Seca Blue","A17":"Silver Gray Metallic",
+  "A22":"Midnight Blue Metallic","A35":"Mauve Red Metallic","A45":"Silver Metallic",
+  "A52":"Light Green","A55":"Burgundy","A62":"Agave Green","A72":"Garnet Red",
+  "A75":"Polaris Silver","A82":"Titanium Silver Metallic","A83":"Titanium Silver Metallic",
+  "A90":"Lime Rock Grey Metallic","A96":"Tanning Red",
+  "B07":"San Marino Blue Metallic","B08":"Tanzanite Blue Metallic","B14":"Orient Blue",
+  "B39":"Mineral Grey Metallic","B45":"Frozen Blue Metallic","B46":"Sepang Bronze",
+  "B47":"Frozen Bronze Metallic","B48":"Sakhir Orange Metallic","B56":"Midnight Blue Metallic",
+  "B60":"Java Green Metallic","B61":"Limerock Grey Metallic","B62":"Frozen Brilliant White",
+  "B63":"Frozen Dark Silver Metallic","B64":"Frozen Dark Brown Metallic",
+  "B65":"Frozen Cashmere Silver Metallic","B67":"Frozen Black Metallic",
+  "B69":"Liquid Copper Metallic","B72":"Sunset Orange Metallic","B74":"Frozen Red Metallic",
+  "B75":"Moonstone Metallic","B76":"Amethyst Metallic","B77":"Azur Metallic",
+  "B78":"Moonlight Silver Metallic","B79":"Sophisto Grey Metallic",
+  "B80":"Champagne Quartz Metallic","B81":"Phytonic Blue Metallic",
+  "B82":"Skyscraper Grey Metallic","B83":"Twilight Purple Metallic",
+  "B84":"Piemont Red Metallic","B85":"Portimao Blue Metallic","B86":"Thundernight Metallic",
+  "B87":"Atacama Yellow","B88":"Frozen Bluestone Metallic","B89":"Kith Blue",
+  "B90":"Frozen Arctic Grey Metallic","B91":"Emerald Grey Metallic",
+  "B92":"Tasman Green Metallic","B93":"Papyrus White",
+  "C01":"Sparkling Graphite Metallic","C02":"Oxford Green Metallic",
+  "C04":"Ferric Grey Metallic","C05":"Bluestone Metallic","C27":"Arktis Grey Brilliant Effect",
+  "C35":"Blue Ridge Mountain Metallic","C36":"Grigio Telesto",
+  "D01":"Mineral White Metallic","D02":"Marina Bay Blue Metallic","D03":"Java Green Metallic",
+  "D04":"Snapper Rocks Blue Metallic","D05":"Smoked White","D06":"Mocha Metallic",
+  "D07":"Sophisto Grey Metallic","D08":"Sakhir Orange Metallic","D09":"Orion Silver Metallic",
+  "D10":"Brilliant White","D15":"Sunset Orange Metallic","D16":"Cape York Green Metallic",
+  "D17":"Sophisto Grey Brilliant Effect","D18":"Storm Bay Metallic",
+  "D19":"Thundernight Metallic","D20":"Galvanic Gold Metallic","D21":"Brooklyn Grey Metallic",
+  "D22":"Dravit Grey Metallic","D23":"Frozen Black Metallic","D24":"Skyscraper Grey Metallic",
+  "D25":"Tourmaline Violet Metallic","D26":"Aventurin Red Metallic",
+  "D28":"Frozen Dark Silver Metallic","D29":"Frozen Cashmere Silver Metallic",
+  "D30":"Mineral Grey Metallic","D31":"Frozen Brilliant White","D33":"Flamenco Red",
+  "D34":"Speed Yellow","D36":"Long Beach Blue Metallic","D37":"Imola Red II",
+  "D38":"Melbourne Red Metallic","D39":"Vermilion Red","D40":"Twilight Purple Metallic",
+  "D43":"Isle of Man Green Metallic","D44":"Hockenheim Silver Metallic",
+  "D45":"Voodoo Blue Metallic","D46":"Sao Paulo Yellow","D48":"Yas Marina Blue Metallic",
+  "D49":"Interlagos Blue Metallic","D50":"Daytona Violet Metallic",
+  "D53":"Nardo Grey Metallic","D54":"Grigio Medio Metallic","D62":"Kyalami Orange Metallic",
+  "D64":"Copper Grey Metallic","D67":"Velocity Blue","D70":"Phytonic Blue Metallic",
+  "D71":"M Portimao Blue","D72":"M Zandvoort Blue","D73":"Piemont Red Metallic",
+  "D74":"Dune Grey Metallic","D76":"Manhattan Brown Metallic","D77":"Thundernight Metallic",
+  "D78":"Atlantic Blue Metallic","D79":"Portimao Blue Metallic","D85":"Frozen Grey Metallic",
+  "D86":"Cedros Green Metallic","D87":"Manhattan Green Metallic",
+  "D88":"Corundum Grey Metallic","D90":"Petrol Mica","D91":"Viola Metallic",
+  "D92":"Verona Red","D93":"Sparkling Copper Metallic",
+  "E01":"Black Sapphire Metallic","E04":"Space Grey Metallic","E07":"Monte Carlo Blue Metallic",
+  "U91":"Azurite Black Metallic","W82":"Alpine White","W83":"BMW M White",
+  "W86":"Mineral White Metallic",
 };
 
-function normaliseColour(raw: string | null | undefined): { display: string; sub: string | null } {
+/** Known German → English colour word translations */
+const DE_EN: Record<string, string> = {
+  "schwarz":"Black","weiss":"White","weiß":"White","silber":"Silver","silbern":"Silver",
+  "grau":"Grey","blau":"Blue","rot":"Red","grün":"Green","gelb":"Yellow",
+  "orange":"Orange","braun":"Brown","beige":"Beige","violett":"Violet",
+  "turmalin":"Tourmaline","saphir":"Sapphire","titan":"Titanium","oxid":"Oxide",
+  "karbon":"Carbon","mineral":"Mineral","bernstein":"Amber","brillant":"Brilliant",
+  "frozen":"Frozen","individual":"Individual",
+};
+
+/**
+ * Normalise a BMW colour string. Code lookup first, then title-case + DE→EN translation.
+ * Returns { display, sub } where sub shows original raw name when meaningfully different.
+ */
+function normaliseColour(raw: string | null | undefined, code?: string | null): { display: string; sub: string | null } {
   if (!raw) return { display: "", sub: null };
 
-  // Strip trailing parenthetical code like "(475)" or "(C36)"
+  // 1. Code lookup — if we have an authoritative English name, prefer it
+  if (code) {
+    const canonical = BMW_PAINT_CODES[code.toUpperCase()];
+    if (canonical) {
+      // Show raw underneath only if it carries extra info (e.g. different name)
+      const rawClean = raw.replace(/\s*\([A-Z0-9]{2,4}\)\s*$/, "").trim();
+      const sub = rawClean.toLowerCase() !== canonical.toLowerCase() ? rawClean : null;
+      return { display: canonical, sub };
+    }
+  }
+
+  // 2. Strip parenthetical code suffix
   const stripped = raw.replace(/\s*\([A-Z0-9]{2,4}\)\s*$/, "").trim();
 
-  // Title-case: capitalise each word, handle hyphenated words
+  // 3. Title-case with DE→EN word substitution
   const titleCase = (s: string) =>
-    s.replace(/[-\s]+/g, " ")
-     .split(" ")
-     .map(w => {
-       // Roman numerals stay uppercase
-       if (/^[IVX]+$/i.test(w) && w.length <= 4) return w.toUpperCase();
-       // Known German words get translated
-       const lw = w.toLowerCase();
-       if (DE_EN[lw]) return DE_EN[lw];
-       // Otherwise title-case
-       return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
-     })
-     .join(" ");
+    s.replace(/[-\s]+/g, " ").split(" ").map(w => {
+      if (/^[IVX]+$/i.test(w) && w.length <= 4) return w.toUpperCase(); // Roman numerals
+      const lw = w.toLowerCase();
+      if (DE_EN[lw]) return DE_EN[lw];
+      return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+    }).join(" ");
 
   const display = titleCase(stripped);
 
-  // Show raw sub-label only if the original was meaningfully different
-  // (German word present, or all-caps, or had a stripped code)
   const hasGerman = Object.keys(DE_EN).some(k => raw.toLowerCase().includes(k));
   const wasAllCaps = raw === raw.toUpperCase() && raw.length > 3;
   const hadCode = /\([A-Z0-9]{2,4}\)/.test(raw);
-  const rawDiffersFromDisplay = raw.trim() !== display;
-
-  const sub = (hasGerman || wasAllCaps || hadCode) && rawDiffersFromDisplay
-    ? raw.replace(/\s*\([A-Z0-9]{2,4}\)\s*$/, "").trim()
-    : null;
+  const sub = (hasGerman || wasAllCaps || hadCode) && raw.trim() !== display
+    ? stripped : null;
 
   return { display, sub };
+}
+
+/** Normalise BMW upholstery string — same approach as colour. */
+const DE_EN_UPHOLSTERY: Record<string, string> = {
+  "leder":"Leather","stoff":"Fabric","alcantara":"Alcantara","merino":"Merino",
+  "vernasca":"Vernasca","sensatec":"Sensatec","dakota":"Dakota","nevada":"Nevada",
+  "nappa":"Nappa","schwarz":"Black","weiss":"White","weiß":"White","grau":"Grey",
+  "beige":"Beige","braun":"Brown","rot":"Red","blau":"Blue","anthrazit":"Anthracite",
+  "elfenbein":"Ivory","cognac":"Cognac","mokka":"Mocha","sonnengelb":"Sun Yellow",
+  "kyalami":"Kyalami","fjord":"Fjord","parchment":"Parchment","smoke":"Smoke",
+};
+
+function normaliseUpholstery(raw: string | null | undefined): { display: string; sub: string | null } {
+  if (!raw) return { display: "", sub: null };
+  const stripped = raw.replace(/\s*\([A-Z0-9]{2,4}\)\s*$/, "").trim();
+  const titleCase = (s: string) =>
+    s.replace(/[-\s]+/g, " ").split(" ").map(w => {
+      const lw = w.toLowerCase();
+      if (DE_EN_UPHOLSTERY[lw]) return DE_EN_UPHOLSTERY[lw];
+      return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+    }).join(" ");
+  const display = titleCase(stripped);
+  const hasGerman = Object.keys(DE_EN_UPHOLSTERY).some(k => raw.toLowerCase().includes(k));
+  const wasAllCaps = raw === raw.toUpperCase() && raw.length > 3;
+  const sub = (hasGerman || wasAllCaps) && raw.trim() !== display ? stripped : null;
+  return { display, sub };
+}
+
+/** Normalise BMW drivetrain — expand abbreviations to human-readable. */
+function normaliseDrivetrain(raw: string | null | undefined): string {
+  if (!raw) return "";
+  const map: Record<string, string> = {
+    "rwd":"Rear-wheel drive","fwd":"Front-wheel drive","awd":"All-wheel drive",
+    "xdrive":"xDrive (AWD)","sdrive":"sDrive (RWD)","4wd":"Four-wheel drive",
+    "right-hand drive":"Right-hand drive","left-hand drive":"Left-hand drive",
+    "rhd":"Right-hand drive","lhd":"Left-hand drive",
+  };
+  const key = raw.toLowerCase().trim();
+  return map[key] ?? (raw.charAt(0).toUpperCase() + raw.slice(1));
 }
 
 // FAQ accordion
@@ -748,13 +860,15 @@ function BmvVinDecoder({ vin }: { vin: string }) {
                   />
                   {(bwv?.engine) && <DataCard label="Engine" value={bwv.engine} />}
                   {bwv?.market && <DataCard label="Market" value={bwv.market} />}
-                  {bwv?.drivetrain && <DataCard label="Drivetrain" value={bwv.drivetrain} />}
-                  {bwv?.transmission && <DataCard label="Transmission" value={bwv.transmission} />}
+                  {bwv?.drivetrain && <DataCard label="Drivetrain" value={normaliseDrivetrain(bwv.drivetrain)} />}
                   {bwv?.color && (() => {
-                    const { display, sub } = normaliseColour(bwv.color);
+                    const { display, sub } = normaliseColour(bwv.color, bwv.colorCode);
                     return <DataCard label="Colour" value={display} sub={sub ?? (bwv.colorCode ? `Code ${bwv.colorCode}` : undefined)} />;
                   })()}
-                  {bwv?.upholstery && <DataCard label="Upholstery" value={bwv.upholstery} sub={bwv.upholsteryCode || undefined} />}
+                  {bwv?.upholstery && (() => {
+                    const { display, sub } = normaliseUpholstery(bwv.upholstery);
+                    return <DataCard label="Upholstery" value={display} sub={sub ?? (bwv.upholsteryCode || undefined)} />;
+                  })()}
                   {bwv?.startOfProduction && <DataCard label="Production date" value={bwv.startOfProduction} />}
                   {decoded.productionSequence && <DataCard label="Production seq." value={decoded.productionSequence} />}
                 </div>
