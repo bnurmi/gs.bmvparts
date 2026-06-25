@@ -192,8 +192,8 @@ export async function lookupRegoWithPlaywright(
 
     // Click the Next anchor (confirmed: <a class="btn btn-primary left">Next…</a>)
     const clicked = await page.evaluate(() => {
-      const anchors = [...document.querySelectorAll("a")];
-      const next = anchors.find(a => a.textContent?.includes("Next"));
+      const anchors = Array.from(document.querySelectorAll("a"));
+      const next = anchors.find((a: HTMLAnchorElement) => a.textContent?.includes("Next"));
       if (next) { (next as HTMLElement).click(); return true; }
       return false;
     });
