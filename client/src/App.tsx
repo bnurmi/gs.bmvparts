@@ -53,19 +53,19 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       {/* Car & part detail */}
-      <Route path="/car/:id" component={CarDetail} />
+      <Route path="/car/:slug" component={CarDetail} />
       <Route path="/part/:partNumberClean" component={PartDetail} />
       {/* Search & tools */}
       <Route path="/search" component={Search} />
       <Route path="/part-finder" component={PartFinder} />
       {/* VIN decoder */}
       <Route path="/vin" component={VinDecoder} />
-      <Route path="/vin/:vin" component={VinDecoder} />
+      <Route path="/vin/:vin">{(params) => <VinDecoder params={params} />}</Route>
       {/* Browse */}
       <Route path="/models" component={BmwModels} />
-      <Route path="/models/:slug" component={ModelHubPage} />
-      <Route path="/series/:series" component={SeriesLanding} />
-      <Route path="/chassis/:chassis" component={ChassisLanding} />
+      <Route path="/models/:chassis" component={ModelHubPage} />
+      <Route path="/series/:seriesSlug" component={SeriesLanding} />
+      <Route path="/chassis/:chassisCode" component={ChassisLanding} />
       {/* Info pages */}
       <Route path="/servicing" component={Servicing} />
       <Route path="/about" component={About} />
