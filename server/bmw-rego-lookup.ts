@@ -121,7 +121,7 @@ async function solveRecaptchaV3(action = "rego"): Promise<string> {
     body: JSON.stringify({
       clientKey,
       task: {
-        type: "ReCaptchaV3Task",
+        type: "ReCaptchaV3TaskProxyLess",
         websiteURL: BMW_RECALL_URL,
         websiteKey: BMW_RECALL_SITE_KEY,
         pageAction: action,
