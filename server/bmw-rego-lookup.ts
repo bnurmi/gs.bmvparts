@@ -12,6 +12,7 @@
  */
 
 import { chromium } from "playwright";
+import type { Response as PlaywrightResponse } from "playwright";
 import { db } from "./storage.js";
 import { regoVinCache } from "@shared/schema.js";
 import { eq, and } from "drizzle-orm";
@@ -105,7 +106,7 @@ export async function scrapeRegoVin(
     let regoResponse: any = null;
     let vehicleResponse: any = null;
 
-    context.on("response", async (response) => {
+    context.on("response", async (response: PlaywrightResponse) => {
       const url = response.url();
       if (url.includes("/BmwRecall/Rego")) {
         try { regoResponse = await response.json(); } catch {}

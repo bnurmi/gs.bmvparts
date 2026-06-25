@@ -9423,7 +9423,7 @@ ${editorialLink ? `Set editorialLink to "${editorialLink}" for recommendations t
 
   function cleanOldRegoJobs() {
     const cutoff = Date.now() - 5 * 60 * 1000; // 5 min TTL
-    for (const [id, job] of regoJobs.entries()) {
+    for (const [id, job] of Array.from(regoJobs.entries())) {
       if (job.startedAt < cutoff) regoJobs.delete(id);
     }
   }
@@ -9489,7 +9489,7 @@ ${editorialLink ? `Set editorialLink to "${editorialLink}" for recommendations t
     if (job.status === "failed") {
       return res.json({ status: "failed", error: job.error });
     }
-    return res.json({ status: "found", source: "bmw_recall", ...job.result });
+    return res.json({ status: "found", ...job.result });
   });
 
   return httpServer;

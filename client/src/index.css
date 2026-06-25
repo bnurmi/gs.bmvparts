@@ -465,3 +465,9 @@
     inset: -1px;
   }
 }
+
+/* Spinner keyframe used by rego lookup Loader2 icon */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
