@@ -98,6 +98,7 @@ export async function lookupRegoWithToken(
   const upper = rego.toUpperCase().trim();
 
   try {
+    console.log(`[rego-lookup] ${upper}/${state} token length=${recaptchaToken.length}`);
     // Step 1: Rego -> VIN
     const regoRes = await fetch(`${BMW_API_BASE}/Rego`, {
       method: "POST",
@@ -107,6 +108,7 @@ export async function lookupRegoWithToken(
 
     if (!regoRes.ok) {
       const text = await regoRes.text();
+      console.log(`[rego-lookup] BMW API ${regoRes.status} for ${upper}/${state}: ${text.substring(0, 80)}`);
       if (text.includes("ReCaptcha")) {
         return { found: false, reason: "reCAPTCHA token rejected -- please try again", rego: upper, state };
       }
@@ -114,6 +116,7 @@ export async function lookupRegoWithToken(
     }
 
     const regoData: any = await regoRes.json();
+    console.log(`[rego-lookup] BMW 200 response: success=${regoData.success} found=${regoData.found} vin=${regoData.vin ?? 'none'}`);
     if (!regoData.success || !regoData.found || !regoData.vin) {
       return { found: false, reason: "Registration not found", rego: upper, state };
     }
