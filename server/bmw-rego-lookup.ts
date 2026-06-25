@@ -89,12 +89,21 @@ export async function checkRegoCache(
 // ---------------------------------------------------------------------------
 
 function buildProxyConfig(): { server: string; username: string; password: string } | null {
+  // Prefer Oxylabs residential (better reCAPTCHA scores than Evomi)
+  const oxyHost = (process.env.OXYLABS_PROXY_HOST || "").trim();
+  const oxyPort = (process.env.OXYLABS_PROXY_PORT || "7777").trim();
+  const oxyUser = (process.env.OXYLABS_USERNAME || "").trim();
+  const oxyPass = (process.env.OXYLABS_PASSWORD || "").trim();
+  if (oxyHost && oxyUser && oxyPass) {
+    return { server: `https://${oxyHost}:${oxyPort}`, username: oxyUser, password: oxyPass };
+  }
+
+  // Fallback: Evomi residential (https:// scheme confirmed working for BMW recall)
   const host = (process.env.EVOMI_PROXY_HOST || "").trim();
   const port = (process.env.EVOMI_PROXY_PORT || "").trim();
   const user = (process.env.EVOMI_PROXY_USERNAME || "").trim();
   const pass = (process.env.EVOMI_PROXY_PASSWORD || "").trim();
   if (!host || !port || !user || !pass) return null;
-  // https:// scheme confirmed working for BMW recall domain via Evomi
   const scheme = (process.env.EVOMI_PROXY_SCHEME || "https").toLowerCase() === "http" ? "http" : "https";
   return { server: `${scheme}://${host}:${port}`, username: user, password: pass };
 }
@@ -116,7 +125,10 @@ export async function lookupRegoWithPlaywright(
     chromium.use(StealthPlugin());
 
     const proxy = buildProxyConfig();
-    console.log(`[rego-lookup] Launching Chromium ${proxy ? "via Evomi residential proxy" : "(no proxy -- datacenter IP)"}`);
+    const proxyLabel = proxy
+      ? (proxy.server.includes("oxylabs") ? "Oxylabs residential" : "Evomi residential")
+      : "no proxy (datacenter)";
+    console.log(`[rego-lookup] Launching Chromium via ${proxyLabel}`);
 
     browser = await chromium.launch({
       headless: true,
