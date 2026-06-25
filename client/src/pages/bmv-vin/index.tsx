@@ -1311,10 +1311,80 @@ export function DecoderHome() {
   const [vinInput, setVinInput] = useState("");
   const [, navigate] = useLocation();
 
+  // Rego search state
+  const [tab, setTab] = useState<"vin" | "rego">("vin");
+  const [regoInput, setRegoInput] = useState("");
+  const [regoState] = useState("NSW"); // NSW only for now
+  const [regoStatus, setRegoStatus] = useState<"idle" | "pending" | "failed">("idle");
+  const [regoError, setRegoError] = useState<string | null>(null);
+  const [regoPolling, setRegoPolling] = useState<NodeJS.Timeout | null>(null);
+
   function handleDecode() {
     const clean = vinInput.replace(/[^A-HJ-NPR-Z0-9]/gi, "").toUpperCase();
     if (clean.length === 17) navigate(`/${clean}`);
   }
+
+  async function handleRegoSearch() {
+    const upper = regoInput.toUpperCase().trim();
+    if (!upper || !/^[A-Z0-9]{1,9}$/.test(upper)) {
+      setRegoError("Enter a valid registration number.");
+      return;
+    }
+    setRegoStatus("pending");
+    setRegoError(null);
+
+    try {
+      const res = await fetch("/api/rego-lookup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rego: upper, state: regoState }),
+      });
+      const data = await res.json();
+
+      if (data.status === "found") {
+        navigate(`/${data.vin}`);
+        return;
+      }
+
+      if (data.status === "pending" && data.jobId) {
+        // Start polling
+        const timer = setInterval(async () => {
+          try {
+            const pollRes = await fetch(`/api/rego-lookup/${data.jobId}`);
+            const pollData = await pollRes.json();
+            if (pollData.status === "found") {
+              clearInterval(timer);
+              setRegoPolling(null);
+              setRegoStatus("idle");
+              navigate(`/${pollData.vin}`);
+            } else if (pollData.status === "failed") {
+              clearInterval(timer);
+              setRegoPolling(null);
+              setRegoStatus("failed");
+              setRegoError(pollData.error ?? "Rego not found in BMW system.");
+            }
+            // else still pending — keep polling
+          } catch {
+            // network hiccup — keep polling
+          }
+        }, 1500);
+        setRegoPolling(timer);
+        return;
+      }
+
+      // Unexpected response
+      setRegoStatus("failed");
+      setRegoError(data.error ?? "Unexpected response from server.");
+    } catch (err: any) {
+      setRegoStatus("failed");
+      setRegoError("Network error. Please try again.");
+    }
+  }
+
+  // Cleanup polling on unmount
+  useEffect(() => {
+    return () => { if (regoPolling) clearInterval(regoPolling); };
+  }, [regoPolling]);
 
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
@@ -1364,6 +1434,94 @@ export function DecoderHome() {
             onDecode={handleDecode}
             isDecoding={false}
           />
+
+          {/* Tab switcher: VIN / Rego */}
+          <div style={{ display: "flex", gap: 0, marginTop: 28, borderRadius: 10, overflow: "hidden", border: `1px solid ${C.rule}` }}>
+            <button
+              onClick={() => { setTab("vin"); setRegoStatus("idle"); setRegoError(null); }}
+              style={{
+                flex: 1, padding: "10px 20px",
+                background: tab === "vin" ? C.blue : C.white,
+                color: tab === "vin" ? C.white : C.ink4,
+                border: "none", cursor: "pointer",
+                fontFamily: F.sans, fontWeight: 600, fontSize: 13.5,
+                transition: "background 0.15s, color 0.15s",
+              }}
+            >Decode by VIN</button>
+            <button
+              onClick={() => setTab("rego")}
+              style={{
+                flex: 1, padding: "10px 20px",
+                background: tab === "rego" ? C.blue : C.white,
+                color: tab === "rego" ? C.white : C.ink4,
+                border: "none", borderLeft: `1px solid ${C.rule}`, cursor: "pointer",
+                fontFamily: F.sans, fontWeight: 600, fontSize: 13.5,
+                transition: "background 0.15s, color 0.15s",
+              }}
+            >Look up by Rego</button>
+          </div>
+
+          {/* Rego search panel */}
+          {tab === "rego" && (
+            <div style={{ marginTop: 24, width: "100%", maxWidth: 480, textAlign: "left" }}>
+              <div style={{ display: "flex", gap: 10 }}>
+                <input
+                  type="text"
+                  value={regoInput}
+                  onChange={e => setRegoInput(e.target.value.toUpperCase())}
+                  onKeyDown={e => e.key === "Enter" && regoStatus !== "pending" && handleRegoSearch()}
+                  maxLength={9}
+                  placeholder="e.g. NBW51M"
+                  disabled={regoStatus === "pending"}
+                  style={{
+                    flex: 1, padding: "12px 16px",
+                    fontFamily: F.mono, fontSize: 16, letterSpacing: "0.08em",
+                    border: `1.5px solid ${regoError ? C.red : C.rule}`,
+                    borderRadius: 8, outline: "none",
+                    background: regoStatus === "pending" ? C.surface : C.white,
+                    color: C.ink, textTransform: "uppercase",
+                  }}
+                />
+                {/* State badge — NSW only for now */}
+                <div style={{
+                  padding: "12px 14px", borderRadius: 8,
+                  border: `1.5px solid ${C.rule}`, background: C.surface,
+                  fontFamily: F.sans, fontSize: 13, fontWeight: 600,
+                  color: C.ink4, display: "flex", alignItems: "center",
+                  whiteSpace: "nowrap",
+                }}>NSW</div>
+                <button
+                  onClick={handleRegoSearch}
+                  disabled={regoStatus === "pending"}
+                  style={{
+                    padding: "12px 20px", borderRadius: 8,
+                    background: regoStatus === "pending" ? C.ink4 : C.blue,
+                    color: C.white, border: "none", cursor: regoStatus === "pending" ? "default" : "pointer",
+                    fontFamily: F.sans, fontWeight: 600, fontSize: 14,
+                    display: "flex", alignItems: "center", gap: 8,
+                    transition: "background 0.15s",
+                  }}
+                >
+                  {regoStatus === "pending"
+                    ? (<><Loader2 size={15} style={{ animation: "spin 1s linear infinite" }} />Looking up…</>)
+                    : "Find VIN"}
+                </button>
+              </div>
+              {regoStatus === "pending" && (
+                <p style={{ fontFamily: F.sans, fontSize: 13, color: C.ink4, marginTop: 10 }}>
+                  Querying BMW Australia recall database. This takes a few seconds...
+                </p>
+              )}
+              {regoError && (
+                <p style={{ fontFamily: F.sans, fontSize: 13, color: C.red, marginTop: 10 }}>
+                  {regoError}
+                </p>
+              )}
+              <p style={{ fontFamily: F.sans, fontSize: 12, color: C.ink5, marginTop: 12 }}>
+                BMW registered vehicles only. NSW registrations supported.
+              </p>
+            </div>
+          )}
         </section>
 
         {/* Browse block — surface */}

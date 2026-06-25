@@ -39,6 +39,7 @@ import { sendTestEmail, sendPasswordResetEmail } from "./email";
 import { createHash } from "crypto";
 import { downloadVinImages, migrateExistingVinImages, migrateModelImages, ensureLocalImagesExist } from "./vin-images";
 import { runTypeCodeBackfill } from "./type-code-backfill";
+import { checkRegoCache, scrapeRegoVin, AUS_STATES, type AusState } from "./bmw-rego-lookup";
 import { createDbBackup, createPreDeployBackup, restoreFromKey } from "./backup/db-backup";
 import { createFileBackup } from "./backup/file-backup";
 import { createCodeBackup } from "./backup/code-backup";
@@ -9406,6 +9407,89 @@ ${editorialLink ? `Set editorialLink to "${editorialLink}" for recommendations t
     } catch (err: any) {
       res.status(500).json({ error: err.message });
     }
+  });
+
+  // ---------------------------------------------------------------------------
+  // Rego -> VIN lookup (BMW Australia recall site, async via in-process job map)
+  // ---------------------------------------------------------------------------
+
+  // In-process job store — lightweight, no persistence needed (lookups are short)
+  const regoJobs = new Map<string, {
+    status: "pending" | "done" | "failed";
+    result?: any;
+    error?: string;
+    startedAt: number;
+  }>();
+
+  function cleanOldRegoJobs() {
+    const cutoff = Date.now() - 5 * 60 * 1000; // 5 min TTL
+    for (const [id, job] of regoJobs.entries()) {
+      if (job.startedAt < cutoff) regoJobs.delete(id);
+    }
+  }
+
+  app.post("/api/rego-lookup", async (req, res) => {
+    try {
+      const { rego, state } = req.body as { rego?: string; state?: string };
+
+      if (!rego || typeof rego !== "string") {
+        return res.status(400).json({ error: "rego is required" });
+      }
+      const upperRego = rego.toUpperCase().trim();
+      if (!/^[A-Z0-9]{1,9}$/.test(upperRego)) {
+        return res.status(400).json({ error: "Invalid rego format" });
+      }
+
+      const st = (state ?? "NSW").toUpperCase() as AusState;
+      if (!(AUS_STATES as readonly string[]).includes(st)) {
+        return res.status(400).json({ error: `State must be one of: ${AUS_STATES.join(", ")}` });
+      }
+
+      // Cache hit — instant return
+      const cached = await checkRegoCache(upperRego, st);
+      if (cached) {
+        return res.json({ status: "found", source: "cache", ...cached });
+      }
+
+      // Start async scrape job
+      cleanOldRegoJobs();
+      const jobId = `${upperRego}-${st}-${Date.now()}`;
+      regoJobs.set(jobId, { status: "pending", startedAt: Date.now() });
+
+      // Fire and forget — don't await
+      scrapeRegoVin(upperRego, st).then((outcome) => {
+        const job = regoJobs.get(jobId);
+        if (!job) return;
+        if (outcome.found) {
+          job.status = "done";
+          job.result = outcome;
+        } else {
+          job.status = "failed";
+          job.error = outcome.reason;
+        }
+      }).catch((err) => {
+        const job = regoJobs.get(jobId);
+        if (job) { job.status = "failed"; job.error = err?.message ?? "unknown"; }
+      });
+
+      return res.json({ status: "pending", jobId });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.get("/api/rego-lookup/:jobId", (req, res) => {
+    const job = regoJobs.get(req.params.jobId);
+    if (!job) {
+      return res.status(404).json({ error: "Job not found or expired" });
+    }
+    if (job.status === "pending") {
+      return res.json({ status: "pending" });
+    }
+    if (job.status === "failed") {
+      return res.json({ status: "failed", error: job.error });
+    }
+    return res.json({ status: "found", source: "bmw_recall", ...job.result });
   });
 
   return httpServer;

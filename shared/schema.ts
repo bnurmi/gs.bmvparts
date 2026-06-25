@@ -1652,3 +1652,24 @@ export const seoAuditLog = pgTable("seo_audit_log", {
 export const insertSeoAuditLogSchema = createInsertSchema(seoAuditLog).omit({ id: true, timestamp: true });
 export type SeoAuditLog = typeof seoAuditLog.$inferSelect;
 export type InsertSeoAuditLog = z.infer<typeof insertSeoAuditLogSchema>;
+
+// ---------------------------------------------------------------------------
+// rego_vin_cache — rego plate -> VIN lookups from BMW Australia recall site
+// ---------------------------------------------------------------------------
+export const regoVinCache = pgTable("rego_vin_cache", {
+  id:          serial("id").primaryKey(),
+  rego:        text("rego").notNull(),
+  state:       text("state").notNull(),
+  vin:         text("vin").notNull(),
+  model:       text("model"),
+  year:        integer("year"),
+  colour:      text("colour"),
+  lookedUpAt:  timestamp("looked_up_at").defaultNow().notNull(),
+  source:      text("source").notNull().default("bmw_recall"),
+}, (t) => ({
+  regoStateUnique: uniqueIndex("rego_vin_cache_rego_state_unique").on(t.rego, t.state),
+  regoIdx:         index("idx_rego_vin_cache_rego").on(t.rego),
+  vinIdx:          index("idx_rego_vin_cache_vin").on(t.vin),
+}));
+
+export type RegoVinCache = typeof regoVinCache.$inferSelect;

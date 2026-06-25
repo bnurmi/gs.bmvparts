@@ -139,4 +139,9 @@ app.use((req, res, next) => {
       log(`serving on port ${port}`);
     },
   );
+
+  // Start VIN enrichment backfill worker (slow-burn, rate-limited, proxy-routed)
+  // Disabled via BMV_DISABLE_VIN_BACKFILL=true. Cap via VIN_BACKFILL_DAILY_LIMIT (default 1000).
+  const { startVinBackfillWorker } = await import("./vin-backfill/worker");
+  void startVinBackfillWorker();
 })();
