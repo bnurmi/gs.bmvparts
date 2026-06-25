@@ -272,43 +272,17 @@ async function attemptLookup(
 
     const vin = regoData.vin;
 
-    // 15. Capture vehicle details from Step 2 -- BMW shows model/year/colour after Rego lookup
-    // The page has already advanced to Step 2 if the Rego call succeeded
-    // We can read the details directly from the DOM
-    let model: string | null = null;
-    let year:  number | null = null;
-    let colour: string | null = null;
-    try {
-      // Also intercept the /BmwRecall/Vehicle response if it fires automatically
-      // BMW's Angular app may auto-fetch Vehicle details after the Rego step
-      const vehicleData = await page.evaluate(() => {
-        const bodyText = document.body.innerText;
-        // Look for model year, model name, colour in the Step 2 DOM
-        const modelMatch = bodyText.match(/(?:Model|Vehicle)[:\s]+([^\n]{3,60})/i);
-        const yearMatch  = bodyText.match(/\b(19[89]\d|20[0-2]\d)\b/);
-        const colourMatch = bodyText.match(/(?:Colour|Color)[:\s]+([^\n]{3,40})/i);
-        return {
-          model:  modelMatch?.[1]?.trim() ?? null,
-          year:   yearMatch  ? parseInt(yearMatch[1]) : null,
-          colour: colourMatch?.[1]?.trim() ?? null,
-        };
-      }).catch(() => ({ model: null, year: null, colour: null }));
-      model  = vehicleData.model;
-      year   = vehicleData.year;
-      colour = vehicleData.colour;
-    } catch { /* best-effort */ }
-
-    // 16. Cache
+    // 15. Cache -- store VIN only. Vehicle details come from the full decoder pipeline.
     await db
       .insert(regoVinCache)
-      .values({ rego: upper, state, vin, model, year, colour, source: "bmw_recall" })
+      .values({ rego: upper, state, vin, model: null, year: null, colour: null, source: "bmw_recall" })
       .onConflictDoUpdate({
         target: [regoVinCache.rego, regoVinCache.state],
-        set: { vin, model, year, colour, lookedUpAt: new Date(), source: "bmw_recall" },
+        set: { vin, model: null, year: null, colour: null, lookedUpAt: new Date(), source: "bmw_recall" },
       });
 
-    console.log(`[rego-lookup] ${upper}/${state} -> ${vin} model=${model ?? "?"} year=${year ?? "?"} colour=${colour ?? "?"}`);
-    return { found: true, vin, model, year, colour, rego: upper, state, source: "bmw_recall" };
+    console.log(`[rego-lookup] ${upper}/${state} -> ${vin}`);
+    return { found: true, vin, model: null, year: null, colour: null, rego: upper, state, source: "bmw_recall" };
 
   } catch (err: any) {
     console.error(`[rego-lookup] Error: ${err?.message}`);
