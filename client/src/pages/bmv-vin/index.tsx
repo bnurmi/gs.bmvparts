@@ -1036,22 +1036,32 @@ function BmvVinDecoder({ vin }: { vin: string }) {
 
                 {/* Data cards grid */}
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 32 }}>
-                  <DataCard primary label="Manufacturer" value={bwv?.manufacturer || decoded.manufacturer || ""} sub={decoded.wmi} />
-                  <DataCard label="Chassis" value={decoded.chassis || ""} sub={bwv?.chassis || decoded.series || undefined} />
+                  {/* Manufacturer: decoded is always more specific (BMW M GmbH vs BMW) */}
+                  <DataCard primary label="Manufacturer" value={decoded.manufacturer || bwv?.manufacturer || ""} sub={decoded.wmi} />
+                  {/* Chassis: skip sub when it equals primary (e.g. bwv.chassis=F97 = decoded.chassis) */}
+                  <DataCard label="Chassis" value={decoded.chassis || ""} sub={bwv?.chassis && bwv.chassis !== decoded.chassis ? bwv.chassis : (decoded.series || undefined)} />
                   <DataCard label="Model year" value={modelYear ? String(modelYear) : ""} />
                   <DataCard label="Assembly plant"
                     value={decoded.plant ? `${countryFlag(decoded.plant.country)} ${decoded.plant.city}` : (bwv?.manufacturer ? bwv.manufacturer.split("/").pop()?.trim() || "" : "")}
                     sub={decoded.plant?.country}
                   />
                   {(bwv?.engine || decoded.engine) && (() => {
-                    const engineDesc = bwv?.engine || describeEngine(decoded.engine);
+                    // Prefer decoded.engineFamily (e.g. "S58 3.0L Twin-Turbo I6") over bwv.engine raw code (e.g. "S58T")
+                    // Fall back to lookup table, then raw bwv string
+                    const engineDesc = decoded.engineFamily || describeEngine(decoded.engine) || bwv?.engine || null;
                     const engineCode = decoded.engine || undefined;
                     return <DataCard label="Engine" value={engineDesc || engineCode || ""} code={engineDesc ? engineCode : undefined} />;
                   })()}
                   {bwv?.market && <DataCard label="Market" value={bwv.market} />}
                   {decoded.division && decoded.division !== "Standard" && <DataCard label="Division" value={decoded.division} />}
                   {(bwv?.drivetrain || decoded?.driveType) && (() => {
-                    const { display, sub } = normaliseDrivetrain(bwv?.drivetrain || decoded?.driveType, bwv?.modelName);
+                    // For drivetrain: pass both bwv and decoded context so xDrive/eAWD can be inferred
+                    // bwv.drivetrain may be a raw code (ALLR) -- decoded.driveType and decoded.chassis give extra signal
+                    const rawDrive = bwv?.drivetrain || decoded?.driveType;
+                    // M SAV/SAC on xDrive chassis (F95/F96/F97/F98, G05/G06 M) are always xDrive
+                    const mXDriveChassis = ["F95","F96","F97","F98"].includes(decoded.chassis || "");
+                    const modelForDrive = mXDriveChassis ? (bwv?.modelName || "") + " xDrive" : bwv?.modelName;
+                    const { display, sub } = normaliseDrivetrain(rawDrive, modelForDrive);
                     return <DataCard label="Drivetrain" value={display} sub={sub || undefined} />;
                   })()}
                   {bwv?.color && (() => {
