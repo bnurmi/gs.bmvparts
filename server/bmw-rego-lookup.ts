@@ -21,7 +21,7 @@ import { eq, and } from "drizzle-orm";
 // Supported states
 // ---------------------------------------------------------------------------
 
-export const AUS_STATES = ["NSW"] as const;
+export const AUS_STATES = ["ACT", "NSW", "NT", "QLD", "SA", "TAS", "VIC", "WA"] as const;
 export type AusState = typeof AUS_STATES[number];
 
 // ---------------------------------------------------------------------------
@@ -115,7 +115,7 @@ export async function lookupRegoWithToken(
 
     const regoData: any = await regoRes.json();
     if (!regoData.success || !regoData.found || !regoData.vin) {
-      return { found: false, reason: "Registration not found in BMW recall system", rego: upper, state };
+      return { found: false, reason: "Registration not found", rego: upper, state };
     }
 
     const vin: string = regoData.vin;

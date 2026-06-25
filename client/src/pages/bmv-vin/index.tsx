@@ -1345,7 +1345,7 @@ export function DecoderHome() {
   // Rego search state
   const [tab, setTab] = useState<"vin" | "rego">("vin");
   const [regoInput, setRegoInput] = useState("");
-  const [regoState] = useState("NSW"); // NSW only for now
+  const [regoState, setRegoState] = useState("NSW");
   const [regoStatus, setRegoStatus] = useState<"idle" | "pending" | "failed">("idle");
   const [regoError, setRegoError] = useState<string | null>(null);
   const [regoPolling, setRegoPolling] = useState<NodeJS.Timeout | null>(null);
@@ -1437,7 +1437,7 @@ export function DecoderHome() {
           setRegoPolling(null);
           setRegoStatus("failed");
           const reason = pollData.error ?? "";
-          setRegoError(reason.includes("reCAPTCHA") ? "Verification failed. Please try again." : "Registration not found in BMW system.");
+          setRegoError(reason.includes("reCAPTCHA") ? "Verification failed. Please try again." : "Registration not found.");
         }
       } catch {
         // network hiccup -- keep polling
@@ -1547,14 +1547,24 @@ export function DecoderHome() {
                     color: C.ink, textTransform: "uppercase",
                   }}
                 />
-                {/* State badge — NSW only for now */}
-                <div style={{
-                  padding: "12px 14px", borderRadius: 8,
-                  border: `1.5px solid ${C.rule}`, background: C.surface,
-                  fontFamily: F.sans, fontSize: 13, fontWeight: 600,
-                  color: C.ink4, display: "flex", alignItems: "center",
-                  whiteSpace: "nowrap",
-                }}>NSW</div>
+                {/* State selector */}
+                <select
+                  value={regoState}
+                  onChange={e => setRegoState(e.target.value)}
+                  disabled={regoStatus === "pending"}
+                  style={{
+                    padding: "12px 10px", borderRadius: 8,
+                    border: `1.5px solid ${C.rule}`, background: C.white,
+                    fontFamily: F.sans, fontSize: 13, fontWeight: 600,
+                    color: C.ink, cursor: "pointer", outline: "none",
+                    appearance: "none", WebkitAppearance: "none",
+                    minWidth: 72, textAlign: "center",
+                  }}
+                >
+                  {["ACT","NSW","NT","QLD","SA","TAS","VIC","WA"].map(s => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
                 <button
                   onClick={handleRegoSearch}
                   disabled={regoStatus === "pending"}
@@ -1574,7 +1584,7 @@ export function DecoderHome() {
               </div>
               {regoStatus === "pending" && (
                 <p style={{ fontFamily: F.sans, fontSize: 13, color: C.ink4, marginTop: 10 }}>
-                  Querying BMW Australia recall database. This takes a few seconds...
+                  Resolving registration to VIN...
                 </p>
               )}
               {regoError && (
@@ -1583,7 +1593,7 @@ export function DecoderHome() {
                 </p>
               )}
               <p style={{ fontFamily: F.sans, fontSize: 12, color: C.ink5, marginTop: 12 }}>
-                BMW registered vehicles only. NSW registrations supported.
+                BMW registered vehicles only. Australian states and territories supported.
               </p>
             </div>
           )}
