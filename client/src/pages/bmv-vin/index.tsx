@@ -568,6 +568,45 @@ function normaliseColour(raw: string | null | undefined): { display: string; sub
   return { display, sub };
 }
 
+// FAQ accordion
+function FaqAccordion({ items }: { items: { q: string; a: string }[] }) {
+  const [open, setOpen] = useState<number | null>(null);
+  return (
+    <div style={{ border: `1px solid ${C.rule}`, borderRadius: 10, overflow: "hidden" }}>
+      {items.map((item, i) => (
+        <div key={i} style={{ borderTop: i > 0 ? `1px solid ${C.rule}` : "none" }}>
+          <button
+            type="button"
+            onClick={() => setOpen(open === i ? null : i)}
+            style={{
+              width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
+              padding: "16px 22px", background: open === i ? C.surface : C.white,
+              border: "none", cursor: "pointer", textAlign: "left",
+              transition: "background 0.12s",
+            }}
+            onMouseEnter={e => { if (open !== i) (e.currentTarget as HTMLElement).style.background = C.surface; }}
+            onMouseLeave={e => { if (open !== i) (e.currentTarget as HTMLElement).style.background = C.white; }}
+          >
+            <span style={{ fontFamily: F.sans, fontSize: 14, fontWeight: 600, color: C.ink, letterSpacing: "-0.01em" }}>
+              {item.q}
+            </span>
+            <span style={{ fontFamily: F.sans, fontSize: 16, color: C.ink4, marginLeft: 16, flexShrink: 0, transform: open === i ? "rotate(45deg)" : "none", transition: "transform 0.15s" }}>
+              +
+            </span>
+          </button>
+          {open === i && (
+            <div style={{ padding: "0 22px 16px", background: C.surface }}>
+              <p style={{ fontFamily: F.sans, fontSize: 13.5, fontWeight: 300, lineHeight: 1.65, color: C.ink3, margin: 0 }}>
+                {item.a}
+              </p>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function BmvVinDecoder({ vin }: { vin: string }) {
   const [result, setResult] = useState<DecodeResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -856,15 +895,15 @@ function BmvVinDecoder({ vin }: { vin: string }) {
               </div>
             </section>
 
-            {/* FAQ + SEO block — white */}
-            <section style={{ background: C.white, padding: "56px 48px 72px" }}>
+            {/* FAQ + How it works block — white */}
+            <section id="how-it-works" style={{ background: C.white, padding: "56px 48px 72px" }}>
               <div style={{ maxWidth: 900, margin: "0 auto" }}>
-                <h2 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: "clamp(20px, 2.5vw, 28px)", letterSpacing: "-0.02em", color: C.ink, margin: "0 0 32px" }}>
-                  About this VIN.
-                </h2>
 
-                {/* How-it-works steps */}
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 48 }}>
+                {/* How it works */}
+                <h2 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: "clamp(20px, 2.5vw, 28px)", letterSpacing: "-0.02em", color: C.ink, margin: "0 0 32px" }}>
+                  How it works.
+                </h2>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 56 }}>
                   {[
                     { n: "01", title: "Structural decode.", body: "WMI, VDS, and VIS segments extracted. Check digit validated against the ISO 3779 formula." },
                     { n: "02", title: "Factory enrichment.", body: "VDS cross-referenced against BMW's internal production data to resolve chassis, engine, market, and build options." },
@@ -878,8 +917,25 @@ function BmvVinDecoder({ vin }: { vin: string }) {
                   ))}
                 </div>
 
-                {/* Decode another */}
-                <div style={{ borderTop: `1px solid ${C.rule}`, paddingTop: 40 }}>
+                {/* Divider */}
+                <div style={{ borderTop: `1px solid ${C.rule}`, marginBottom: 48 }} />
+
+                {/* FAQ */}
+                <h2 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: "clamp(18px, 2vw, 24px)", letterSpacing: "-0.02em", color: C.ink, margin: "0 0 24px" }}>
+                  Frequently asked questions.
+                </h2>
+                <FaqAccordion items={[
+                  { q: "Is this BMW VIN decoder free?", a: "Yes. Decoding any BMW VIN on bmv.vin is free and requires no account." },
+                  { q: "What does a BMW VIN tell you?", a: "A BMW VIN encodes the manufacturer (WMI), model line and body (VDS), the check digit, model year, assembly plant, and a unique production sequence. Combined with BMW's factory build records it also reveals every option code, original paint, and upholstery." },
+                  { q: "Can I decode just the last 7 of my VIN?", a: "Yes. The last 7 characters of a BMW VIN are the production sequence and are unique within a given chassis and plant. Enter either the full 17-character VIN or the 7-character production sequence." },
+                  { q: "Do you support every BMW chassis?", a: "We cover every modern BMW chassis from the early E-series through the current G, U and i series. MINI, Rolls-Royce and BMW Motorrad VINs using a BMW-issued WMI are also supported." },
+                  { q: "Is bimmer.work down? Can I use bmv.vin instead?", a: "Yes. bmv.vin uses the same factory-options pipeline as bimmer.work, so when bimmer.work is slow or unreachable you can decode the same VIN here and get equivalent chassis, paint and option-code detail." },
+                  { q: "Why does my VIN show 'partially enriched'?", a: "Some very recent builds or grey-market chassis are not yet present in the public BMW factory records we cache. The structural decode (chassis, engine, plant, model year) still works; option enrichment may follow as factory data is published." },
+                  { q: "Does this work for ALPINA, MINI, Rolls-Royce or BMW Motorrad?", a: "Yes. ALPINA-built BMWs use the WBA/WBS WMI and decode through the same pipeline. MINI (WMW), Rolls-Royce (SBM) and BMW Motorrad (WBW/WUF) all use BMW-issued VINs and resolve into the same chassis-hub and series-hub navigation." },
+                ]} />
+
+                {/* Divider */}
+                <div style={{ borderTop: `1px solid ${C.rule}`, marginTop: 48, paddingTop: 40 }}>
                   <h3 style={{ fontFamily: F.sans, fontWeight: 700, fontSize: 16, letterSpacing: "-0.01em", color: C.ink, margin: "0 0 20px" }}>Decode another VIN.</h3>
                   <CellInstrument
                     value={secondVin}
