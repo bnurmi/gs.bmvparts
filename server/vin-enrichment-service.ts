@@ -27,6 +27,8 @@ import {
   fetchMdecoderData,
   fetchVindecoderzData,
   type BimmerWorkData,
+  type BimmerWorkVehicle,
+  type BimmerWorkOption,
 } from "./bimmer-work-scraper";
 import { db } from "./storage";
 import { saCodes, vinFactoryOptions, paintCodes, upholsteryCodes } from "@shared/schema";
@@ -287,6 +289,73 @@ function shouldShortcutToBimmerWork(modelYear: number | null): boolean {
   return modelYear > ETK_CUTOFF_YEAR;
 }
 
+function prefer<T>(primary: T | null | undefined, fallback: T | null | undefined): T | null {
+  return (primary !== null && primary !== undefined && primary !== "" ? primary : fallback) ?? null;
+}
+
+function mergeVehicle(primary: BimmerWorkVehicle | null, fallback: BimmerWorkVehicle | null): BimmerWorkVehicle | null {
+  if (!primary) return fallback;
+  if (!fallback) return primary;
+  return {
+    vin: primary.vin || fallback.vin,
+    codeType: prefer(primary.codeType, fallback.codeType),
+    chassis: prefer(primary.chassis, fallback.chassis),
+    market: prefer(primary.market, fallback.market),
+    engine: prefer(primary.engine, fallback.engine),
+    drivetrain: prefer(primary.drivetrain, fallback.drivetrain),
+    transmission: prefer(primary.transmission, fallback.transmission),
+    // bimmer.work usually has BMW paint/upholstery codes; mdecoder often only has names.
+    color: prefer(primary.color, fallback.color),
+    colorCode: prefer(primary.colorCode, fallback.colorCode),
+    upholstery: prefer(primary.upholstery, fallback.upholstery),
+    upholsteryCode: prefer(primary.upholsteryCode, fallback.upholsteryCode),
+    startOfProduction: prefer(primary.startOfProduction, fallback.startOfProduction),
+    manufacturer: prefer(primary.manufacturer, fallback.manufacturer),
+    modelName: prefer(primary.modelName, fallback.modelName),
+  };
+}
+
+function mergeOptions(primary: BimmerWorkOption[] = [], fallback: BimmerWorkOption[] = []): BimmerWorkOption[] {
+  const byCode = new Map<string, BimmerWorkOption>();
+  for (const o of fallback) if (o?.code) byCode.set(o.code, o);
+  for (const o of primary) {
+    if (!o?.code) continue;
+    const prev = byCode.get(o.code);
+    byCode.set(o.code, {
+      code: o.code,
+      nameEn: prefer(o.nameEn, prev?.nameEn) || "",
+      nameDe: prefer(o.nameDe, prev?.nameDe) || "",
+      imageUrl: prefer(o.imageUrl, prev?.imageUrl),
+    });
+  }
+  return Array.from(byCode.values()).sort((a, b) => a.code.localeCompare(b.code));
+}
+
+function mergeThirdPartyData(sources: BimmerWorkData[]): BimmerWorkData | null {
+  if (sources.length === 0) return null;
+  const bimmer = sources.find(s => s.hash !== "mdecoder" && s.hash !== "vindecoderz") || null;
+  const mdecoder = sources.find(s => s.hash === "mdecoder") || null;
+  const vindecoderz = sources.find(s => s.hash === "vindecoderz") || null;
+  const ordered = [bimmer, mdecoder, vindecoderz].filter(Boolean) as BimmerWorkData[];
+  let vehicle: BimmerWorkVehicle | null = null;
+  let options: BimmerWorkOption[] = [];
+  for (const src of ordered) {
+    vehicle = mergeVehicle(vehicle, src.vehicle);
+    options = mergeOptions(options, src.options || []);
+  }
+  const imageSource = ordered.find(s => s.images)?.images || null;
+  const manualSource = ordered.find(s => (s.manuals || []).length > 0)?.manuals || [];
+  return {
+    hash: ordered.map(s => s.hash).join("+") || "merged",
+    vehicle,
+    options,
+    images: imageSource,
+    manuals: manualSource,
+    sourceUrl: ordered.map(s => s.sourceUrl).filter(Boolean).join(" | "),
+    fetchedAt: nowIso(),
+  };
+}
+
 export async function enrichVin(vin: string, opts?: { providedHash?: string; allowThirdParty?: boolean; _forceBypassEtkGate?: boolean }): Promise<EnrichmentResult | null> {
   const cleanVin = vin.toUpperCase().replace(/[\s\-]/g, "");
   if (cleanVin.length !== 17) return null;
@@ -324,29 +393,44 @@ export async function enrichVin(vin: string, opts?: { providedHash?: string; all
   let bimmerData: BimmerWorkData | null = null;
   let bimmerFetched = false;
 
-  // Lazy fetch of the third-party scrapers. Cached after the first
-  // call so we hit the network at most once even when several tabs
-  // need to fall back. Returns null when third-party is disabled.
+  // Lazy fetch of third-party sources. When enabled, query bimmer.work and
+  // mdecoder, then merge. bimmer.work is preferred for paint/upholstery codes;
+  // mdecoder fills missing vehicle fields/options when bimmer.work is absent or incomplete.
   async function ensureBimmerData(): Promise<BimmerWorkData | null> {
     if (bimmerFetched) return bimmerData;
     bimmerFetched = true;
     if (!allowThirdParty) return null;
-    bimmerData = await fetchBimmerWorkData(cleanVin, opts?.providedHash);
-    if (!bimmerData) {
-      const m = await fetchMdecoderData(cleanVin);
-      if (m) bimmerData = m;
-    }
-    if (!bimmerData && VINDECODERZ_ENABLED) {
+
+    const sources: BimmerWorkData[] = [];
+
+    const bw = await fetchBimmerWorkData(cleanVin, opts?.providedHash);
+    if (bw && !(bw as any).vinMismatch) sources.push(bw);
+
+    const m = await fetchMdecoderData(cleanVin);
+    if (m) sources.push(m);
+
+    // Vindecoderz remains tertiary/optional. Only call it if the merged bimmer+mdecoder
+    // result still has no vehicle and no options.
+    let merged = mergeThirdPartyData(sources);
+    if ((!merged?.vehicle && (merged?.options || []).length === 0) && VINDECODERZ_ENABLED) {
       const v = await fetchVindecoderzData(cleanVin);
-      if (v) bimmerData = v;
+      if (v) sources.push(v);
+      merged = mergeThirdPartyData(sources);
+    }
+
+    bimmerData = merged;
+    if (bimmerData) {
+      console.log(`[Enrichment] merged third-party for ${cleanVin}: ${sources.map(s => s.hash).join("+")}`);
     }
     return bimmerData;
   }
 
   function bimmerTag(bw: BimmerWorkData): EnrichmentTabSource {
-    return bw.hash === "mdecoder" ? "mdecoder"
-      : bw.hash === "vindecoderz" ? "vindecoderz"
-      : "bimmerwork";
+    const h = bw.hash || "";
+    if (h.includes("bimmer") || (!h.includes("mdecoder") && !h.includes("vindecoderz"))) return "bimmerwork";
+    if (h.includes("mdecoder")) return "mdecoder";
+    if (h.includes("vindecoderz")) return "vindecoderz";
+    return "bimmerwork";
   }
 
   // Step 1 — Vehicle (ETK first; populate paint+upholstery+SOP from
