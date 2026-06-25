@@ -1498,8 +1498,8 @@ export function DecoderHome() {
   function startPolling(jobId: string) {
     const startedAt = Date.now();
     const timer = setInterval(async () => {
-      // Stop polling after 50s
-      if (Date.now() - startedAt > 50_000) {
+      // Stop polling after 3 minutes (3 attempts × ~40s each)
+      if (Date.now() - startedAt > 180_000) {
         clearInterval(timer);
         setRegoPolling(null);
         setRegoStatus("failed");
