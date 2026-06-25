@@ -476,19 +476,33 @@ export async function enrichVin(vin: string, opts?: { providedHash?: string; all
     const bw = await ensureBimmerData();
     if (bw) {
       const tag = bimmerTag(bw);
-      if (!vehicle && bw.vehicle) {
-        vehicle = bw.vehicle;
-        enrichmentSource.vehicle = source(tag);
+
+      // Monotonic merge: scraper data may fill missing vehicle fields
+      // (paint/upholstery/production date/etc.) but must not replace existing
+      // first-party or richer values.
+      if (bw.vehicle) {
+        const beforeVehicle = vehicle;
+        vehicle = mergeVehicle(vehicle, bw.vehicle);
+        if (!beforeVehicle || JSON.stringify(beforeVehicle) !== JSON.stringify(vehicle)) {
+          enrichmentSource.vehicle = source(tag);
+        }
       }
-      if (options.length === 0 && (bw.options || []).length > 0) {
-        options = bw.options || [];
-        enrichmentSource.options = source(tag);
-        // Promote SA codes into the local FA table so the next call
-        // for this VIN goes 100% first-party (and unlocks the BMW
-        // configurator for images via the promoted paint/upholstery).
+
+      // Monotonic merge: add missing option codes and fill empty option fields,
+      // but do not replace already-populated option data with poorer data.
+      if ((bw.options || []).length > 0) {
+        const beforeCount = options.length;
+        options = mergeOptions(options, bw.options || []);
+        if (options.length > beforeCount && !enrichmentSource.options) {
+          enrichmentSource.options = source(tag);
+        }
+
+        // Promote only the expanded/merged SA set. This is additive in the sense
+        // that it stores the best known complete list for this VIN; field-level
+        // merge above protects against downgrades in the response.
         const sas = options.map(o => o.code).filter(Boolean);
-        const promotePaint = (bw.vehicle as any)?.colorCode || null;
-        const promoteUph = (bw.vehicle as any)?.upholsteryCode || null;
+        const promotePaint = vehicle?.colorCode || (bw.vehicle as any)?.colorCode || null;
+        const promoteUph = vehicle?.upholsteryCode || (bw.vehicle as any)?.upholsteryCode || null;
         await promoteFactoryOptions(cleanVin, sas, promotePaint, promoteUph, tag);
       }
     }
