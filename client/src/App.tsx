@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { AuthProvider } from "@/lib/auth";
+import { HelmetProvider } from "react-helmet-async";
 import Home from "@/pages/Home";
 import CarDetail from "@/pages/CarDetail";
 import Search from "@/pages/Search";
@@ -64,8 +65,9 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AppErrorBoundary>
-        <AuthProvider>
-          <TooltipProvider>
+        <HelmetProvider>
+          <AuthProvider>
+            <TooltipProvider>
           <SidebarProvider style={style as React.CSSProperties}>
             <div className="flex h-screen w-full overflow-hidden bg-background">
               <AppSidebar />
@@ -82,8 +84,9 @@ export default function App() {
             </div>
           </SidebarProvider>
           <Toaster />
-          </TooltipProvider>
-        </AuthProvider>
+            </TooltipProvider>
+          </AuthProvider>
+        </HelmetProvider>
       </AppErrorBoundary>
     </QueryClientProvider>
   );
