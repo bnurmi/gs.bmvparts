@@ -93,7 +93,7 @@ export function UniversalSearch({ className = "", variant = "topbar", autoFocus,
         />
         <button
           type="submit"
-          className="px-5 bg-ink-primary text-ink-inverse font-medium text-sm tracking-tight hover:bg-bmv-accent transition-colors"
+          className="px-5 bg-ink-primary text-ink-inverse font-medium text-sm tracking-tight hover:bg-[#1563D6] transition-colors"
           data-testid="button-hero-decode"
         >
           {cta ?? t.hero.decode}

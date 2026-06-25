@@ -1,15 +1,29 @@
 import express, { type Express, type NextFunction, type Request, type Response } from "express";
 import fs from "fs";
 import path from "path";
-import { Client as ObjectStorageClient } from "@replit/object-storage";
+import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 
-let osClient: ObjectStorageClient | null = null;
+// R2 / S3-compatible image proxy. Replaces the Replit object-storage client
+// which required a sidecar at 127.0.0.1:1106 that only exists on Replit.
+// All credentials come from env vars set in the VPS secrets file.
+let r2Client: S3Client | null = null;
 
-function getObjectStorageClient(): ObjectStorageClient {
-  if (!osClient) {
-    osClient = new ObjectStorageClient();
+function getR2Client(): S3Client {
+  if (!r2Client) {
+    r2Client = new S3Client({
+      region: "auto",
+      endpoint: process.env.CLOUDFLARE_R2_ENDPOINT || process.env.Endpoint,
+      credentials: {
+        accessKeyId: process.env.CLOUDFLARE_R2_ACCESS_KEY_ID || "",
+        secretAccessKey: process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY || process.env.Secret_Access_Key || "",
+      },
+    });
   }
-  return osClient;
+  return r2Client;
+}
+
+function getR2Bucket(): string {
+  return process.env.CLOUDFLARE_R2_BUCKET || process.env.R2_BUCKET || "bmv-parts-bucket";
 }
 
 // In production, /images/* is no longer shipped inside dist (would have
@@ -28,22 +42,33 @@ async function serveImageFromObjectStorage(req: Request, res: Response) {
     return res.status(404).end();
   }
   const key = `images/${rel}`;
-  const dl = await getObjectStorageClient().downloadAsBytes(key);
-  if (!dl.ok) {
-    return res.status(404).end();
+  try {
+    const cmd = new GetObjectCommand({ Bucket: getR2Bucket(), Key: key });
+    const r2res = await getR2Client().send(cmd);
+    if (!r2res.Body) return res.status(404).end();
+    const chunks: Buffer[] = [];
+    for await (const chunk of r2res.Body as AsyncIterable<Uint8Array>) {
+      chunks.push(Buffer.from(chunk));
+    }
+    const buf = Buffer.concat(chunks);
+    const ext = path.extname(rel).toLowerCase();
+    const ct =
+      ext === ".jpg" || ext === ".jpeg" ? "image/jpeg" :
+      ext === ".png" ? "image/png" :
+      ext === ".webp" ? "image/webp" :
+      ext === ".gif" ? "image/gif" :
+      "application/octet-stream";
+    res.setHeader("Content-Type", ct);
+    res.setHeader("Cache-Control", `public, max-age=${IMAGE_CACHE_TTL_SECONDS}, immutable`);
+    res.setHeader("Content-Length", String(buf.length));
+    res.end(buf);
+  } catch (err: any) {
+    // NoSuchKey or similar — return 404 without logging noise
+    if (err?.name === "NoSuchKey" || err?.$metadata?.httpStatusCode === 404) {
+      return res.status(404).end();
+    }
+    throw err;
   }
-  const buf = Buffer.isBuffer(dl.value[0]) ? dl.value[0] : Buffer.from(dl.value[0]);
-  const ext = path.extname(rel).toLowerCase();
-  const ct =
-    ext === ".jpg" || ext === ".jpeg" ? "image/jpeg" :
-    ext === ".png" ? "image/png" :
-    ext === ".webp" ? "image/webp" :
-    ext === ".gif" ? "image/gif" :
-    "application/octet-stream";
-  res.setHeader("Content-Type", ct);
-  res.setHeader("Cache-Control", `public, max-age=${IMAGE_CACHE_TTL_SECONDS}, immutable`);
-  res.setHeader("Content-Length", String(buf.length));
-  res.end(buf);
 }
 
 export function mountImageProxy(app: Express) {

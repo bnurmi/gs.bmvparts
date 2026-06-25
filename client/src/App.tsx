@@ -18,6 +18,20 @@ import CarDetail from "@/pages/CarDetail";
 import Search from "@/pages/Search";
 import PartDetail from "@/pages/PartDetail";
 import VinDecoder from "@/pages/VinDecoder";
+import Login from "@/pages/Login";
+import Admin from "@/pages/Admin";
+import About from "@/pages/About";
+import ApiDocs from "@/pages/ApiDocs";
+import Friends from "@/pages/Friends";
+import Servicing from "@/pages/Servicing";
+import BmwModels from "@/pages/BmwModels";
+import ModelHubPage from "@/pages/ModelHubPage";
+import SeriesLanding from "@/pages/SeriesLanding";
+import ChassisLanding from "@/pages/ChassisLanding";
+import PartFinder from "@/pages/PartFinder";
+import MyCars from "@/pages/MyCars";
+import BackupRestore from "@/pages/BackupRestore";
+import ResetPassword from "@/pages/ResetPassword";
 import NotFound from "@/pages/not-found";
 import {
   DecoderHome,
@@ -38,9 +52,35 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      {/* Car & part detail */}
       <Route path="/car/:id" component={CarDetail} />
       <Route path="/part/:partNumberClean" component={PartDetail} />
+      {/* Search & tools */}
       <Route path="/search" component={Search} />
+      <Route path="/part-finder" component={PartFinder} />
+      {/* VIN decoder */}
+      <Route path="/vin" component={VinDecoder} />
+      <Route path="/vin/:vin" component={VinDecoder} />
+      {/* Browse */}
+      <Route path="/models" component={BmwModels} />
+      <Route path="/models/:slug" component={ModelHubPage} />
+      <Route path="/series/:series" component={SeriesLanding} />
+      <Route path="/chassis/:chassis" component={ChassisLanding} />
+      {/* Info pages */}
+      <Route path="/servicing" component={Servicing} />
+      <Route path="/about" component={About} />
+      <Route path="/api-docs" component={ApiDocs} />
+      <Route path="/friends" component={Friends} />
+      <Route path="/recommended-sites" component={Friends} />
+      {/* Auth */}
+      <Route path="/login" component={Login} />
+      <Route path="/reset-password" component={ResetPassword} />
+      {/* User */}
+      <Route path="/my-cars" component={MyCars} />
+      {/* Admin */}
+      <Route path="/admin" component={Admin} />
+      <Route path="/admin/backup-restore" component={BackupRestore} />
+      {/* 404 */}
       <Route component={NotFound} />
     </Switch>
   );
