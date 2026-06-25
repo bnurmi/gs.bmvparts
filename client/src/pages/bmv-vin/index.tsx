@@ -665,13 +665,26 @@ const DE_EN_UPHOLSTERY: Record<string, string> = {
 function normaliseUpholstery(raw: string | null | undefined): { display: string; sub: string | null } {
   if (!raw) return { display: "", sub: null };
   const stripped = raw.replace(/\s*\([A-Z0-9]{2,4}\)\s*$/, "").trim();
-  const titleCase = (s: string) =>
-    s.replace(/[-\s]+/g, " ").split(" ").map(w => {
-      const lw = w.toLowerCase();
-      if (DE_EN_UPHOLSTERY[lw]) return DE_EN_UPHOLSTERY[lw];
-      return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
-    }).join(" ");
-  const display = titleCase(stripped);
+
+  // BMW-specific proper nouns that must survive translation unchanged
+  const BMW_PROPER_NOUNS = new Set(["midrand", "kyalami", "fjord", "parchment", "smoke", "sonnengelb", "nevada", "dakota", "nappa", "vernasca", "sensatec", "merino", "alcantara", "vernasca"]);
+
+  // Translate a single word
+  const translateWord = (w: string): string => {
+    const lw = w.toLowerCase();
+    if (DE_EN_UPHOLSTERY[lw]) return DE_EN_UPHOLSTERY[lw];
+    // BMW proper nouns: title-case but don't translate
+    if (BMW_PROPER_NOUNS.has(lw)) return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+    return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+  };
+
+  // Translate a segment (space/hyphen-delimited words within one slash segment)
+  const translateSegment = (seg: string): string =>
+    seg.replace(/[-\s]+/g, " ").trim().split(" ").map(translateWord).join(" ");
+
+  // Split on "/" to handle compound upholstery like "Stoff Ribbon/anthrazit" or "Leder/Alcantara schwarz/midrand-beige"
+  const display = stripped.split("/").map(translateSegment).join(" / ");
+
   const hasGerman = Object.keys(DE_EN_UPHOLSTERY).some(k => raw.toLowerCase().includes(k));
   const wasAllCaps = raw === raw.toUpperCase() && raw.length > 3;
   const sub = (hasGerman || wasAllCaps) && raw.trim() !== display ? stripped : null;
@@ -768,8 +781,10 @@ function BmvVinDecoder({ vin }: { vin: string }) {
     ? parseInt(bwv.startOfProduction.match(/(\d{4})/)?.[1] ?? "0", 10) || decoded?.modelYear
     : decoded?.modelYear;
 
+  // Strip nested parens from chassis (e.g. "Sports Activity Vehicle (5 Doors)" → "Sports Activity Vehicle")
+  const chassisLabel = bwv?.chassis ? bwv.chassis.replace(/\s*\([^)]*\)\s*$/, "").trim() : null;
   const modelTitle = bwv?.modelName
-    ? `${modelYear ? modelYear + " " : ""}${bwv.modelName}${bwv.chassis ? " (" + bwv.chassis + ")" : ""}`
+    ? `${modelYear ? modelYear + " " : ""}${bwv.modelName}${chassisLabel ? " (" + chassisLabel + ")" : ""}`
     : decoded?.chassis
       ? `${modelYear ? modelYear + " " : ""}BMW ${decoded.chassis}`
       : "BMW VIN Decoded.";
