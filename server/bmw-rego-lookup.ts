@@ -1,31 +1,58 @@
 /**
  * bmw-rego-lookup.ts
  *
- * Looks up a VIN from BMW Australia's recall site using a real browser session
- * (Playwright + Chromium) so that reCAPTCHA v3 executes naturally.
+ * Resolves an Australian rego plate to a VIN via BMW Australia's recall site
+ * (https://www.recall.bmw.com.au/).
  *
- * The lookup is intentionally slow (~4-8s) — callers should treat it as async
- * and use the rego_vin_cache table as a write-through cache so repeat lookups
- * are instant.
+ * The recall site uses reCAPTCHA v3 server-side. We obtain a valid token from
+ * CapSolver (cheap, fast, ~5s) then POST directly to the BMW recall API --
+ * no headless browser required.
  *
- * Supported states: NSW only for now. Extend AUS_STATES to add more.
+ * Flow:
+ *   1. Ask CapSolver to solve reCAPTCHA v3 for the recall site key
+ *   2. POST /BmwRecall/Rego  -> vin
+ *   3. POST /BmwRecall/Vehicle -> model, year, colour
+ *   4. Cache result in rego_vin_cache, return to caller
  */
 
-import { chromium } from "playwright";
-import type { Response as PlaywrightResponse } from "playwright";
 import { db } from "./storage.js";
 import { regoVinCache } from "@shared/schema.js";
 import { eq, and } from "drizzle-orm";
+import { readFileSync } from "fs";
+import { homedir } from "os";
+import path from "path";
 
 // ---------------------------------------------------------------------------
-// Constants
+// Config
+// ---------------------------------------------------------------------------
+
+const BMW_RECALL_SITE_KEY = "6LfRPsoZAAAAAP-kZo0Sd7aw_89JIx-XUnTod7_R";
+const BMW_RECALL_URL      = "https://www.recall.bmw.com.au/";
+const BMW_API_BASE        = "https://fg.recall.bmw.com.au/BmwRecall";
+const CAPSOLVER_API       = "https://api.capsolver.com";
+const CAPSOLVER_ENV_FILE  = path.join(homedir(), ".hermes/profiles/veronica/secrets/capsolver.env");
+
+function getCapsolverKey(): string {
+  // In Docker: injected as env var
+  const fromEnv = process.env.CAPSOLVER_API_KEY;
+  if (fromEnv) return fromEnv;
+  // Local dev: read from secrets file
+  try {
+    const raw = readFileSync(CAPSOLVER_ENV_FILE, "utf-8");
+    for (const line of raw.split("\n")) {
+      const [k, v] = line.trim().split("=");
+      if (k === "CAPSOLVER_API_KEY" && v) return v.trim();
+    }
+  } catch {}
+  throw new Error("CAPSOLVER_API_KEY not found in environment or secrets file");
+}
+
+// ---------------------------------------------------------------------------
+// Supported states
 // ---------------------------------------------------------------------------
 
 export const AUS_STATES = ["NSW"] as const;
 export type AusState = typeof AUS_STATES[number];
-
-const BMW_RECALL_URL = "https://www.recall.bmw.com.au/";
-const LOOKUP_TIMEOUT_MS = 30_000;
 
 // ---------------------------------------------------------------------------
 // Types
@@ -81,7 +108,95 @@ export async function checkRegoCache(
 }
 
 // ---------------------------------------------------------------------------
-// Live scrape via Playwright
+// CapSolver -- obtain reCAPTCHA v3 token
+// ---------------------------------------------------------------------------
+
+async function solveRecaptchaV3(action = "rego"): Promise<string> {
+  const clientKey = getCapsolverKey();
+
+  // Create task
+  const createRes = await fetch(`${CAPSOLVER_API}/createTask`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      clientKey,
+      task: {
+        type: "ReCaptchaV3Task",
+        websiteURL: BMW_RECALL_URL,
+        websiteKey: BMW_RECALL_SITE_KEY,
+        pageAction: action,
+        minScore: 0.5,
+      },
+    }),
+  });
+
+  const createData: any = await createRes.json();
+  if (createData.errorId && createData.errorId !== 0) {
+    throw new Error(`CapSolver createTask error: ${createData.errorCode} ${createData.errorDescription}`);
+  }
+  const taskId: string = createData.taskId;
+
+  // Poll for result (up to 30s, every 2s)
+  for (let i = 0; i < 15; i++) {
+    await new Promise(r => setTimeout(r, 2000));
+
+    const pollRes = await fetch(`${CAPSOLVER_API}/getTaskResult`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ clientKey, taskId }),
+    });
+    const pollData: any = await pollRes.json();
+
+    if (pollData.status === "ready") {
+      const token: string = pollData.solution?.gRecaptchaResponse;
+      if (!token) throw new Error("CapSolver returned ready but no token");
+      return token;
+    }
+    if (pollData.status === "failed" || (pollData.errorId && pollData.errorId !== 0)) {
+      throw new Error(`CapSolver task failed: ${pollData.errorCode ?? pollData.status}`);
+    }
+    // status === "processing" -- keep polling
+  }
+
+  throw new Error("CapSolver timed out after 30s");
+}
+
+// ---------------------------------------------------------------------------
+// BMW recall API calls
+// ---------------------------------------------------------------------------
+
+const BMW_HEADERS = {
+  "Content-Type": "application/json",
+  "Origin":  "https://www.recall.bmw.com.au",
+  "Referer": "https://www.recall.bmw.com.au/",
+  "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+};
+
+async function bmwRegoLookup(rego: string, state: string, token: string) {
+  const res = await fetch(`${BMW_API_BASE}/Rego`, {
+    method: "POST",
+    headers: BMW_HEADERS,
+    body: JSON.stringify({ rego, regoState: state, brand: "1", token }),
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`BMW /Rego API ${res.status}: ${text.substring(0, 100)}`);
+  }
+  return res.json() as Promise<{ success: boolean; found: boolean; vin?: string }>;
+}
+
+async function bmwVehicleLookup(rego: string, state: string, vin: string, token: string) {
+  const res = await fetch(`${BMW_API_BASE}/Vehicle`, {
+    method: "POST",
+    headers: BMW_HEADERS,
+    body: JSON.stringify({ rego, regoState: state, brand: "1", token, vin }),
+  });
+  if (!res.ok) return null; // Vehicle lookup is best-effort
+  return res.json() as Promise<{ model?: string; year?: string; colour?: string } | null>;
+}
+
+// ---------------------------------------------------------------------------
+// Public scrape function
 // ---------------------------------------------------------------------------
 
 export async function scrapeRegoVin(
@@ -90,119 +205,47 @@ export async function scrapeRegoVin(
 ): Promise<RegoLookupOutcome> {
   const upper = rego.toUpperCase().trim();
 
-  const browser = await chromium.launch({
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
-  });
-
   try {
-    const context = await browser.newContext({
-      userAgent:
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-      locale: "en-AU",
-    });
+    console.log(`[rego-lookup] Solving reCAPTCHA for ${upper}/${state}...`);
+    const token = await solveRecaptchaV3();
 
-    // Intercept the Rego and Vehicle API responses
-    let regoResponse: any = null;
-    let vehicleResponse: any = null;
+    console.log(`[rego-lookup] Token obtained. Querying BMW Rego API...`);
+    const regoData = await bmwRegoLookup(upper, state, token);
 
-    context.on("response", async (response: PlaywrightResponse) => {
-      const url = response.url();
-      if (url.includes("/BmwRecall/Rego")) {
-        try { regoResponse = await response.json(); } catch {}
-      }
-      if (url.includes("/BmwRecall/Vehicle")) {
-        try { vehicleResponse = await response.json(); } catch {}
-      }
-    });
+    if (!regoData.success || !regoData.found || !regoData.vin) {
+      return { found: false, reason: "Registration not found in BMW recall system", rego: upper, state };
+    }
 
-    const page = await context.newPage();
+    const vin = regoData.vin;
+    console.log(`[rego-lookup] VIN resolved: ${vin}. Fetching vehicle details...`);
 
-    await page.goto(BMW_RECALL_URL, { waitUntil: "networkidle", timeout: LOOKUP_TIMEOUT_MS });
-
-    // Wait for the Angular app to mount and render the rego input
-    await page.waitForSelector("input#rego", { timeout: 15_000 });
-
-    // Fill rego -- click first to focus, then type char-by-char so Angular
-    // reactive forms get proper keydown/keypress/keyup/input events
-    const regoInput = page.locator("input#rego");
-    await regoInput.click();
-    await page.keyboard.type(upper, { delay: 80 });
-
-    // Select the state -- click the select, then use keyboard to pick the right option
-    await page.locator("select").click();
-    await page.selectOption("select", state);
-    // Dispatch change event explicitly for Angular
-    await page.locator("select").evaluate((el: HTMLSelectElement, val: string) => {
-      el.value = val;
-      el.dispatchEvent(new Event("change", { bubbles: true }));
-    }, state);
-
-    // Wait for reCAPTCHA v3 to run in the background (it fires automatically)
-    await page.waitForTimeout(2000);
-
-    // Click Next -- use the visible link text. If that fails, try direct click via JS
+    // Vehicle lookup uses a fresh token (BMW may validate it again)
+    let vehicleData: any = null;
     try {
-      await page.locator("a.btn-primary:has-text('Next')").click({ timeout: 5_000 });
-    } catch {
-      // Fallback: JS click on any element whose trimmed text starts with "Next"
-      await page.evaluate(() => {
-        const el = Array.from(document.querySelectorAll("a, button"))
-          .find(e => e.textContent?.trim().startsWith("Next")) as HTMLElement | undefined;
-        el?.click();
-      });
+      const vehicleToken = await solveRecaptchaV3();
+      vehicleData = await bmwVehicleLookup(upper, state, vin, vehicleToken);
+    } catch (e) {
+      console.warn(`[rego-lookup] Vehicle details fetch failed (non-fatal): ${e}`);
     }
 
-    // Wait for both API responses — the Rego call fires on click, Vehicle fires after
-    const deadline = Date.now() + 20_000;
-    while (Date.now() < deadline) {
-      if (regoResponse !== null) break;
-      await page.waitForTimeout(300);
-    }
-
-    if (!regoResponse) {
-      return { found: false, reason: "No response from BMW recall API", rego: upper, state };
-    }
-
-    if (!regoResponse.success || !regoResponse.found) {
-      return { found: false, reason: "Rego not found in BMW recall system", rego: upper, state };
-    }
-
-    const vin: string = regoResponse.vin;
-
-    // Wait briefly for Vehicle response (fires automatically after Rego)
-    const vehicleDeadline = Date.now() + 5_000;
-    while (Date.now() < vehicleDeadline) {
-      if (vehicleResponse !== null) break;
-      await page.waitForTimeout(200);
-    }
-
-    const model: string | null = vehicleResponse?.model ?? null;
-    const year: number | null = vehicleResponse?.year ? parseInt(vehicleResponse.year) : null;
-    const colour: string | null = vehicleResponse?.colour ?? null;
+    const model:  string | null = vehicleData?.model  ?? null;
+    const year:   number | null = vehicleData?.year   ? parseInt(vehicleData.year) : null;
+    const colour: string | null = vehicleData?.colour ?? null;
 
     // Write to cache
     await db
       .insert(regoVinCache)
-      .values({
-        rego: upper,
-        state,
-        vin,
-        model,
-        year,
-        colour,
-        source: "bmw_recall",
-      })
+      .values({ rego: upper, state, vin, model, year, colour, source: "bmw_recall" })
       .onConflictDoUpdate({
         target: [regoVinCache.rego, regoVinCache.state],
         set: { vin, model, year, colour, lookedUpAt: new Date(), source: "bmw_recall" },
       });
 
+    console.log(`[rego-lookup] Cached ${upper}/${state} -> ${vin}`);
     return { found: true, vin, model, year, colour, rego: upper, state, source: "bmw_recall" };
+
   } catch (err: any) {
-    console.error("[rego-lookup] Scrape error:", err?.message);
-    return { found: false, reason: `Scrape failed: ${err?.message ?? "unknown error"}`, rego: upper, state };
-  } finally {
-    await browser.close();
+    console.error(`[rego-lookup] Error: ${err?.message}`);
+    return { found: false, reason: err?.message ?? "Unknown error", rego: upper, state };
   }
 }
