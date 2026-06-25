@@ -67,15 +67,13 @@ function SiteHeader() {
         </span>
       </Link>
       <nav style={{ display: "flex", gap: 24 }}>
-        {[["How it works", "#how-it-works"], ["Style guide", "/guide"]].map(([label, href]) => (
-          <a key={label} href={href} style={{
-            fontFamily: F.sans, fontWeight: 500, fontSize: 13.5,
-            color: C.ink4, textDecoration: "none",
-          }}
-            onMouseEnter={e => (e.target as HTMLElement).style.color = C.ink}
-            onMouseLeave={e => (e.target as HTMLElement).style.color = C.ink4}
-          >{label}</a>
-        ))}
+        <a href="#how-it-works" style={{
+          fontFamily: F.sans, fontWeight: 500, fontSize: 13.5,
+          color: C.ink4, textDecoration: "none",
+        }}
+          onMouseEnter={e => (e.target as HTMLElement).style.color = C.ink}
+          onMouseLeave={e => (e.target as HTMLElement).style.color = C.ink4}
+        >How it works</a>
       </nav>
     </header>
   );
