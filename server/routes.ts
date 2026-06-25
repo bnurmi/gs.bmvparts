@@ -5378,8 +5378,12 @@ Be specific with BMW terminology. For example use "kidney grille" not just "gril
         const cached = await storage.getVinCache(cleaned);
         // Capture the stored hash for use below regardless of cache-hit outcome.
         // `bimmerworkHash` is part of the VinCache schema (Task #166) so no cast needed.
-        storedHash = cached?.bimmerworkHash ?? null;
-        if (cached && cached.enrichedData) {
+        // Only reuse a real bimmer.work hash. ETK placeholder rows store bimmerwork_hash='etk',
+        // which is not a usable bimmer.work hash and will poison fallback enrichment.
+        storedHash = cached?.bimmerworkHash && cached.bimmerworkHash !== "etk" ? cached.bimmerworkHash : null;
+        const cachedVehicle = (cached?.enrichedData as any)?.vehicle ?? null;
+        const isPlaceholderCache = cached?.source === "none" || (cached?.enrichedData as any)?.hash === "etk" || !cachedVehicle;
+        if (cached && cached.enrichedData && !isPlaceholderCache) {
           // Recompute coverage on cache-hit. Cached rows pre-Task-#83
           // were saved without the coverage block; the UI's OptionsTab
           // depends on it to render the honest "not in our dataset"
