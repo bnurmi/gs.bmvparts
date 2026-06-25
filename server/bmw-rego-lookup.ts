@@ -225,9 +225,11 @@ async function attemptLookup(
     }, state);
     await page.waitForTimeout(400 + Math.random() * 200);
 
-    // 11. Brief idle movement then let reCAPTCHA score -- 6s minimum
+    // 11. Brief idle movement then let reCAPTCHA score.
+    // Warmed Browserbase context lets us cut this from 6s to 4s; IP reputation
+    // still dominates, so retries remain the reliability mechanism.
     await page.mouse.move(500, 400, { steps: 6 });
-    await page.waitForTimeout(6000);
+    await page.waitForTimeout(4000);
 
     // 12. Click Next
     const nextHandle = await page.evaluateHandle((): HTMLElement | null => {
