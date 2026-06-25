@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="BMV.parts">
-  <title>BMV.parts</title>
-  <rect width="32" height="32" fill="#FFFFFF"/>
-  <text x="16" y="22.5" font-family="Inter Tight, system-ui, sans-serif" font-size="17" font-weight="900" letter-spacing="-0.8" text-anchor="middle">
-    <tspan fill="#08090B">BM</tspan><tspan fill="#1563D6">V</tspan>
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="bmv.vin">
+  <title>bmv.vin</title>
+  <rect width="64" height="64" rx="14" fill="#0A0A0C"/>
+  <path d="M14 14h36v6H20v10h25v6H20v14h30v6H14z" fill="#FFFFFF" opacity="0.96"/>
+  <path d="M45 14h6L35 56h-6z" fill="#1C69D4"/>
+  <circle cx="48" cy="48" r="4" fill="#1C69D4"/>
 </svg>

@@ -7,7 +7,9 @@
          Sets data-theme on <html> from localStorage (bmv-theme) immediately. -->
     <script>(function(){var STORAGE_KEY='bmv-theme';var VALID=['light','dark','auto'];function stored(){try{var s=localStorage.getItem(STORAGE_KEY);return VALID.includes(s)?s:'auto';}catch(_){return'auto';}}function apply(t){document.documentElement.setAttribute('data-theme',t);}apply(stored());window.BMVTheme={get current(){return stored();},get resolved(){var t=stored();if(t!=='auto')return t;return window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';},set:function(t){if(!VALID.includes(t))return;try{localStorage.setItem(STORAGE_KEY,t);}catch(_){}apply(t);window.dispatchEvent(new CustomEvent('bmv-theme-change',{detail:{theme:t}}));},cycle:function(){var order=['light','dark','auto'];var next=order[(order.indexOf(this.current)+1)%order.length];this.set(next);return next;}};if(window.matchMedia){window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(){if(stored()==='auto'){apply('auto');window.dispatchEvent(new CustomEvent('bmv-theme-change',{detail:{theme:'auto'}}));}});}})();</script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <!-- bmv.parts fonts: Inter Tight + JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
