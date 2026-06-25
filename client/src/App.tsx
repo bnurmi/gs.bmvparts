@@ -6,9 +6,13 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
-import { AuthProvider } from "@/lib/auth";
-import { isBmvVinHost } from "@/lib/locale";
+import { AuthProvider, useAuth } from "@/lib/auth";
+import { isBmvVinHost, useLocalizedHref } from "@/lib/locale";
 import { HelmetProvider } from "react-helmet-async";
+import { Link } from "wouter";
+import { CatalogStatusChip } from "@/components/CatalogStatusChip";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { UniversalSearch } from "@/components/UniversalSearch";
 import Home from "@/pages/Home";
 import CarDetail from "@/pages/CarDetail";
 import Search from "@/pages/Search";
@@ -103,6 +107,35 @@ class AppErrorBoundary extends Component<
   }
 }
 
+/** Compact sign-in / user button for the topbar. */
+function AppTopbarUser() {
+  const { user, isAuthenticated, logout } = useAuth();
+  const localize = useLocalizedHref();
+  const [, navigate] = useLocation();
+
+  if (!isAuthenticated) {
+    return (
+      <Link
+        href={localize("/login")}
+        className="bmv-eyebrow-accent text-[11px] px-2.5 py-1 border border-border-default hover:border-border-ink transition-colors"
+      >
+        Sign in
+      </Link>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={() => logout().then(() => navigate("/", { replace: true }))}
+      title={`Signed in as ${user?.username ?? "user"} — click to sign out`}
+      className="bmv-eyebrow text-[11px] px-2.5 py-1 border border-border-default hover:border-border-ink transition-colors"
+    >
+      {user?.username ?? "Account"}
+    </button>
+  );
+}
+
 export default function App() {
   const vinHost = isBmvVinHost();
   const style = {
@@ -125,10 +158,16 @@ export default function App() {
                   <div className="flex h-screen w-full overflow-hidden bg-background">
                     <AppSidebar />
                     <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
-                      <header className="flex items-center gap-3 px-4 h-12 border-b bg-background/95 backdrop-blur-sm shrink-0 z-10">
-                        <SidebarTrigger data-testid="button-sidebar-toggle" className="-ml-1" />
-                        <div className="h-5 w-px bg-border" />
-                        <span className="text-sm font-medium text-muted-foreground">BMW M Parts Catalog</span>
+                      <header className="flex items-center gap-2 px-3 h-12 border-b border-border-default bg-surface shrink-0 z-10">
+                        <SidebarTrigger data-testid="button-sidebar-toggle" className="-ml-0.5 text-ink-tertiary hover:text-ink-primary" />
+                        <div className="h-4 w-px bg-border-default" />
+                        <div className="flex-1 min-w-0">
+                          <UniversalSearch variant="topbar" className="max-w-[540px]" />
+                        </div>
+                        <CatalogStatusChip className="hidden sm:flex shrink-0" />
+                        <div className="h-4 w-px bg-border-default hidden sm:block" />
+                        <ThemeToggle />
+                        <AppTopbarUser />
                       </header>
                       <main className="flex-1 overflow-auto">
                         <Router />
