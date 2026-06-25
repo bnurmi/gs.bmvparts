@@ -960,7 +960,7 @@ function BmvVinDecoder({ vin }: { vin: string }) {
                     value={decoded.plant ? `${countryFlag(decoded.plant.country)} ${decoded.plant.city}` : (bwv?.manufacturer ? bwv.manufacturer.split("/").pop()?.trim() || "" : "")}
                     sub={decoded.plant?.country}
                   />
-                  {(bwv?.engine || decoded.engine) && <DataCard label="Engine" value={bwv?.engine || ""} code={decoded.engine || undefined} sub={decoded.engineFamily !== decoded.engine ? decoded.engineFamily || undefined : undefined} />}
+                  {(bwv?.engine || decoded.engine) && <DataCard label="Engine" value={bwv?.engine || decoded.engine || ""} code={bwv?.engine ? decoded.engine || undefined : undefined} />}
                   {bwv?.market && <DataCard label="Market" value={bwv.market} />}
                   {decoded.division && decoded.division !== "Standard" && <DataCard label="Division" value={decoded.division} />}
                   {(bwv?.drivetrain || decoded?.driveType) && (() => {
