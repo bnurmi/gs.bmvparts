@@ -295,6 +295,7 @@ interface DecodedVin {
   modelYear: number | null; plant: { code: string; city: string; country: string } | null;
   isValid: boolean; validationErrors: string[];
   productionSequence: string | null;
+  driveType?: string | null;
 }
 
 function SegmentBreakdown({ decoded }: { decoded: DecodedVin }) {
@@ -691,39 +692,88 @@ function normaliseUpholstery(raw: string | null | undefined): { display: string;
   return { display, sub };
 }
 
-/** Normalise BMW drivetrain — handles bimmerwork English strings, decoded short codes, and BMW German codes. */
-function normaliseDrivetrain(raw: string | null | undefined): string {
-  if (!raw) return "";
-  const map: Record<string, string> = {
-    // Short codes (decoded.driveType)
-    "rwd": "Rear-wheel drive", "fwd": "Front-wheel drive", "awd": "All-wheel drive",
-    "4wd": "Four-wheel drive",
-    // BMW German drivetrain codes
-    "allr": "All-wheel drive",       // Allradantrieb
-    "ha": "Rear-wheel drive",        // Hinterachsantrieb
-    "hr": "Rear-wheel drive",        // Hinterrad
-    "va": "Front-wheel drive",       // Vorderachse
-    "allrad": "All-wheel drive",
-    "hinterrad": "Rear-wheel drive",
-    "vorderrad": "Front-wheel drive",
-    // BMW xDrive / sDrive marketing names
-    "xdrive": "xDrive — All-wheel drive",
-    "sdrive": "sDrive — Rear-wheel drive",
-    // Bimmerwork English strings (normalise inconsistent hyphenation)
-    "all wheel-drive": "All-wheel drive",
-    "all wheel drive": "All-wheel drive",
-    "rear-wheel drive": "Rear-wheel drive",
-    "rear wheel drive": "Rear-wheel drive",
-    "rear wheel-drive": "Rear-wheel drive",
-    "front-wheel drive": "Front-wheel drive",
-    "front wheel drive": "Front-wheel drive",
-    "front wheel-drive": "Front-wheel drive",
-    // Steering (sometimes appears in drivetrain field)
-    "right-hand drive": "Right-hand drive", "rhd": "Right-hand drive",
-    "left-hand drive": "Left-hand drive", "lhd": "Left-hand drive",
-  };
+/** Normalise BMW drivetrain — returns { display, sub } like colour/upholstery.
+ *  display: BMW marketing name (xDrive / sDrive / eAWD / eDrive) when model confirms it, else English
+ *  sub: BMW German spec term (Allradantrieb, Hinterradantrieb, Vorderradantrieb)
+ *  modelName: optional — used to detect drive system branding from model name
+ */
+function normaliseDrivetrain(
+  raw: string | null | undefined,
+  modelName?: string | null
+): { display: string; sub: string | null } {
+  if (!raw) return { display: "", sub: null };
+
   const key = raw.toLowerCase().trim();
-  return map[key] ?? (raw.charAt(0).toUpperCase() + raw.slice(1));
+  const model = (modelName ?? "").toLowerCase();
+
+  // BMW German sub-labels
+  const germanSub: Record<string, string> = {
+    "awd": "Allradantrieb", "all-wheel drive": "Allradantrieb",
+    "all wheel-drive": "Allradantrieb", "all wheel drive": "Allradantrieb",
+    "allr": "Allradantrieb", "allrad": "Allradantrieb",
+    "xdrive": "Allradantrieb", "eawd": "Allradantrieb",
+    "rwd": "Hinterradantrieb", "rear-wheel drive": "Hinterradantrieb",
+    "rear wheel drive": "Hinterradantrieb", "rear wheel-drive": "Hinterradantrieb",
+    "ha": "Hinterradantrieb", "hr": "Hinterradantrieb", "hinterrad": "Hinterradantrieb",
+    "sdrive": "Hinterradantrieb", "edrive": "Hinterradantrieb",
+    "fwd": "Vorderradantrieb", "front-wheel drive": "Vorderradantrieb",
+    "front wheel drive": "Vorderradantrieb", "front wheel-drive": "Vorderradantrieb",
+    "va": "Vorderradantrieb", "vorderrad": "Vorderradantrieb",
+    "4wd": "Allradantrieb",
+  };
+
+  // eAWD: BMW M-Performance electric models with dual-motor AWD.
+  // BMW labels these M50/M60/M70 on i-series — distinct from xDrive on ICE/PHEV.
+  // e.g. i4 M50, i5 M60, i7 M70, iX M60. Regular iX xDrive40 uses xDrive branding.
+  const isEAWD = /\b(m50|m60|m70)\b/.test(model) &&
+    /\b(i4|i5|i7|ix)\b/.test(model) &&
+    (key.includes("all") || key === "awd");
+
+  // xDrive: model name contains "xdrive" — both ICE and electric variants BMW explicitly brands this way
+  const isXDrive = !isEAWD && model.includes("xdrive");
+
+  // sDrive: model name contains "sdrive" — BMW's RWD branding on X-models
+  const isSDrive = model.includes("sdrive");
+
+  // eDrive: single-motor electric RWD (i4 eDrive35, i5 eDrive40, etc.)
+  const isEDrive = model.includes("edrive") && !isEAWD;
+
+  let display: string;
+
+  if (isEAWD || key === "eawd") {
+    display = "eAWD — All-wheel drive";
+  } else if (isXDrive || key === "xdrive") {
+    display = "xDrive — All-wheel drive";
+  } else if (isEDrive || key === "edrive") {
+    display = "eDrive — Rear-wheel drive";
+  } else if (isSDrive || key === "sdrive") {
+    display = "sDrive — Rear-wheel drive";
+  } else {
+    const englishMap: Record<string, string> = {
+      "rwd": "Rear-wheel drive", "fwd": "Front-wheel drive", "awd": "All-wheel drive",
+      "4wd": "All-wheel drive",
+      "allr": "All-wheel drive", "ha": "Rear-wheel drive", "hr": "Rear-wheel drive",
+      "va": "Front-wheel drive", "allrad": "All-wheel drive",
+      "hinterrad": "Rear-wheel drive", "vorderrad": "Front-wheel drive",
+      "all wheel-drive": "All-wheel drive", "all wheel drive": "All-wheel drive",
+      "rear-wheel drive": "Rear-wheel drive", "rear wheel drive": "Rear-wheel drive",
+      "rear wheel-drive": "Rear-wheel drive",
+      "front-wheel drive": "Front-wheel drive", "front wheel drive": "Front-wheel drive",
+      "front wheel-drive": "Front-wheel drive",
+      "right-hand drive": "Right-hand drive", "rhd": "Right-hand drive",
+      "left-hand drive": "Left-hand drive", "lhd": "Left-hand drive",
+    };
+    display = englishMap[key] ?? (raw.charAt(0).toUpperCase() + raw.slice(1));
+  }
+
+  // German sub: use the key if mapped, else derive from the resolved display
+  const sub = germanSub[key]
+    ?? (display.includes("All-wheel") ? "Allradantrieb"
+      : display.includes("Rear-wheel") ? "Hinterradantrieb"
+      : display.includes("Front-wheel") ? "Vorderradantrieb"
+      : null);
+
+  return { display, sub };
 }
 
 // FAQ accordion
@@ -908,7 +958,10 @@ function BmvVinDecoder({ vin }: { vin: string }) {
                   />
                   {(bwv?.engine) && <DataCard label="Engine" value={bwv.engine} />}
                   {bwv?.market && <DataCard label="Market" value={bwv.market} />}
-                  {(bwv?.drivetrain || decoded?.driveType) && <DataCard label="Drivetrain" value={normaliseDrivetrain(bwv?.drivetrain || decoded?.driveType)} />}
+                  {(bwv?.drivetrain || decoded?.driveType) && (() => {
+                    const { display, sub } = normaliseDrivetrain(bwv?.drivetrain || decoded?.driveType, bwv?.modelName);
+                    return <DataCard label="Drivetrain" value={display} sub={sub || undefined} />;
+                  })()}
                   {bwv?.color && (() => {
                     const { display, sub } = normaliseColour(bwv.color, bwv.colorCode);
                     return <DataCard label="Colour" value={display} code={bwv.colorCode || undefined} sub={sub || undefined} />;
