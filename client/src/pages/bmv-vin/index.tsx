@@ -10,6 +10,7 @@ import { useState, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { Loader2 } from "lucide-react";
 import { AiFaqSection } from "@/components/AiFaqSection";
+import VinDecoder from "@/pages/VinDecoder";
 import {
   BMV_VIN_BRANDS, BMV_VIN_FACET_KINDS, BRAND_LABEL, FACET_KIND_LABEL,
   type BmvVinBrand, type BmvVinFacetKind,
@@ -170,9 +171,9 @@ function CellInstrument({ value, onChange, onDecode, isDecoding }: CellInstrumen
           data-testid="input-vin-hidden"
         />
 
-        {/* Segment columns */}
+        {/* Segment columns — flex-end so cells always sit on same baseline */}
         <div
-          style={{ display: "flex", gap: 10, cursor: "text" }}
+          style={{ display: "flex", gap: 10, cursor: "text", alignItems: "flex-end" }}
           onClick={() => inputRef.current?.focus()}
         >
           {SEG_CONFIG.map(seg => (
@@ -839,10 +840,79 @@ function Crumb({ items }: { items: { label: string; href?: string }[] }) {
 }
 
 // =============================================================================
-// Single-segment VIN route — renders BmvVinDecoder
+// BmvVinDecoderPage — wraps the shared VinDecoder in the bmv.vin shell.
+// The VinDecoder component handles all data, tabs, enrichment, and FAQ.
+// We only provide the shell (header/footer) and pass the VIN as a param.
 // =============================================================================
+
+/** Read-only display of a filled VIN in the segment instrument. No interactivity. */
+function CellInstrumentReadonly({ vin }: { vin: string }) {
+  const chars = vin.toUpperCase().split("");
+  return (
+    <div style={{ width: "100%", maxWidth: 820 }}>
+      <div style={{
+        background: C.white,
+        border: `1.5px solid ${C.ruleMid}`,
+        borderRadius: 16,
+        padding: "28px 28px 20px",
+        boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+      }}>
+        <div style={{ display: "flex", gap: 10, alignItems: "flex-end" }}>
+          {SEG_CONFIG.map(seg => (
+            <div key={seg.key} style={{ flex: SEG_FLEX[seg.key] }}>
+              <div style={{ borderBottom: `2px solid ${seg.color}`, paddingBottom: 6, marginBottom: 8 }}>
+                <div style={{ fontFamily: F.sans, fontSize: 9, fontWeight: 700, color: seg.color, textTransform: "uppercase", letterSpacing: "0.06em" }}>{seg.label}</div>
+                <div style={{ fontFamily: F.sans, fontSize: 10, fontWeight: 400, color: C.ink5 }}>{seg.name}</div>
+              </div>
+              <div style={{ display: "flex", gap: 3 }}>
+                {seg.positions.map((pos, ci) => (
+                  <div key={ci} style={{
+                    flex: 1, height: 50,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    position: "relative",
+                    background: C.white, border: `1.5px solid ${C.ruleMid}`, borderRadius: 6,
+                  }}>
+                    <span style={{ position: "absolute", top: 3, right: 4, fontFamily: F.sans, fontSize: 7, fontWeight: 500, color: C.ink5 }}>{pos + 1}</span>
+                    <span style={{ fontFamily: F.mono, fontSize: 17, fontWeight: 700, color: C.ink }}>{chars[pos] ?? ""}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 10 }}>
+          <span style={{ fontFamily: F.mono, fontSize: 11, color: C.green }}>17 / 17</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function BmvVinDecoderPage({ vin }: { vin: string }) {
-  return <BmvVinDecoder vin={vin} />;
+  return (
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: C.white }}>
+      <Helmet>
+        <title>{vin} — VIN Decoder | bmv.vin</title>
+      </Helmet>
+      <SiteHeader />
+
+      {/* Read-only cell instrument showing the decoded VIN */}
+      <section style={{
+        background: C.white, padding: "48px 48px 40px",
+        borderBottom: `1px solid ${C.rule}`,
+        display: "flex", flexDirection: "column", alignItems: "center",
+      }}>
+        <CellInstrumentReadonly vin={vin} />
+      </section>
+
+      {/* Full VinDecoder — all tabs, enrichment, FAQ, everything */}
+      <main style={{ flex: 1, padding: "32px 48px" }}>
+        <VinDecoder params={{ vin }} />
+      </main>
+
+      <SiteFooter />
+    </div>
+  );
 }
 
 // =============================================================================
