@@ -39,7 +39,7 @@ import { sendTestEmail, sendPasswordResetEmail } from "./email";
 import { createHash } from "crypto";
 import { downloadVinImages, migrateExistingVinImages, migrateModelImages, ensureLocalImagesExist } from "./vin-images";
 import { runTypeCodeBackfill } from "./type-code-backfill";
-import { checkRegoCache, scrapeRegoVin, AUS_STATES, type AusState } from "./bmw-rego-lookup";
+import { checkRegoCache, lookupRegoWithToken, AUS_STATES, type AusState } from "./bmw-rego-lookup";
 import { createDbBackup, createPreDeployBackup, restoreFromKey } from "./backup/db-backup";
 import { createFileBackup } from "./backup/file-backup";
 import { createCodeBackup } from "./backup/code-backup";
@@ -9410,10 +9410,11 @@ ${editorialLink ? `Set editorialLink to "${editorialLink}" for recommendations t
   });
 
   // ---------------------------------------------------------------------------
-  // Rego -> VIN lookup (BMW Australia recall site, async via in-process job map)
+  // Rego -> VIN lookup (BMW Australia recall site, browser-side reCAPTCHA v3)
   // ---------------------------------------------------------------------------
 
-  // In-process job store — lightweight, no persistence needed (lookups are short)
+  // In-process job store for async poll flow (token is sent by browser,
+  // BMW call happens server-side and may take 1-3s)
   const regoJobs = new Map<string, {
     status: "pending" | "done" | "failed";
     result?: any;
@@ -9422,7 +9423,7 @@ ${editorialLink ? `Set editorialLink to "${editorialLink}" for recommendations t
   }>();
 
   function cleanOldRegoJobs() {
-    const cutoff = Date.now() - 5 * 60 * 1000; // 5 min TTL
+    const cutoff = Date.now() - 5 * 60 * 1000;
     for (const [id, job] of Array.from(regoJobs.entries())) {
       if (job.startedAt < cutoff) regoJobs.delete(id);
     }
@@ -9430,7 +9431,7 @@ ${editorialLink ? `Set editorialLink to "${editorialLink}" for recommendations t
 
   app.post("/api/rego-lookup", async (req, res) => {
     try {
-      const { rego, state } = req.body as { rego?: string; state?: string };
+      const { rego, state, recaptchaToken } = req.body as { rego?: string; state?: string; recaptchaToken?: string };
 
       if (!rego || typeof rego !== "string") {
         return res.status(400).json({ error: "rego is required" });
@@ -9445,19 +9446,23 @@ ${editorialLink ? `Set editorialLink to "${editorialLink}" for recommendations t
         return res.status(400).json({ error: `State must be one of: ${AUS_STATES.join(", ")}` });
       }
 
-      // Cache hit — instant return
+      // Cache hit -- instant return, no token needed
       const cached = await checkRegoCache(upperRego, st);
       if (cached) {
         return res.json({ status: "found", source: "cache", ...cached });
       }
 
-      // Start async scrape job
+      // No token -- tell frontend to solve reCAPTCHA first
+      if (!recaptchaToken || typeof recaptchaToken !== "string") {
+        return res.json({ status: "needs_token" });
+      }
+
+      // Kick off async BMW call
       cleanOldRegoJobs();
       const jobId = `${upperRego}-${st}-${Date.now()}`;
       regoJobs.set(jobId, { status: "pending", startedAt: Date.now() });
 
-      // Fire and forget — don't await
-      scrapeRegoVin(upperRego, st).then((outcome) => {
+      lookupRegoWithToken(upperRego, st, recaptchaToken).then((outcome) => {
         const job = regoJobs.get(jobId);
         if (!job) return;
         if (outcome.found) {

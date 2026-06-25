@@ -1307,6 +1307,37 @@ export function BmvVinDecoderPage({ vin }: { vin: string }) {
 // =============================================================================
 
 
+// reCAPTCHA v3 helper -- loads the BMW recall site key script once and executes
+// it in the user's browser context (residential IP, real browser = high score)
+const BMW_RECAPTCHA_SITE_KEY = "6LfRPsoZAAAAAP-kZo0Sd7aw_89JIx-XUnTod7_R";
+
+function loadRecaptchaScript(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if ((window as any).grecaptcha) { resolve(); return; }
+    const existing = document.getElementById("bmw-recaptcha-script");
+    if (existing) { resolve(); return; }
+    const script = document.createElement("script");
+    script.id = "bmw-recaptcha-script";
+    script.src = `https://www.google.com/recaptcha/api.js?render=${BMW_RECAPTCHA_SITE_KEY}`;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error("reCAPTCHA failed to load"));
+    document.head.appendChild(script);
+  });
+}
+
+async function solveRecaptchaInBrowser(): Promise<string | null> {
+  try {
+    await loadRecaptchaScript();
+    await new Promise<void>(resolve => {
+      (window as any).grecaptcha.ready(resolve);
+    });
+    const token: string = await (window as any).grecaptcha.execute(BMW_RECAPTCHA_SITE_KEY, { action: "bmwrecall" });
+    return token;
+  } catch {
+    return null;
+  }
+}
+
 export function DecoderHome() {
   const [vinInput, setVinInput] = useState("");
   const [, navigate] = useLocation();
@@ -1334,6 +1365,7 @@ export function DecoderHome() {
     setRegoError(null);
 
     try {
+      // First attempt -- check cache (no token needed)
       const res = await fetch("/api/rego-lookup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -1346,42 +1378,75 @@ export function DecoderHome() {
         return;
       }
 
-      if (data.status === "pending" && data.jobId) {
-        // Start polling
-        const timer = setInterval(async () => {
-          try {
-            const pollRes = await fetch(`/api/rego-lookup/${data.jobId}`);
-            const pollData = await pollRes.json();
-            if (pollData.status === "found") {
-              clearInterval(timer);
-              setRegoPolling(null);
-              setRegoStatus("idle");
-              navigate(`/${pollData.vin}`);
-            } else if (pollData.status === "failed") {
-              clearInterval(timer);
-              setRegoPolling(null);
-              setRegoStatus("failed");
-              setRegoError(pollData.error ?? "Rego not found in BMW system.");
-            }
-            // else still pending — keep polling
-          } catch {
-            // network hiccup — keep polling
-          }
-        }, 1500);
-        setRegoPolling(timer);
+      if (data.status === "needs_token") {
+        // Cache miss -- solve reCAPTCHA v3 in the browser then resubmit
+        const token = await solveRecaptchaInBrowser();
+        if (!token) {
+          setRegoStatus("failed");
+          setRegoError("Could not verify you are human. Please try again.");
+          return;
+        }
+
+        const res2 = await fetch("/api/rego-lookup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ rego: upper, state: regoState, recaptchaToken: token }),
+        });
+        const data2 = await res2.json();
+
+        if (data2.status === "found") {
+          navigate(`/${data2.vin}`);
+          return;
+        }
+
+        if (data2.status === "pending" && data2.jobId) {
+          startPolling(data2.jobId);
+          return;
+        }
+
+        setRegoStatus("failed");
+        setRegoError(data2.error ?? "Unexpected response.");
         return;
       }
 
-      // Unexpected response
+      if (data.status === "pending" && data.jobId) {
+        startPolling(data.jobId);
+        return;
+      }
+
       setRegoStatus("failed");
       setRegoError(data.error ?? "Unexpected response from server.");
-    } catch (err: any) {
+    } catch {
       setRegoStatus("failed");
       setRegoError("Network error. Please try again.");
     }
   }
 
-  // Cleanup polling on unmount
+  function startPolling(jobId: string) {
+    const timer = setInterval(async () => {
+      try {
+        const pollRes = await fetch(`/api/rego-lookup/${jobId}`);
+        const pollData = await pollRes.json();
+        if (pollData.status === "found") {
+          clearInterval(timer);
+          setRegoPolling(null);
+          setRegoStatus("idle");
+          navigate(`/${pollData.vin}`);
+        } else if (pollData.status === "failed") {
+          clearInterval(timer);
+          setRegoPolling(null);
+          setRegoStatus("failed");
+          const reason = pollData.error ?? "";
+          setRegoError(reason.includes("reCAPTCHA") ? "Verification failed. Please try again." : "Registration not found in BMW system.");
+        }
+      } catch {
+        // network hiccup -- keep polling
+      }
+    }, 1500);
+    setRegoPolling(timer);
+  }
+
+  // Cleanup polling timer on unmount
   useEffect(() => {
     return () => { if (regoPolling) clearInterval(regoPolling); };
   }, [regoPolling]);
