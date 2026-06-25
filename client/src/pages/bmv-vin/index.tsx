@@ -691,14 +691,36 @@ function normaliseUpholstery(raw: string | null | undefined): { display: string;
   return { display, sub };
 }
 
-/** Normalise BMW drivetrain — expand abbreviations to human-readable. */
+/** Normalise BMW drivetrain — handles bimmerwork English strings, decoded short codes, and BMW German codes. */
 function normaliseDrivetrain(raw: string | null | undefined): string {
   if (!raw) return "";
   const map: Record<string, string> = {
-    "rwd":"Rear-wheel drive","fwd":"Front-wheel drive","awd":"All-wheel drive",
-    "xdrive":"xDrive (AWD)","sdrive":"sDrive (RWD)","4wd":"Four-wheel drive",
-    "right-hand drive":"Right-hand drive","left-hand drive":"Left-hand drive",
-    "rhd":"Right-hand drive","lhd":"Left-hand drive",
+    // Short codes (decoded.driveType)
+    "rwd": "Rear-wheel drive", "fwd": "Front-wheel drive", "awd": "All-wheel drive",
+    "4wd": "Four-wheel drive",
+    // BMW German drivetrain codes
+    "allr": "All-wheel drive",       // Allradantrieb
+    "ha": "Rear-wheel drive",        // Hinterachsantrieb
+    "hr": "Rear-wheel drive",        // Hinterrad
+    "va": "Front-wheel drive",       // Vorderachse
+    "allrad": "All-wheel drive",
+    "hinterrad": "Rear-wheel drive",
+    "vorderrad": "Front-wheel drive",
+    // BMW xDrive / sDrive marketing names
+    "xdrive": "xDrive — All-wheel drive",
+    "sdrive": "sDrive — Rear-wheel drive",
+    // Bimmerwork English strings (normalise inconsistent hyphenation)
+    "all wheel-drive": "All-wheel drive",
+    "all wheel drive": "All-wheel drive",
+    "rear-wheel drive": "Rear-wheel drive",
+    "rear wheel drive": "Rear-wheel drive",
+    "rear wheel-drive": "Rear-wheel drive",
+    "front-wheel drive": "Front-wheel drive",
+    "front wheel drive": "Front-wheel drive",
+    "front wheel-drive": "Front-wheel drive",
+    // Steering (sometimes appears in drivetrain field)
+    "right-hand drive": "Right-hand drive", "rhd": "Right-hand drive",
+    "left-hand drive": "Left-hand drive", "lhd": "Left-hand drive",
   };
   const key = raw.toLowerCase().trim();
   return map[key] ?? (raw.charAt(0).toUpperCase() + raw.slice(1));
@@ -886,7 +908,7 @@ function BmvVinDecoder({ vin }: { vin: string }) {
                   />
                   {(bwv?.engine) && <DataCard label="Engine" value={bwv.engine} />}
                   {bwv?.market && <DataCard label="Market" value={bwv.market} />}
-                  {bwv?.drivetrain && <DataCard label="Drivetrain" value={normaliseDrivetrain(bwv.drivetrain)} />}
+                  {(bwv?.drivetrain || decoded?.driveType) && <DataCard label="Drivetrain" value={normaliseDrivetrain(bwv?.drivetrain || decoded?.driveType)} />}
                   {bwv?.color && (() => {
                     const { display, sub } = normaliseColour(bwv.color, bwv.colorCode);
                     return <DataCard label="Colour" value={display} code={bwv.colorCode || undefined} sub={sub || undefined} />;
