@@ -168,8 +168,8 @@ export async function lookupRegoWithPlaywright(
     });
 
     // Navigate -- use domcontentloaded then wait for the Angular #rego input
-    await page.goto("https://www.recall.bmw.com.au/", { waitUntil: "domcontentloaded", timeout: 45_000 });
-    await page.waitForSelector("#rego", { timeout: 20_000 });
+    await page.goto("https://www.recall.bmw.com.au/", { waitUntil: "domcontentloaded", timeout: 25_000 });
+    await page.waitForSelector("#rego", { timeout: 15_000 });
 
     // Dismiss cookie/privacy modal if present (best-effort)
     await page.click("button.close", { timeout: 2000 }).catch(() => {});

@@ -1509,7 +1509,16 @@ export function DecoderHome() {
   }
 
   function startPolling(jobId: string) {
+    const startedAt = Date.now();
     const timer = setInterval(async () => {
+      // Stop polling after 50s
+      if (Date.now() - startedAt > 50_000) {
+        clearInterval(timer);
+        setRegoPolling(null);
+        setRegoStatus("failed");
+        setRegoError("Registration not found. Check the plate and state and try again.");
+        return;
+      }
       try {
         const pollRes = await fetch(`/api/rego-lookup/${jobId}`);
         const pollData = await pollRes.json();
@@ -1522,7 +1531,6 @@ export function DecoderHome() {
           clearInterval(timer);
           setRegoPolling(null);
           setRegoStatus("failed");
-          const reason = pollData.error ?? "";
           // Playwright handles verification server-side -- any failure shown as not found
           setRegoError("Registration not found. Check the plate and state and try again.");
         }
