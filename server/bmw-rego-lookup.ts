@@ -4,17 +4,20 @@
  * Resolves an Australian rego plate to a VIN via BMW Australia's recall site
  * (https://www.recall.bmw.com.au/).
  *
- * reCAPTCHA v3 strategy: Playwright headless Chromium routed through Evomi
- * residential proxy. BMW's recall page handles reCAPTCHA natively -- we never
- * touch the token. The browser navigates the real recall site, fills the form,
- * and we intercept the API response via network interception.
+ * reCAPTCHA v3 strategy: Playwright headless Chromium + stealth mode + Evomi
+ * residential proxy (https:// scheme). BMW's recall page handles reCAPTCHA
+ * natively -- we never touch the token. The browser fills the Angular form and
+ * we intercept the BmwRecall/Rego API response via network interception.
  *
- * This is the only reliable approach:
- *   - datacenter fetch: BMW API returns 400 ReCaptcha Fail (score too low)
- *   - solving services (CapSolver ProxyLess): same result, confirmed
- *   - browser-side token forwarded from user: domain mismatch, rejected
- *   - Playwright on residential proxy: real Chrome, real residential IP,
- *     reCAPTCHA executes on recall.bmw.com.au -> high score -> accepted
+ * Form structure (confirmed via DOM inspection 2026-06-25):
+ *   - Input: #rego (type=text, formcontrolname=rego)
+ *   - State: select[formcontrolname=regoState] (native select, values: ACT/NSW/etc)
+ *   - Submit: <a class="btn btn-primary left"> containing "Next" text
+ *             (NOT a <button> -- Angular Material anchor tag)
+ *
+ * Known limitation: Evomi residential IP pool scores below BMW's reCAPTCHA
+ * threshold when running headless. Result is 400 ReCaptcha Fail from BMW API.
+ * Fix: upgrade to Oxylabs residential (set OXYLABS_RESIDENTIAL_* env vars).
  */
 
 import { db } from "./storage.js";
@@ -27,18 +30,6 @@ import { eq, and } from "drizzle-orm";
 
 export const AUS_STATES = ["ACT", "NSW", "NT", "QLD", "SA", "TAS", "VIC", "WA"] as const;
 export type AusState = typeof AUS_STATES[number];
-
-// State label map used in the BMW recall form dropdown
-const STATE_LABELS: Record<AusState, string> = {
-  ACT: "Australian Capital Territory",
-  NSW: "New South Wales",
-  NT:  "Northern Territory",
-  QLD: "Queensland",
-  SA:  "South Australia",
-  TAS: "Tasmania",
-  VIC: "Victoria",
-  WA:  "Western Australia",
-};
 
 // ---------------------------------------------------------------------------
 // Types
@@ -94,19 +85,23 @@ export async function checkRegoCache(
 }
 
 // ---------------------------------------------------------------------------
-// Playwright scraper -- navigates BMW's recall page on a residential proxy
+// Proxy config
 // ---------------------------------------------------------------------------
 
-function buildProxyUrl(): string | null {
-  const host   = (process.env.EVOMI_PROXY_HOST     || "").trim();
-  const port   = (process.env.EVOMI_PROXY_PORT     || "").trim();
-  const user   = (process.env.EVOMI_PROXY_USERNAME || "").trim();
-  const pass   = (process.env.EVOMI_PROXY_PASSWORD || "").trim();
+function buildProxyConfig(): { server: string; username: string; password: string } | null {
+  const host = (process.env.EVOMI_PROXY_HOST || "").trim();
+  const port = (process.env.EVOMI_PROXY_PORT || "").trim();
+  const user = (process.env.EVOMI_PROXY_USERNAME || "").trim();
+  const pass = (process.env.EVOMI_PROXY_PASSWORD || "").trim();
   if (!host || !port || !user || !pass) return null;
-  // Use https:// scheme -- confirmed working for BMW recall site via Evomi
+  // https:// scheme confirmed working for BMW recall domain via Evomi
   const scheme = (process.env.EVOMI_PROXY_SCHEME || "https").toLowerCase() === "http" ? "http" : "https";
-  return `${scheme}://${host}:${port}`;
+  return { server: `${scheme}://${host}:${port}`, username: user, password: pass };
 }
+
+// ---------------------------------------------------------------------------
+// Playwright scraper
+// ---------------------------------------------------------------------------
 
 export async function lookupRegoWithPlaywright(
   rego: string,
@@ -120,19 +115,17 @@ export async function lookupRegoWithPlaywright(
     const { default: StealthPlugin } = await import("puppeteer-extra-plugin-stealth");
     chromium.use(StealthPlugin());
 
-    const proxyServer = buildProxyUrl();
-    const proxyUser   = (process.env.EVOMI_PROXY_USERNAME || "").trim();
-    const proxyPass   = (process.env.EVOMI_PROXY_PASSWORD || "").trim();
-
-    console.log(`[rego-lookup] Launching Chromium via ${proxyServer ? "Evomi residential proxy" : "direct (no proxy)"}`);
+    const proxy = buildProxyConfig();
+    console.log(`[rego-lookup] Launching Chromium ${proxy ? "via Evomi residential proxy" : "(no proxy -- datacenter IP)"}`);
 
     browser = await chromium.launch({
       headless: true,
       args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
-      ...(proxyServer ? { proxy: { server: proxyServer, username: proxyUser, password: proxyPass } } : {}),
+      ...(proxy ? { proxy } : {}),
     });
 
     const ctx = await browser.newContext({
+      viewport: { width: 1280, height: 900 },
       userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
       locale: "en-AU",
       timezoneId: "Australia/Sydney",
@@ -154,6 +147,7 @@ export async function lookupRegoWithPlaywright(
           } else {
             const body = await response.text().catch(() => "");
             apiError = `BMW API ${status}: ${body.substring(0, 100)}`;
+            console.log(`[rego-lookup] BMW API ${status}: ${body.substring(0, 80)}`);
           }
         } catch (e: any) {
           apiError = `Response parse error: ${e?.message}`;
@@ -161,30 +155,57 @@ export async function lookupRegoWithPlaywright(
       }
     });
 
-    // Navigate to BMW recall page
-    await page.goto("https://www.recall.bmw.com.au/", { waitUntil: "networkidle", timeout: 30_000 });
+    // Navigate -- use domcontentloaded then wait for the Angular #rego input
+    await page.goto("https://www.recall.bmw.com.au/", { waitUntil: "domcontentloaded", timeout: 45_000 });
+    await page.waitForSelector("#rego", { timeout: 20_000 });
 
-    // Fill rego field
-    await page.fill('input[name="rego"], input[placeholder*="rego" i], input[placeholder*="registration" i], input[type="text"]:first-of-type', upper);
+    // Dismiss cookie/privacy modal if present (best-effort)
+    await page.click("button.close", { timeout: 2000 }).catch(() => {});
 
-    // Select state from dropdown
-    const stateLabel = STATE_LABELS[state];
-    try {
-      // Try Angular Material / custom select first
-      await page.click(`mat-select, select[name*="state" i], select[id*="state" i]`, { timeout: 3000 });
-      await page.click(`mat-option:has-text("${stateLabel}"), option[value="${state}"]`, { timeout: 3000 });
-    } catch {
-      // Fallback: native select
-      await page.selectOption(`select`, { label: stateLabel }).catch(async () => {
-        await page.selectOption(`select`, state);
-      });
+    // Let reCAPTCHA observe the session
+    await page.waitForTimeout(4000);
+
+    // Fill rego -- click first then type to trigger Angular's reactive form
+    await page.click("#rego");
+    await page.keyboard.type(upper, { delay: 100 });
+
+    // Dispatch Angular input/change events
+    await page.evaluate(() => {
+      const el = document.querySelector("#rego") as HTMLInputElement | null;
+      if (el) {
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+        el.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    });
+
+    // Select state
+    await page.selectOption("select[formcontrolname=\"regoState\"]", state).catch(async () => {
+      // Fallback if formcontrolname doesn't match
+      await page.selectOption("select", state);
+    });
+    await page.evaluate(() => {
+      const el = document.querySelector("select[formcontrolname=\"regoState\"]") as HTMLSelectElement | null;
+      if (el) el.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+
+    await page.waitForTimeout(1500);
+
+    // Click the Next anchor (confirmed: <a class="btn btn-primary left">Next…</a>)
+    const clicked = await page.evaluate(() => {
+      const anchors = [...document.querySelectorAll("a")];
+      const next = anchors.find(a => a.textContent?.includes("Next"));
+      if (next) { (next as HTMLElement).click(); return true; }
+      return false;
+    });
+
+    if (!clicked) {
+      await browser.close();
+      browser = null;
+      return { found: false, reason: "Could not locate form submit button", rego: upper, state };
     }
 
-    // Submit the form
-    await page.click('button[type="submit"], button:has-text("Search"), button:has-text("Look up")', { timeout: 5000 });
-
-    // Wait for the API call to complete (up to 20s)
-    const deadline = Date.now() + 20_000;
+    // Wait for API response (up to 25s)
+    const deadline = Date.now() + 25_000;
     while (!apiResponse && !apiError && Date.now() < deadline) {
       await page.waitForTimeout(500);
     }
@@ -193,14 +214,13 @@ export async function lookupRegoWithPlaywright(
     browser = null;
 
     if (apiError) {
-      if (apiError.includes("ReCaptcha")) {
-        return { found: false, reason: "reCAPTCHA check failed -- retry", rego: upper, state };
-      }
+      // Log internally but don't surface reCAPTCHA detail to user
+      console.log(`[rego-lookup] API error for ${upper}/${state}: ${apiError}`);
       return { found: false, reason: apiError, rego: upper, state };
     }
 
     if (!apiResponse) {
-      return { found: false, reason: "Timeout waiting for BMW API response", rego: upper, state };
+      return { found: false, reason: "Timeout -- no response from BMW system", rego: upper, state };
     }
 
     if (!apiResponse.success || !apiResponse.found || !apiResponse.vin) {
@@ -208,8 +228,8 @@ export async function lookupRegoWithPlaywright(
     }
 
     const vin: string = apiResponse.vin;
-    const model:  string | null = apiResponse.model  ?? null;
-    const year:   number | null = apiResponse.year   ? parseInt(apiResponse.year) : null;
+    const model: string | null = apiResponse.model ?? null;
+    const year: number | null = apiResponse.year ? parseInt(apiResponse.year) : null;
     const colour: string | null = apiResponse.colour ?? null;
 
     // Write to cache
@@ -232,13 +252,13 @@ export async function lookupRegoWithPlaywright(
 }
 
 // ---------------------------------------------------------------------------
-// Public entry point -- alias kept for routes.ts compatibility
+// Public entry point -- routes.ts calls this
 // ---------------------------------------------------------------------------
 
 export async function lookupRegoWithToken(
   rego: string,
   state: AusState,
-  _recaptchaToken: string, // ignored -- Playwright handles reCAPTCHA natively
+  _recaptchaToken: string, // unused -- Playwright handles reCAPTCHA natively
 ): Promise<RegoLookupOutcome> {
   return lookupRegoWithPlaywright(rego, state);
 }

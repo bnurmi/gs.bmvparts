@@ -1523,7 +1523,8 @@ export function DecoderHome() {
           setRegoPolling(null);
           setRegoStatus("failed");
           const reason = pollData.error ?? "";
-          setRegoError(reason.includes("reCAPTCHA") ? "Verification failed. Please try again." : "Registration not found.");
+          // Playwright handles verification server-side -- any failure shown as not found
+          setRegoError("Registration not found. Check the plate and state and try again.");
         }
       } catch {
         // network hiccup -- keep polling
