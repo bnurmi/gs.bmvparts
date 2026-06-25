@@ -1487,27 +1487,6 @@ export function DecoderHome() {
         return;
       }
 
-      if (data.status === "needs_token") {
-        // Cache miss -- solve reCAPTCHA v3 in the user's browser (real residential IP = high score)
-        const token = await solveRecaptchaInBrowser();
-        if (!token) {
-          setRegoStatus("failed");
-          setRegoError("Could not verify. Please try again.");
-          return;
-        }
-        const res2 = await fetch("/api/rego-lookup", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ rego: upper, state: regoState, recaptchaToken: token }),
-        });
-        const data2 = await res2.json();
-        if (data2.status === "found") { navigate(`/${data2.vin}`); return; }
-        if (data2.status === "pending" && data2.jobId) { startPolling(data2.jobId); return; }
-        setRegoStatus("failed");
-        setRegoError("Registration not found. Check the plate and state and try again.");
-        return;
-      }
-
       setRegoStatus("failed");
       setRegoError(data.error ?? "Unexpected response from server.");
     } catch {
@@ -1617,7 +1596,7 @@ export function DecoderHome() {
               }}
             >Decode by VIN</button>
             <button
-              onClick={() => { setTab("rego"); loadRecaptchaScript().catch(() => {}); }}
+              onClick={() => setTab("rego")}
               style={{
                 flex: 1, padding: "10px 20px",
                 background: tab === "rego" ? C.blue : C.white,

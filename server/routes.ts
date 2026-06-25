@@ -9446,18 +9446,13 @@ ${editorialLink ? `Set editorialLink to "${editorialLink}" for recommendations t
         return res.status(400).json({ error: `State must be one of: ${AUS_STATES.join(", ")}` });
       }
 
-      // Cache hit -- instant return, no token needed
+      // Cache hit -- instant return
       const cached = await checkRegoCache(upperRego, st);
       if (cached) {
         return res.json({ status: "found", source: "cache", ...cached });
       }
 
-      // No token -- tell frontend to solve reCAPTCHA in the user's browser
-      if (!recaptchaToken || typeof recaptchaToken !== "string") {
-        return res.json({ status: "needs_token" });
-      }
-
-      // Kick off async BMW call with the browser-provided token
+      // Kick off async Browserbase session (handles reCAPTCHA natively via residential IP)
       cleanOldRegoJobs();
       const jobId = `${upperRego}-${st}-${Date.now()}`;
       regoJobs.set(jobId, { status: "pending", startedAt: Date.now() });
